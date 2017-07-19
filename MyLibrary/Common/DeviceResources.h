@@ -13,7 +13,9 @@
 #include <memory>
 #include <stdexcept>
 
-namespace DX
+#include <SpriteBatch.h>
+
+namespace MyLibrary
 {
     // Provides an interface for an application that owns DeviceResources to be notified of the device being lost or created.
     interface IDeviceNotify
@@ -25,12 +27,12 @@ namespace DX
     // Controls all the DirectX device resources.
     class DeviceResources
     {
-    public:
-        DeviceResources(DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM,
-                        DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D24_UNORM_S8_UINT,
-                        UINT backBufferCount = 2,
-                        D3D_FEATURE_LEVEL minFeatureLevel = D3D_FEATURE_LEVEL_9_1);
+	public:
+		static DeviceResources* GetInstance();
+	private:
+		static DeviceResources* m_Instance;
 
+    public:
         void CreateDeviceResources();
         void CreateWindowSizeDependentResources();
         void SetWindow(HWND window, int width, int height);
@@ -58,6 +60,7 @@ namespace DX
         DXGI_FORMAT             GetDepthBufferFormat() const            { return m_depthBufferFormat; }
         D3D11_VIEWPORT          GetScreenViewport() const               { return m_screenViewport; }
         UINT                    GetBackBufferCount() const              { return m_backBufferCount; }
+		DirectX::SpriteBatch*	GetSpriteBatch() const					{ return m_spriteBatch.get(); }
 
         // Performance events
         void PIXBeginEvent(_In_z_ const wchar_t* name)
@@ -85,6 +88,11 @@ namespace DX
         }
 
     private:
+		DeviceResources(DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM,
+			DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D24_UNORM_S8_UINT,
+			UINT backBufferCount = 2,
+			D3D_FEATURE_LEVEL minFeatureLevel = D3D_FEATURE_LEVEL_9_1);
+
         void GetHardwareAdapter(IDXGIAdapter1** ppAdapter);
 
         // Direct3D objects.
@@ -116,5 +124,8 @@ namespace DX
 
         // The IDeviceNotify can be held directly as it owns the DeviceResources.
         IDeviceNotify*                                  m_deviceNotify;
+
+		// スプライトバッチ
+		std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
     };
 }

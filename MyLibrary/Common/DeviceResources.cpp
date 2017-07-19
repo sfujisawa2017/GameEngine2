@@ -3,8 +3,6 @@
 //                       (requires DirectX 11.0 Runtime)
 //
 
-#include <math.h>
-
 #include "DeviceResources.h"
 
 inline void ThrowIfFailed(HRESULT hr)
@@ -16,7 +14,9 @@ inline void ThrowIfFailed(HRESULT hr)
 	}
 }
 
+using namespace DirectX;
 using Microsoft::WRL::ComPtr;
+using namespace MyLibrary;
 
 namespace
 {
@@ -42,8 +42,21 @@ namespace
 #endif
 };
 
+// static member variable
+DeviceResources* DeviceResources::m_Instance = nullptr;
+
+DeviceResources * DeviceResources::GetInstance()
+{
+	if (!m_Instance)
+	{
+		m_Instance = new DeviceResources();
+	}
+
+	return m_Instance;
+}
+
 // Constructor for DeviceResources.
-DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel) :
+DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel) :
     m_screenViewport{},
     m_backBufferFormat(backBufferFormat),
     m_depthBufferFormat(depthBufferFormat),
@@ -57,7 +70,7 @@ DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT d
 }
 
 // Configures the Direct3D device, and stores handles to it and the device context.
-void DX::DeviceResources::CreateDeviceResources() 
+void DeviceResources::CreateDeviceResources() 
 {
     UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
@@ -217,10 +230,12 @@ void DX::DeviceResources::CreateDeviceResources()
         (void) m_d3dContext.As(&m_d3dContext1);
         (void) m_d3dContext.As(&m_d3dAnnotation);
     }
+
+	m_spriteBatch = std::make_unique<SpriteBatch>(m_d3dContext.Get());
 }
 
 // These resources need to be recreated every time the window size is changed.
-void DX::DeviceResources::CreateWindowSizeDependentResources() 
+void DeviceResources::CreateWindowSizeDependentResources() 
 {
     if (!m_window)
     {
@@ -385,7 +400,7 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
 }
 
 // This method is called when the Win32 window is created (or re-created).
-void DX::DeviceResources::SetWindow(HWND window, int width, int height)
+void DeviceResources::SetWindow(HWND window, int width, int height)
 {
     m_window = window;
 
@@ -395,7 +410,7 @@ void DX::DeviceResources::SetWindow(HWND window, int width, int height)
 }
 
 // This method is called when the Win32 window changes size
-bool DX::DeviceResources::WindowSizeChanged(int width, int height)
+bool DeviceResources::WindowSizeChanged(int width, int height)
 {
     RECT newRc;
     newRc.left = newRc.top = 0;
@@ -412,7 +427,7 @@ bool DX::DeviceResources::WindowSizeChanged(int width, int height)
 }
 
 // Recreate all device resources and set them back to the current state.
-void DX::DeviceResources::HandleDeviceLost()
+void DeviceResources::HandleDeviceLost()
 {
     if (m_deviceNotify)
     {
@@ -449,10 +464,12 @@ void DX::DeviceResources::HandleDeviceLost()
     {
         m_deviceNotify->OnDeviceRestored();
     }
+
+	m_spriteBatch.reset();
 }
 
 // Present the contents of the swap chain to the screen.
-void DX::DeviceResources::Present() 
+void DeviceResources::Present() 
 {
     // The first argument instructs DXGI to block until VSync, putting the application
     // to sleep until the next VSync. This ensures we don't waste any cycles rendering
@@ -492,7 +509,7 @@ void DX::DeviceResources::Present()
 
 // This method acquires the first available hardware adapter.
 // If no such adapter can be found, *ppAdapter will be set to nullptr.
-void DX::DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
+void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
 {
     *ppAdapter = nullptr;
 

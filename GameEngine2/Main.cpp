@@ -9,6 +9,9 @@
 
 #include "Game.h"
 
+#include <Mouse.h>
+#include <Keyboard.h>
+
 namespace
 {
     std::unique_ptr<Game> g_game;
@@ -176,6 +179,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_ACTIVATEAPP:
+		DirectX::Mouse::ProcessMessage(message, wParam, lParam);
+		DirectX::Keyboard::ProcessMessage(message, wParam, lParam);
+
         if (game)
         {
             if (wParam)
@@ -214,6 +220,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_SYSKEYDOWN:
+		DirectX::Keyboard::ProcessMessage(message, wParam, lParam);
         if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000)
         {
             // Implements the classic ALT+ENTER fullscreen toggle
@@ -249,6 +256,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // A menu is active and the user presses a key that does not correspond
         // to any mnemonic or accelerator key. Ignore so we don't produce an error beep.
         return MAKELRESULT(0, MNC_CLOSE);
+	case WM_INPUT:
+	case WM_MOUSEMOVE:
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+	case WM_MBUTTONDOWN:
+	case WM_MBUTTONUP:
+	case WM_MOUSEWHEEL:
+	case WM_XBUTTONDOWN:
+	case WM_XBUTTONUP:
+	case WM_MOUSEHOVER:
+		DirectX::Mouse::ProcessMessage(message, wParam, lParam);
+		break;
+	case WM_KEYDOWN:
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+		DirectX::Keyboard::ProcessMessage(message, wParam, lParam);
+		break;
+
     }
 
     return DefWindowProc(hWnd, message, wParam, lParam);

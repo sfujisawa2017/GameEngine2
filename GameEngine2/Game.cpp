@@ -7,12 +7,12 @@
 extern void ExitGame();
 
 using namespace DirectX;
-
 using Microsoft::WRL::ComPtr;
+using namespace MyLibrary;
 
 Game::Game()
 {
-    m_deviceResources = std::make_unique<DX::DeviceResources>();
+	m_deviceResources = DeviceResources::GetInstance();
     m_deviceResources->RegisterDeviceNotify(this);
 }
 
@@ -33,6 +33,7 @@ void Game::Initialize(HWND window, int width, int height)
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
     */
+	MouseUtil::GetInstance()->SetWindow(window);
 }
 
 #pragma region Frame Update
@@ -48,7 +49,7 @@ void Game::Tick()
 }
 
 // Updates the world.
-void Game::Update(DX::StepTimer const& timer)
+void Game::Update(StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
 
@@ -73,8 +74,8 @@ void Game::Render()
     auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Add your rendering code here.
-    context;
 
+    
     m_deviceResources->PIXEndEvent();
 
     // Show the new frame.

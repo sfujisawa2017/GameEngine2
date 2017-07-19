@@ -7,7 +7,7 @@
 #include <exception>
 #include <stdint.h>
 
-namespace DX
+namespace MyLibrary
 {
     // Helper class for animation and simulation timing.
     class StepTimer

@@ -7,13 +7,11 @@
 #include <DirectXMath.h>
 #include <DirectXColors.h>
 
-#include "DeviceResources.h"
-#include "StepTimer.h"
-
+#include "MyLibrary.h"
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
-class Game : public DX::IDeviceNotify
+class Game : public MyLibrary::IDeviceNotify
 {
 public:
 
@@ -41,7 +39,7 @@ public:
 
 private:
 
-    void Update(DX::StepTimer const& timer);
+    void Update(MyLibrary::StepTimer const& timer);
     void Render();
 
     void Clear();
@@ -50,8 +48,8 @@ private:
     void CreateWindowSizeDependentResources();
 
     // Device resources.
-    std::unique_ptr<DX::DeviceResources>    m_deviceResources;
+    MyLibrary::DeviceResources*    m_deviceResources;
 
     // Rendering loop timer.
-    DX::StepTimer                           m_timer;
+	MyLibrary::StepTimer                           m_timer;
 };
