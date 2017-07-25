@@ -3,6 +3,8 @@
 /// </summary>
 #pragma once
 
+#include "Framework\Framework.h"
+
 #include "Common\DeviceResources.h"
 #include "Common\StepTimer.h"
 

@@ -19,6 +19,9 @@
     <Filter Include="2D">
       <UniqueIdentifier>{ae018e5f-497e-4098-89b2-356eca199f8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{dc54cda0-d225-47e9-bf61-6619a5f4241c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision\Collision.cpp">
@@ -47,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="Collision\CollisionNode.cpp">
       <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Framework.cpp">
+      <Filter>Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +86,9 @@
     </ClInclude>
     <ClInclude Include="Collision\CollisionNode.h">
       <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Framework.h">
+      <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

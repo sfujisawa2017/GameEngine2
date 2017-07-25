@@ -148,6 +148,7 @@
     <ClCompile Include="Collision\Collision.cpp" />
     <ClCompile Include="Collision\CollisionNode.cpp" />
     <ClCompile Include="Common\DeviceResources.cpp" />
+    <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Input\KeyboardUtil.cpp" />
     <ClCompile Include="Input\MouseUtil.cpp" />
   </ItemGroup>
@@ -160,6 +161,7 @@
     <ClInclude Include="Collision\CollisionNode.h" />
     <ClInclude Include="Common\DeviceResources.h" />
     <ClInclude Include="Common\StepTimer.h" />
+    <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Input\KeyboardUtil.h" />
     <ClInclude Include="Input\MouseUtil.h" />
     <ClInclude Include="MyLibrary.h" />
