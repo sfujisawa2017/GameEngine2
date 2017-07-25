@@ -30,7 +30,7 @@ namespace MyLibrary
 	public:
 		static DeviceResources* GetInstance();
 	private:
-		static DeviceResources* m_Instance;
+		static std::unique_ptr<DeviceResources> m_Instance;
 
     public:
         void CreateDeviceResources();

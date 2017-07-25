@@ -43,16 +43,16 @@ namespace
 };
 
 // static member variable
-DeviceResources* DeviceResources::m_Instance = nullptr;
+std::unique_ptr<DeviceResources> DeviceResources::m_Instance;
 
 DeviceResources * DeviceResources::GetInstance()
 {
 	if (!m_Instance)
 	{
-		m_Instance = new DeviceResources();
+		m_Instance.reset(new DeviceResources);
 	}
 
-	return m_Instance;
+	return m_Instance.get();
 }
 
 // Constructor for DeviceResources.
