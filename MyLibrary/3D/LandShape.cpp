@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <DirectXColors.h>
 #include "LandShape.h"
-#include "CollisionNode.h"
+#include "../Collision/CollisionNode.h"
 
 using namespace std;
 using namespace DirectX;
