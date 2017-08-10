@@ -153,6 +153,7 @@
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Input\KeyboardUtil.cpp" />
     <ClCompile Include="Input\MouseUtil.cpp" />
+    <ClCompile Include="Utility\BinaryFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2D\DebugText.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Input\KeyboardUtil.h" />
     <ClInclude Include="Input\MouseUtil.h" />
     <ClInclude Include="MyLibrary.h" />
+    <ClInclude Include="Utility\BinaryFile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

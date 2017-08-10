@@ -21,3 +21,5 @@
 
 #include "Camera\Camera.h"
 #include "Camera\DebugCamera.h"
+
+#include "Utility\BinaryFile.h"

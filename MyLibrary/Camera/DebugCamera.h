@@ -21,9 +21,6 @@ namespace MyLibrary
 
 		float m_sx, m_sy;
 
-		// 生成されたビュー行列
-		DirectX::SimpleMath::Matrix m_view;
-
 		// スクロールフォイール値
 		int m_scrollWheelValue;
 

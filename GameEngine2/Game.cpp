@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "ParticleTest.h"
 
 extern void ExitGame();
 
@@ -19,6 +20,8 @@ void Game::Initialize()
 {
 	// マウスライブラリにウィンドウハンドルを渡す
 	MouseUtil::GetInstance()->SetWindow(DeviceResources::GetInstance()->GetWindow());
+
+	m_ParticleTest = std::make_unique<ParticleTest>();
 }
 
 void Game::Finalize()
@@ -33,7 +36,9 @@ void Game::Finalize()
 /// <param name="timer">時間情報</param>
 void Game::Update(StepTimer const& timer)
 {
-    
+	MouseUtil::GetInstance()->Update();
+
+	m_ParticleTest->Update();
 }
 #pragma endregion
 
@@ -43,6 +48,6 @@ void Game::Update(StepTimer const& timer)
 /// </summary>
 void Game::Render()
 {
-    
+	m_ParticleTest->Draw();
 }
 #pragma endregion

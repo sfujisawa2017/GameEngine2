@@ -8,6 +8,7 @@
 #include <DirectXColors.h>
 
 #include "MyLibrary.h"
+#include "ParticleTest.h"
 
 class Game : public MyLibrary::Framework
 {
@@ -25,4 +26,6 @@ private:
 
     // Rendering loop timer.
 	MyLibrary::StepTimer                           m_timer;
+
+	std::unique_ptr<ParticleTest> m_ParticleTest;
 };

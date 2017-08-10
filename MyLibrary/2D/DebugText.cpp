@@ -11,7 +11,7 @@ DebugText::DebugText(ID3D11Device* d3dDevice, DirectX::SpriteBatch* spriteBatch)
 	d3dDevice->AddRef();
 
 	// フォントファイルの読み込み
-	spriteFont = std::make_unique<SpriteFont>(d3dDevice, L"Resources/Font/myfile.spritefont");
+	spriteFont = std::make_unique<SpriteFont>(d3dDevice, L"Resources/Fonts/myfile.spritefont");
 
 }
 

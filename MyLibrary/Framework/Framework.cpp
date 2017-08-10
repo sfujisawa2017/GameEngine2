@@ -218,14 +218,11 @@ Framework::Framework(HINSTANCE hInstance, int nCmdShow)
 	m_hwnd = CreateWindowEx(0, wcex.lpszClassName, L"Game", WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
 		nullptr);
-	// TODO: Change to CreateWindowEx(WS_EX_TOPMOST, L"GameEngine2WindowClass", L"GameEngine2", WS_POPUP,
-	// to default to fullscreen.
 
 	if (!m_hwnd)
 		throw 0;
 
 	ShowWindow(m_hwnd, nCmdShow);
-	// TODO: Change nCmdShow to SW_SHOWMAXIMIZED to default to fullscreen.
 
 	SetWindowLongPtr(m_hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 

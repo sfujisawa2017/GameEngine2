@@ -16,7 +16,7 @@ DebugCamera::DebugCamera(int w, int h)
 	// 画面サイズに対する相対的なスケールに調整
 	m_sx = 1.0f / (float)w;
 	m_sy = 1.0f / (float)h;
-	m_view = DirectX::SimpleMath::Matrix::Identity;
+	m_View = DirectX::SimpleMath::Matrix::Identity;
 }
 
 //--------------------------------------------------------------------------------------
@@ -70,7 +70,10 @@ void DebugCamera::Update()
 	eye *= (DEFAULT_CAMERA_DISTANCE - m_scrollWheelValue / 100);
 	up = Vector3::Transform(up, rt.Invert());
 
-	m_view = Matrix::CreateLookAt(eye, target, up);
+	Camera::SetEyepos(eye);
+	Camera::SetRefpos(target);
+	Camera::SetUpvec(up);
+	Camera::Update();
 }
 
 //--------------------------------------------------------------------------------------
