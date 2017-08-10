@@ -66,6 +66,9 @@
     <ClCompile Include="Utility\BinaryFile.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="3D\ParticleEffect.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\Collision.h">
@@ -110,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="Utility\BinaryFile.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\ParticleEffect.h">
+      <Filter>3D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

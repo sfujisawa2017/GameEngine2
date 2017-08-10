@@ -22,12 +22,12 @@ ParticleTest::ParticleTest()
 
 	m_CommonStates = std::make_unique<CommonStates>(device);
 
-	//// ファイル読み込み
-	//BinaryFile ShaderData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleTest.cso");
-
 	// ファイル読み込み
+	// 頂点シェーダ
 	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleTestVS.cso");
+	// ジオメトリシェーダ
 	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleTestGS.cso");
+	// ピクセルシェーダ
 	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleTestPS.cso");
 	
 	// 頂点シェーダ作成
@@ -51,9 +51,10 @@ ParticleTest::ParticleTest()
 		return;
 	}
 
-	//m_PrimitiveBatch = std::make_unique<PrimitiveBatch<Vertex>>(context, 1, PARTICLE_NUM_MAX);
+	// プリミティブバッチ作成
 	m_PrimitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionColorTexture>>(context, 1, PARTICLE_NUM_MAX);
 
+	// 頂点フォーマットを指定して入力レイアウト作成
 	device->CreateInputLayout(&INPUT_LAYOUT[0],
 		INPUT_LAYOUT.size(),
 		VSData.GetData(), VSData.GetSize(),
@@ -72,34 +73,8 @@ ParticleTest::ParticleTest()
 		}
 	}
 
-	//{
-	//	VertexPositionTexture vertex;
-	//	vertex.position = Vector3(0, 0, 0);
-	//	//vertex.color = Vector4(1, 1, 1, 1);
-	//	vertex.textureCoordinate = Vector2(0, 0);
-
-	//	m_Vertices.push_back(vertex);
-	//}
-
-	//{
-	//	VertexPositionTexture vertex;
-	//	vertex.position = Vector3(0, 0.5f, 0);
-	//	//vertex.color = Vector4(1, 1, 1, 1);
-	//	vertex.textureCoordinate = Vector2(0, 1);
-
-	//	m_Vertices.push_back(vertex);
-	//}
-
-	//{
-	//	VertexPositionTexture vertex;
-	//	vertex.position = Vector3(0.5f, 0, 0);
-	//	//vertex.color = Vector4(1, 1, 1, 1);
-	//	vertex.textureCoordinate = Vector2(1, 0);
-
-	//	m_Vertices.push_back(vertex);
-	//}
-
-	//コンスタントバッファー作成　ここでは変換行列渡し用
+	//シェーダに共通データを渡す為の
+	//コンスタントバッファー作成
 	D3D11_BUFFER_DESC cb;
 	cb.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cb.ByteWidth = sizeof(Constants);
@@ -129,42 +104,92 @@ ParticleTest::ParticleTest()
 		return;
 	}
 	// テクスチャ読み込み
-	if (FAILED(CreateWICTextureFromFile(device, L"Resources/Images/effect1.png", nullptr,
+	if (FAILED(CreateWICTextureFromFile(device, L"Resources/Images/test.png", nullptr,
 		m_Texture.ReleaseAndGetAddressOf())))
 	{// エラー
 		MessageBox(0, L"ParticleTest Failed.", NULL, MB_OK);
 		return;
 	}
 
+	ParticleEffectManager::getInstance()->Initialize();
+	ParticleEffectManager::getInstance()->Load(0, L"Resources/Images/test.png");
+	ParticleEffectManager::getInstance()->SetCamera(m_Camera.get());
 
 }
 
 void ParticleTest::Update()
 {
+	static float angle = 0;
+	angle += 0.05f;
+
+	static int rest[2] = { 0, 2 };
+
+	for (int j = 0; j < 1; j++)
+	{
+		if (--rest[j] < 0)
+		{
+			rest[j] = 8;
+		}
+		else
+		{
+			continue;
+		}
+
+		for (int i = 0; i < 1; i++)
+		{
+			float angle_add = XM_2PI / 20.0f * i;
+		
+			//VertexPositionColorTexture vertex;
+			//vertex.position = Vector3(i * 0.5f - 2.5f, j * 0.5f - 2.5f, 0);
+			//vertex.color = Vector4(0.2f, 0, 0, 0);
+			//vertex.textureCoordinate = Vector2(0, 0);
+
+			//m_Vertices.push_back(vertex);
+
+			//Vector3 position = Vector3(i * 0.5f - 2.5f, j * 0.5f - 2.5f, 0);
+			Vector3 position = Vector3(0.05f, 0, 0);
+			if ( j == 0)
+				position = Vector3::Transform(position, Matrix::CreateRotationY(angle + angle_add));
+			else
+				position = Vector3::Transform(position, Matrix::CreateRotationY(angle + angle_add));
+			Vector3 velocity = position *0.5f;
+			Vector3 accel = Vector3(0, 0, 0);
+			Color s_color = Color(1, 0, 0, 0);
+			Color e_color = Color(1, 0, 0, 0);
+			if (j == 1)
+			{
+				s_color = Color(0, 1, 0, 0);
+				e_color = Color(0, 1, 0, 0);
+			}
+
+			ParticleEffectManager::getInstance()->Entry(0, 120,
+				position, velocity, accel, 0, 0, 1.0f, 1.0f,
+				s_color, e_color);
+		}
+	}
 	//for (unsigned int i = 0; i < m_Vertices.size(); i++)
 	//{
 	//	m_Vertices[i].position.x += 0.001f;
 	//}
 
 	m_Camera->Update();
+
+	ParticleEffectManager::getInstance()->Update();
 }
 
 void ParticleTest::Draw()
 {
+	ParticleEffectManager::getInstance()->Draw();
+#if 0
 	ID3D11DeviceContext* context = DeviceResources::GetInstance()->GetD3DDeviceContext();
 
-	// ワールド、ビュー、プロジェクション行列を合成
-	Matrix world;
-	world = Matrix::Identity;
+	// ビュー、プロジェクション行列を合成
 	Matrix view = Matrix::Identity;
 	Matrix proj = Matrix::Identity;
 
-	//world = m_Camera->GetBillboard();
 	view = m_Camera->GetView();
 	proj = m_Camera->GetProj();
-	Matrix wvp = world * view * proj;
-
-	//wvp = m_Camera->GetBillboard() * wvp;
+	Matrix vp = view * proj;
 
 	/*XMMatrixLookToLH(m_Camera->GetEyepos(), m_Camera->GetRefpos());
 	Matrix view2 = Matrix::CreateLookAt(Vector3(0, 0, -2.0f), Vector3(0, 0, 0), Vector3::UnitY);
@@ -216,7 +241,7 @@ void ParticleTest::Draw()
 	{
 		Constants constants;
 
-		constants.WVP = wvp;
+		constants.VP = vp;
 		constants.Billboard = m_Camera->GetBillboard();
 
 		//ワールド、カメラ、射影行列を渡す
@@ -226,7 +251,7 @@ void ParticleTest::Draw()
 	//このコンスタントバッファーをどのシェーダーで使うか
 	context->VSSetConstantBuffers(0, 1, m_pWVPConstantBuffer.GetAddressOf());
 	context->GSSetConstantBuffers(0, 1, m_pWVPConstantBuffer.GetAddressOf());
-	//context->PSSetConstantBuffers(0, 1, m_pWVPConstantBuffer.GetAddressOf());
+	context->PSSetConstantBuffers(0, 0, nullptr);
 
 	context->VSSetShader(m_VertexShader.Get(), nullptr, 0);
 	context->GSSetShader(m_GeometryShader.Get(), nullptr, 0);
@@ -238,11 +263,11 @@ void ParticleTest::Draw()
 	context->PSSetSamplers(0, 1, m_Sampler.GetAddressOf());
 	context->PSSetShaderResources(0, 1, m_Texture.GetAddressOf());
 
-	context->RSSetState(m_CommonStates->CullNone());
-	//context->RSSetState(m_CommonStates->Wireframe());
+	context->RSSetState(m_CommonStates->CullClockwise());
 	context->OMSetBlendState(m_CommonStates->Additive(), nullptr, 0xFFFFFFFF);
 
 	m_PrimitiveBatch->Begin();
 	m_PrimitiveBatch->Draw(D3D_PRIMITIVE_TOPOLOGY_POINTLIST, &m_Vertices[0], m_Vertices.size());
 	m_PrimitiveBatch->End();
+#endif
 }

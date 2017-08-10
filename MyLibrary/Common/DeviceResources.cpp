@@ -231,6 +231,7 @@ void DeviceResources::CreateDeviceResources()
         (void) m_d3dContext.As(&m_d3dAnnotation);
     }
 
+	m_commonStates = std::make_unique<CommonStates>(m_d3dDevice.Get());
 	m_spriteBatch = std::make_unique<SpriteBatch>(m_d3dContext.Get());
 }
 

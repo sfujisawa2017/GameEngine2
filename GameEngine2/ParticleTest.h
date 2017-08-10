@@ -22,7 +22,7 @@ public:
 	// コンスタントバッファ
 	struct Constants
 	{
-		DirectX::SimpleMath::Matrix WVP;
+		DirectX::SimpleMath::Matrix VP;
 		DirectX::SimpleMath::Matrix Billboard;
 	};
 

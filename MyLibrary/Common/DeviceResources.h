@@ -13,6 +13,7 @@
 #include <memory>
 #include <stdexcept>
 
+#include <CommonStates.h>
 #include <SpriteBatch.h>
 
 namespace MyLibrary
@@ -60,6 +61,7 @@ namespace MyLibrary
         DXGI_FORMAT             GetDepthBufferFormat() const            { return m_depthBufferFormat; }
         D3D11_VIEWPORT          GetScreenViewport() const               { return m_screenViewport; }
         UINT                    GetBackBufferCount() const              { return m_backBufferCount; }
+		DirectX::CommonStates*	GetCommonStates() const					{ return m_commonStates.get(); }
 		DirectX::SpriteBatch*	GetSpriteBatch() const					{ return m_spriteBatch.get(); }
 		HWND					GetWindow() const						{ return m_window; }
 
@@ -126,6 +128,8 @@ namespace MyLibrary
         // The IDeviceNotify can be held directly as it owns the DeviceResources.
         IDeviceNotify*                                  m_deviceNotify;
 
+		// コモンステート
+		std::unique_ptr<DirectX::CommonStates> m_commonStates;
 		// スプライトバッチ
 		std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
     };

@@ -18,6 +18,7 @@ struct VSOutput
 {
 	float4 pos : SV_POSITION;
 	float4 color : COLOR;
+	float2 other : TEXCOORD;
 };
 
 // ジオメトリシェーダの出力
