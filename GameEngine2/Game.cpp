@@ -39,6 +39,8 @@ void Game::Update(StepTimer const& timer)
 	MouseUtil::GetInstance()->Update();
 
 	m_ParticleTest->Update();
+
+	
 }
 #pragma endregion
 

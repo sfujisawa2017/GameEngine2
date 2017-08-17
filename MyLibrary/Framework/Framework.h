@@ -40,6 +40,8 @@ namespace MyLibrary
 		// Properties
 		void GetDefaultSize(int& width, int& height) const;
 
+		void SetIsDispFPS(bool flag) { m_IsDispFPS = flag; }
+
 	protected:
 
 		virtual void Update(StepTimer const& timer) = 0;
@@ -58,5 +60,8 @@ namespace MyLibrary
 
 		// Rendering loop timer.
 		StepTimer                           m_timer;
+
+		// FPS表示有効
+		bool m_IsDispFPS;
 	};
 }

@@ -6,6 +6,7 @@
 
 #include <Mouse.h>
 #include <Keyboard.h>
+#include <string>
 
 extern void ExitGame();
 
@@ -238,6 +239,9 @@ Framework::Framework(HINSTANCE hInstance, int nCmdShow)
 
 	m_deviceResources->CreateWindowSizeDependentResources();
 	CreateWindowSizeDependentResources();
+
+	// FPS表示有効
+	m_IsDispFPS = true;
 }
 
 void Framework::Initialize()
@@ -256,6 +260,14 @@ void Framework::Tick()
     {
         Update(m_timer);
     });
+
+	// FPSをタイトルバーに表示
+	if (m_IsDispFPS)
+	{
+		unsigned int fps = m_timer.GetFramesPerSecond();
+		std::wstring str = L"FPS:" + std::to_wstring(fps);
+		SetWindowText(m_hwnd, str.c_str());
+	}
 
 	PreRender();
     Render();
