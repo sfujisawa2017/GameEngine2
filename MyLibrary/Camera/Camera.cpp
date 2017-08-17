@@ -140,8 +140,8 @@ void Camera::UnProject(const Vector2& screenPos, float distance, Vector3* worldP
 /// </summary>
 void Camera::CalcBillboard()
 {
-	// 視線方向（右手系の為）
-	Vector3 eyeDir = m_Refpos - m_Eyepos;
+	// 視線方向
+	Vector3 eyeDir = m_Eyepos - m_Refpos;
 	// Y軸
 	Vector3 Y = Vector3::UnitY;
 	// X軸
@@ -150,7 +150,7 @@ void Camera::CalcBillboard()
 	// Z軸
 	Vector3 Z = X.Cross(Y);
 	Z.Normalize();
-	// Y軸周りビルボード行列
+	// Y軸周りビルボード行列（右手系の為Z方向反転）
 	m_BillboardConstrainY = Matrix::Identity;
 	m_BillboardConstrainY.m[0][0] = X.x;
 	m_BillboardConstrainY.m[0][1] = X.y;
@@ -158,14 +158,14 @@ void Camera::CalcBillboard()
 	m_BillboardConstrainY.m[1][0] = Y.x;
 	m_BillboardConstrainY.m[1][1] = Y.y;
 	m_BillboardConstrainY.m[1][2] = Y.z;
-	m_BillboardConstrainY.m[2][0] = Z.x;
-	m_BillboardConstrainY.m[2][1] = Z.y;
-	m_BillboardConstrainY.m[2][2] = Z.z;
+	m_BillboardConstrainY.m[2][0] = -Z.x;
+	m_BillboardConstrainY.m[2][1] = -Z.y;
+	m_BillboardConstrainY.m[2][2] = -Z.z;
 
 	Y = eyeDir.Cross(X);
 	Y.Normalize();
 	eyeDir.Normalize();
-	// ビルボード行列
+	// ビルボード行列（右手系の為Z方向反転）
 	m_Billboard = Matrix::Identity;
 	m_Billboard.m[0][0] = X.x;
 	m_Billboard.m[0][1] = X.y;
@@ -173,7 +173,7 @@ void Camera::CalcBillboard()
 	m_Billboard.m[1][0] = Y.x;
 	m_Billboard.m[1][1] = Y.y;
 	m_Billboard.m[1][2] = Y.z;
-	m_Billboard.m[2][0] = eyeDir.x;
-	m_Billboard.m[2][1] = eyeDir.y;
-	m_Billboard.m[2][2] = eyeDir.z;
+	m_Billboard.m[2][0] = -eyeDir.x;
+	m_Billboard.m[2][1] = -eyeDir.y;
+	m_Billboard.m[2][2] = -eyeDir.z;
 }

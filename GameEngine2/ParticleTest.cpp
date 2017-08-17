@@ -112,7 +112,7 @@ ParticleTest::ParticleTest()
 	}
 
 	ParticleEffectManager::getInstance()->Initialize();
-	ParticleEffectManager::getInstance()->Load(0, L"Resources/Images/test.png");
+	ParticleEffectManager::getInstance()->Load(0, L"Resources/Images/effect2.png");
 	ParticleEffectManager::getInstance()->SetCamera(m_Camera.get());
 
 }
@@ -124,7 +124,7 @@ void ParticleTest::Update()
 
 	static int rest[2] = { 0, 2 };
 
-	for (int j = 0; j < 1; j++)
+	for (int j = 0; j < 2; j++)
 	{
 		if (--rest[j] < 0)
 		{
@@ -135,7 +135,7 @@ void ParticleTest::Update()
 			continue;
 		}
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			float angle_add = XM_2PI / 20.0f * i;
 		
@@ -163,7 +163,7 @@ void ParticleTest::Update()
 			}
 
 			ParticleEffectManager::getInstance()->Entry(0, 120,
-				position, velocity, accel, 0, 0, 1.0f, 1.0f,
+				position, velocity, accel, 0, 360, 1.0f, 1.0f,
 				s_color, e_color);
 		}
 	}

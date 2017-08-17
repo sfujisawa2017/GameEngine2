@@ -32,7 +32,6 @@
     <FxCompile Include="ParticleTestVS.hlsl" />
     <FxCompile Include="ParticleTestPS.hlsl" />
     <FxCompile Include="ParticleTestGS.hlsl" />
-    <FxCompile Include="ParticleTest.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ParticleTest.hlsli" />
