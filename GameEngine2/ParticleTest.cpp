@@ -6,16 +6,16 @@ using namespace MyLibrary;
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-ParticleTest::ParticleTest()
+ParticleTest::ParticleTest(Camera* camera)
 {
 	ID3D11Device* device = DeviceResources::GetInstance()->GetD3DDevice();
 	ID3D11DeviceContext* context = DeviceResources::GetInstance()->GetD3DDeviceContext();
 
-	m_Camera = std::make_unique<DebugCamera>(960,640);
+	m_Camera = camera;
 
 	ParticleEffectManager::getInstance()->Initialize();
 	ParticleEffectManager::getInstance()->Load(0, L"Resources/Images/effect2.png");
-	ParticleEffectManager::getInstance()->SetCamera(m_Camera.get());
+	ParticleEffectManager::getInstance()->SetCamera(m_Camera);
 }
 
 void ParticleTest::Update()

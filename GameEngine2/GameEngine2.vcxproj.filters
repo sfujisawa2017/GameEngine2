@@ -5,6 +5,9 @@
       <UniqueIdentifier>263fc6da-282d-4718-9025-6b256ec45766</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Assets\CMO">
+      <UniqueIdentifier>{27b2ef02-7ab9-4340-9f45-515b61cc2873}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -35,5 +38,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ParticleTest.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\CapsuleNode.FBX">
+      <Filter>Assets\CMO</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\skydome.FBX">
+      <Filter>Assets\CMO</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\SphereNode.FBX">
+      <Filter>Assets\CMO</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

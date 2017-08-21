@@ -18,12 +18,34 @@ Game::Game(HINSTANCE hInstance, int nCmdShow)
 
 void Game::Initialize()
 {
+	DeviceResources* deviceResources = DeviceResources::GetInstance();
+
 	// マウスライブラリにウィンドウハンドルを渡す
 	MouseUtil::GetInstance()->SetWindow(DeviceResources::GetInstance()->GetWindow());
 
-	m_ParticleTest = std::make_unique<ParticleTest>();
+	// デバッグカメラ作成
+	m_Camera = std::make_unique<DebugCamera>(960, 640);
 
-	//m_timer.SetFixedTimeStep(false);
+	{ // Obj3D初期化
+		// 設定
+		Obj3D::CommonDef def;
+		def.pCamera = m_Camera.get();
+		def.pDevice = deviceResources->GetD3DDevice();
+		def.pDeviceContext = deviceResources->GetD3DDeviceContext();
+		// 設定を元に初期化
+		Obj3D::InitializeCommon(def);
+	}
+
+	// 天球読み込み
+	m_ObjSkydome = std::make_unique<Obj3D>();
+	m_ObjSkydome->LoadModel(L"skydome");
+
+	m_ObjTest = std::make_unique<Obj3D>();
+	m_ObjTest->LoadModel(L"SphereNode");
+	m_ObjSkydome->AddChild(m_ObjTest.get());
+
+	// パーティクルテスト
+	m_ParticleTest = std::make_unique<ParticleTest>(m_Camera.get());
 }
 
 void Game::Finalize()
@@ -50,6 +72,8 @@ void Game::Update(StepTimer const& timer)
 /// </summary>
 void Game::Render()
 {
+	m_ObjSkydome->Draw();
+
 	m_ParticleTest->Draw();
 }
 #pragma endregion

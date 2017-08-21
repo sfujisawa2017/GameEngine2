@@ -14,12 +14,12 @@
 class ParticleTest
 {
 public:
-	ParticleTest();
+	ParticleTest(MyLibrary::Camera* camera);
 
 	void Update();
 
 	void Draw();
 	
 protected:
-	std::unique_ptr<MyLibrary::DebugCamera> m_Camera;
+	MyLibrary::Camera* m_Camera;
 };

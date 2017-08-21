@@ -61,9 +61,17 @@ Obj3D::Obj3D()
 : m_pParent(nullptr)
 , m_pModel(nullptr)
 , m_UseQuternion(false)
+, m_IsDirty(true)
 {
 	// スケールは1倍がデフォルト
 	m_Scale = Vector3(1, 1, 1);
+
+	m_RotEuler = Vector3(0, 0, 0);
+}
+
+Obj3D::~Obj3D()
+{
+
 }
 
 /// <summary>
@@ -152,8 +160,84 @@ void Obj3D::EnableAlpha()
 	}
 }
 
-void Obj3D::Update()
+void Obj3D::SetParent(Obj3D* parent)
 {
+	// 親オブジェクト設定
+	this->m_pParent = parent;
+	// 子オブジェクトリストに追加
+	parent->m_Children.push_back(this);
+}
+
+void Obj3D::AddChild(Obj3D* child)
+{
+	// 親オブジェクト設定
+	child->m_pParent = this;
+	// 子オブジェクトリストに追加
+	this->m_Children.push_back(child);
+}
+
+void Obj3D::SetDirty()
+{
+	m_IsDirty = true;
+
+	// 階層を辿って全ての子オブジェクトをダーティにする
+	if (m_Children.size() != 0)
+	{
+		for (Obj3D*& child : m_Children)
+		{
+			child->SetDirty();
+		}
+	}
+}
+
+bool Obj3D::CheckDirty()
+{
+	return m_IsDirty;
+}
+
+void Obj3D::SetTrans(const DirectX::SimpleMath::Vector3& trans)
+{
+	m_Trans = trans;
+	SetDirty();
+}
+
+void Obj3D::SetRot(const DirectX::SimpleMath::Vector3& rot)
+{
+	m_RotEuler = rot;
+	m_UseQuternion = false;
+	SetDirty();
+}
+
+void Obj3D::SetRotQuat(const DirectX::SimpleMath::Quaternion& quat)
+{
+	m_RotQuat = quat;
+	m_UseQuternion = true;
+	SetDirty();
+}
+
+void Obj3D::SetScale(float scale)
+{
+	m_Scale = DirectX::SimpleMath::Vector3(scale, scale, scale);
+	SetDirty();
+}
+
+void Obj3D::SetScale(const DirectX::SimpleMath::Vector3& scale)
+{
+	m_Scale = scale;
+	SetDirty();
+}
+
+void Obj3D::SetLocalWorld(const DirectX::SimpleMath::Matrix& mat)
+{
+	m_LocalWorld = mat;
+	m_IsDirty = false;
+}
+
+void Obj3D::Update(bool recursive)
+{
+	// ダーティでなければ更新不要
+	if (!CheckDirty())	return;
+
 	Matrix scalem;
 	Matrix rotm;
 	Matrix transm;
@@ -166,7 +250,7 @@ void Obj3D::Update()
 	}
 	else
 	{
-		rotm = Matrix::CreateFromYawPitchRoll(m_Rot.y, m_Rot.x, m_Rot.z);
+		rotm = Matrix::CreateFromYawPitchRoll(m_RotEuler.y, m_RotEuler.x, m_RotEuler.z);
 	}
 	
 	transm = Matrix::CreateTranslation(m_Trans);
@@ -183,10 +267,27 @@ void Obj3D::Update()
 		// 親行列を掛ける
 		m_LocalWorld = m_LocalWorld * m_pParent->GetLocalWorld();
 	}
+
+	// 更新したのでダーティフラグを下す
+	m_IsDirty = false;
+
+	if (recursive)
+	{
+		// 階層を辿って全ての子オブジェクトを更新
+		if (m_Children.size() != 0)
+		{
+			for (Obj3D*& child : m_Children)
+			{
+				child->Update();
+			}
+		}
+	}
 }
 
-void Obj3D::Draw()
+void Obj3D::Draw(bool recursive)
 {
+	Update(recursive);
+
 	if ( m_pModel )
 	{
 		assert(s_Common.camera);
@@ -198,10 +299,24 @@ void Obj3D::Draw()
 
 		m_pModel->Draw(s_Common.deviceContext, *s_Common.states, m_LocalWorld, view, projection);
 	}
+
+	if (recursive)
+	{
+		// 階層を辿って全ての子オブジェクトを描画
+		if (m_Children.size() != 0)
+		{
+			for (Obj3D*& child : m_Children)
+			{
+				child->Draw();
+			}
+		}
+	}
 }
 
-void Obj3D::DrawSubtractive()
+void Obj3D::DrawSubtractive(bool recursive)
 {
+	Update(recursive);
+
 	if (m_pModel)
 	{
 		assert(s_Common.camera);
@@ -214,13 +329,27 @@ void Obj3D::DrawSubtractive()
 		// 減算描画用の設定関数を渡して描画
 		m_pModel->Draw(s_Common.deviceContext, *s_Common.states, m_LocalWorld, view, projection, false, Obj3D::SetSubtractive);
 	}
+
+	if (recursive)
+	{
+		// 階層を辿って全ての子オブジェクトを描画
+		if (m_Children.size() != 0)
+		{
+			for (Obj3D*& child : m_Children)
+			{
+				child->DrawSubtractive();
+			}
+		}
+	}
 }
 
 /// <summary>
 ///  ビルボード描画
 /// </summary>
-void Obj3D::DrawBillboard()
+void Obj3D::DrawBillboard(bool recursive)
 {
+	Update(recursive);
+
 	if (m_pModel)
 	{
 		assert(s_Common.camera);
@@ -236,13 +365,27 @@ void Obj3D::DrawBillboard()
 		// 減算描画用の設定関数を渡して描画
 		m_pModel->Draw(s_Common.deviceContext, *s_Common.states, world, view, projection);
 	}
+
+	if (recursive)
+	{
+		// 階層を辿って全ての子オブジェクトを描画
+		if (m_Children.size() != 0)
+		{
+			for (Obj3D*& child : m_Children)
+			{
+				child->DrawBillboard();
+			}
+		}
+	}
 }
 
 /// <summary>
 ///  ビルボード描画
 /// </summary>
-void Obj3D::DrawBillboardConstrainY()
+void Obj3D::DrawBillboardConstrainY(bool recursive)
 {
+	Update(recursive);
+
 	if (m_pModel)
 	{
 		assert(s_Common.camera);
@@ -257,5 +400,17 @@ void Obj3D::DrawBillboardConstrainY()
 
 		// 減算描画用の設定関数を渡して描画
 		m_pModel->Draw(s_Common.deviceContext, *s_Common.states, world, view, projection);
+	}
+
+	if (recursive)
+	{
+		// 階層を辿って全ての子オブジェクトを描画
+		if (m_Children.size() != 0)
+		{
+			for (Obj3D*& child : m_Children)
+			{
+				child->DrawBillboardConstrainY();
+			}
+		}
 	}
 }
