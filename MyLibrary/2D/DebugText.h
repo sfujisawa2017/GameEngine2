@@ -21,7 +21,7 @@ namespace MyLibrary
 		};
 
 		// コンストラクタ
-		DebugText(ID3D11Device*	d3dDevice, DirectX::SpriteBatch* spriteBatch);
+		DebugText(ID3D11Device*	d3dDevice, ID3D11DeviceContext* d3dContext);
 		// デストラクタ
 		virtual ~DebugText();
 		// 描画
@@ -30,10 +30,8 @@ namespace MyLibrary
 		// テキスト追加（フォーマット指定付き）
 		void AddText(const DirectX::XMFLOAT2& position, LPCWSTR format, ...);
 	protected:
-		// デバイス
-		ID3D11Device*	d3dDevice;
 		// スプライトバッチ
-		DirectX::SpriteBatch*	spriteBatch;
+		std::unique_ptr<DirectX::SpriteBatch>	spriteBatch;
 		// スプライトフォント
 		std::unique_ptr<DirectX::SpriteFont>	spriteFont;
 		// 文字列の配列

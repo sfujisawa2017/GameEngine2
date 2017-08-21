@@ -3,12 +3,10 @@
 using namespace DirectX;
 using namespace MyLibrary;
 
-DebugText::DebugText(ID3D11Device* d3dDevice, DirectX::SpriteBatch* spriteBatch)
+DebugText::DebugText(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext)
 {
-	this->d3dDevice = d3dDevice;
-	this->spriteBatch = spriteBatch;
-	// ComPtrの参照カウントを増やす
-	d3dDevice->AddRef();
+	// スプライトバッチを作成
+	spriteBatch = std::make_unique<SpriteBatch>(d3dContext);
 
 	// フォントファイルの読み込み
 	spriteFont = std::make_unique<SpriteFont>(d3dDevice, L"Resources/Fonts/myfile.spritefont");
@@ -17,18 +15,22 @@ DebugText::DebugText(ID3D11Device* d3dDevice, DirectX::SpriteBatch* spriteBatch)
 
 DebugText::~DebugText()
 {
-	// ComPtrの参照カウントを減らす
-	d3dDevice->Release();
+
 }
 
 void DebugText::Draw()
 {
+	spriteBatch->Begin();
+
 	// 全ての文字列を描画する
 	std::vector<DebugText::Text>::iterator it;
 	for (it = textArray.begin(); it != textArray.end(); it++)
 	{
-		spriteFont->DrawString(spriteBatch, it->str.c_str(), it->pos);
+		spriteFont->DrawString(spriteBatch.get(), it->str.c_str(), it->pos);
 	}
+
+	spriteBatch->End();
+
 	textArray.clear();
 }
 

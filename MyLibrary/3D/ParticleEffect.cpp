@@ -257,7 +257,11 @@ void ParticleEffectManager::Draw()
 		m_PrimitiveBatch->Begin();
 		m_PrimitiveBatch->Draw(D3D_PRIMITIVE_TOPOLOGY_POINTLIST, &group.m_Vertices[0], group.m_Vertices.size());
 		m_PrimitiveBatch->End();
-	}	
+	}
+
+	context->VSSetShader(nullptr, nullptr, 0);
+	context->GSSetShader(nullptr, nullptr, 0);
+	context->PSSetShader(nullptr, nullptr, 0);
 }
 
 ParticleEffectManager::ParticleEffectManager()

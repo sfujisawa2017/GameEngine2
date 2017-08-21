@@ -1,4 +1,4 @@
-//
+ï»¿//
 // Game.cpp
 //
 
@@ -18,10 +18,14 @@ Game::Game(HINSTANCE hInstance, int nCmdShow)
 
 void Game::Initialize()
 {
-	// ƒ}ƒEƒXƒ‰ƒCƒuƒ‰ƒŠ‚ÉƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹‚ğ“n‚·
+	Framework::Initialize();
+
+	// ãƒã‚¦ã‚¹ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã‚’æ¸¡ã™
 	MouseUtil::GetInstance()->SetWindow(DeviceResources::GetInstance()->GetWindow());
 
 	m_ParticleTest = std::make_unique<ParticleTest>();
+
+	//m_timer.SetFixedTimeStep(false);
 }
 
 void Game::Finalize()
@@ -31,22 +35,20 @@ void Game::Finalize()
 
 #pragma region Frame Update
 /// <summary>
-/// –ˆƒtƒŒ[ƒ€XV
+/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 /// </summary>
-/// <param name="timer">ŠÔî•ñ</param>
+/// <param name="timer">æ™‚é–“æƒ…å ±</param>
 void Game::Update(StepTimer const& timer)
 {
 	MouseUtil::GetInstance()->Update();
 
 	m_ParticleTest->Update();
-
-	
 }
 #pragma endregion
 
 #pragma region Frame Render
 /// <summary>
-/// –ˆƒtƒŒ[ƒ€•`‰æ
+/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æç”»
 /// </summary>
 void Game::Render()
 {

@@ -291,6 +291,8 @@ void Framework::PreRender()
 
 void Framework::PostRender()
 {
+	m_DebugText->Draw();
+
 	m_deviceResources->PIXEndEvent();
 
 	// Show the new frame.
@@ -367,10 +369,13 @@ void Framework::GetDefaultSize(int& width, int& height) const
 // These are the resources that depend on the device.
 void Framework::CreateDeviceDependentResources()
 {
-    auto device = m_deviceResources->GetD3DDevice();
+    ID3D11Device* device = m_deviceResources->GetD3DDevice();
+	ID3D11DeviceContext* context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Initialize device dependent objects here (independent of window size).
-    device;
+	// デバッグテキスト作成
+	m_DebugText = std::make_unique<DebugText>(device, context);
+
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.

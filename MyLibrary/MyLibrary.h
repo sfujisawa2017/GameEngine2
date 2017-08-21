@@ -24,3 +24,4 @@
 #include "Camera\DebugCamera.h"
 
 #include "Utility\BinaryFile.h"
+#include "Utility\PerformanceCounter.h"

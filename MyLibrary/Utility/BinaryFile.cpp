@@ -1,7 +1,9 @@
-#include "BinaryFile.h"
+ï»¿#include "BinaryFile.h"
 
 #include <fstream>
 #include <assert.h>
+
+using namespace MyLibrary;
 
 BinaryFile BinaryFile::LoadFile(const wchar_t * fileName)
 {
@@ -9,27 +11,27 @@ BinaryFile BinaryFile::LoadFile(const wchar_t * fileName)
 
 	std::ifstream ifs;
 
-	// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³
 	ifs.open(fileName, std::ios::in | std::ios::binary);
 
-	// “Ç‚İ‚İ¸”sA‹­§I—¹
+	// èª­ã¿è¾¼ã¿å¤±æ•—æ™‚ã€å¼·åˆ¶çµ‚äº†
 	assert(ifs);
 
-	// ƒtƒ@ƒCƒ‹ƒTƒCƒY‚ğæ“¾
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºã‚’å–å¾—
 	ifs.seekg(0, std::fstream::end);
 	std::streamoff eofPos = ifs.tellg();
 	ifs.clear();
 	ifs.seekg(0, std::fstream::beg);
 	std::streamoff begPos = ifs.tellg();
-	bin.m_Size = eofPos - begPos;
+	bin.m_Size = (unsigned int)(eofPos - begPos);
 
-	// “Ç‚İ‚Ş‚½‚ß‚Ìƒƒ‚ƒŠ‚ğŠm•Û
+	// èª­ã¿è¾¼ã‚€ãŸã‚ã®ãƒ¡ãƒ¢ãƒªã‚’ç¢ºä¿
 	bin.m_Data.reset(new char[bin.m_Size]);
 
-	// ƒtƒ@ƒCƒ‹æ“ª‚©‚çƒoƒbƒtƒ@‚ÖƒRƒs[ 
+	// ãƒ•ã‚¡ã‚¤ãƒ«å…ˆé ­ã‹ã‚‰ãƒãƒƒãƒ•ã‚¡ã¸ã‚³ãƒ”ãƒ¼ 
 	ifs.read(bin.m_Data.get(), bin.m_Size);
 
-	// ƒtƒ@ƒCƒ‹ƒNƒ[ƒY
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚¯ãƒ­ãƒ¼ã‚º
 	ifs.close();
 
 	return std::move(bin);

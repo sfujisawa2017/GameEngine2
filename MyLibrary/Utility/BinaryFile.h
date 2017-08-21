@@ -1,27 +1,30 @@
-/// <summary>
-/// ƒoƒCƒiƒŠƒtƒ@ƒCƒ‹‚ğˆµ‚¤ƒNƒ‰ƒX
+ï»¿/// <summary>
+/// ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ‰±ã†ã‚¯ãƒ©ã‚¹
 /// </summary>
 #pragma once
 
 #include <memory>
 
-class BinaryFile
+namespace MyLibrary
 {
-public:
-	// ƒtƒ@ƒCƒ‹–¼‚ğw’è‚µ‚Äƒ[ƒh
-	static BinaryFile LoadFile(const wchar_t* fileName);
+	class BinaryFile
+	{
+	public:
+		// ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã—ã¦ãƒ­ãƒ¼ãƒ‰
+		static BinaryFile LoadFile(const wchar_t* fileName);
 
-	BinaryFile();
-	// ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	BinaryFile(BinaryFile&& in);
+		BinaryFile();
+		// ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		BinaryFile(BinaryFile&& in);
 
-	// ƒAƒNƒZƒbƒT
-	char* GetData() { return m_Data.get(); }
-	unsigned int GetSize() { return m_Size; }
+		// ã‚¢ã‚¯ã‚»ãƒƒã‚µ
+		char* GetData() { return m_Data.get(); }
+		unsigned int GetSize() { return m_Size; }
 
-protected:
-	// ƒf[ƒ^
-	std::unique_ptr<char[]> m_Data;
-	// ƒTƒCƒY
-	unsigned int m_Size;
-};
+	protected:
+		// ãƒ‡ãƒ¼ã‚¿
+		std::unique_ptr<char[]> m_Data;
+		// ã‚µã‚¤ã‚º
+		unsigned int m_Size;
+	};
+}

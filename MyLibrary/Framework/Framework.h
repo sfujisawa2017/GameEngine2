@@ -9,6 +9,8 @@
 #include "../Common/DeviceResources.h"
 #include "../Common/StepTimer.h"
 
+#include "../2D/DebugText.h"
+
 namespace MyLibrary
 {
 	class Framework : public IDeviceNotify
@@ -60,6 +62,9 @@ namespace MyLibrary
 
 		// Rendering loop timer.
 		StepTimer                           m_timer;
+
+		// デバッグテキスト
+		std::unique_ptr<DebugText>	m_DebugText;
 
 		// FPS表示有効
 		bool m_IsDispFPS;
