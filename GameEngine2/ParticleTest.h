@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <windows.h>
 #include <wrl/client.h>
@@ -14,19 +14,6 @@
 class ParticleTest
 {
 public:
-	static const int PARTICLE_NUM_MAX;
-
-	// “ü—ÍƒŒƒCƒAƒEƒg‚Ì’è‹`.
-	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
-
-	// ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
-	struct Constants
-	{
-		DirectX::SimpleMath::Matrix VP;
-		DirectX::SimpleMath::Matrix Billboard;
-	};
-
-public:
 	ParticleTest();
 
 	void Update();
@@ -34,26 +21,5 @@ public:
 	void Draw();
 	
 protected:
-	// ’¸“_ƒVƒF[ƒ_
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VertexShader;
-	// ƒWƒIƒƒgƒŠƒVƒF[ƒ_
-	Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_GeometryShader;
-	// ƒsƒNƒZƒ‹ƒVƒF[ƒ_
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PixelShader;
-	// ƒ[ƒ‹ƒhƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ—pƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_pWVPConstantBuffer;
-
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_PrimitiveBatch;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_InputLayout;
-
-	std::vector<DirectX::VertexPositionColorTexture> m_Vertices;
-	DirectX::SimpleMath::Matrix m_WVP;
-	//ƒeƒNƒXƒ`ƒƒ[‚ÌƒTƒ“ƒvƒ‰[
-	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_Sampler;
-	// ƒeƒNƒXƒ`ƒƒ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_Texture;
-
 	std::unique_ptr<MyLibrary::DebugCamera> m_Camera;
-
-	std::unique_ptr<DirectX::CommonStates> m_CommonStates;
 };

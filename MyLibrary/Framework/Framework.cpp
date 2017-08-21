@@ -244,6 +244,10 @@ Framework::Framework(HINSTANCE hInstance, int nCmdShow)
 	m_IsDispFPS = true;
 }
 
+MyLibrary::Framework::~Framework()
+{
+}
+
 void Framework::Initialize()
 {
 }

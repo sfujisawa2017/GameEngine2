@@ -18,8 +18,6 @@ Game::Game(HINSTANCE hInstance, int nCmdShow)
 
 void Game::Initialize()
 {
-	Framework::Initialize();
-
 	// マウスライブラリにウィンドウハンドルを渡す
 	MouseUtil::GetInstance()->SetWindow(DeviceResources::GetInstance()->GetWindow());
 

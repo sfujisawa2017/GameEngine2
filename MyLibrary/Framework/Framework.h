@@ -21,6 +21,8 @@ namespace MyLibrary
 
 		Framework(HINSTANCE hInstance, int nCmdShow);
 
+		virtual ~Framework();
+
 		virtual void Initialize();
 
 		virtual void Finalize();
