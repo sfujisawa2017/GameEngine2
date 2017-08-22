@@ -72,6 +72,15 @@
     <ClCompile Include="Utility\PerformanceCounter.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="2D\Sprite.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="2D\TextureCache.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="2D\SpriteRenderer.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\Collision.h">
@@ -122,6 +131,15 @@
     </ClInclude>
     <ClInclude Include="Utility\PerformanceCounter.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\Sprite.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\TextureCache.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\SpriteRenderer.h">
+      <Filter>2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

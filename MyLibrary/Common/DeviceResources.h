@@ -62,7 +62,6 @@ namespace MyLibrary
         D3D11_VIEWPORT          GetScreenViewport() const               { return m_screenViewport; }
         UINT                    GetBackBufferCount() const              { return m_backBufferCount; }
 		DirectX::CommonStates*	GetCommonStates() const					{ return m_commonStates.get(); }
-		DirectX::SpriteBatch*	GetSpriteBatch() const					{ return m_spriteBatch.get(); }
 		HWND					GetWindow() const						{ return m_window; }
 
         // Performance events
@@ -130,7 +129,5 @@ namespace MyLibrary
 
 		// コモンステート
 		std::unique_ptr<DirectX::CommonStates> m_commonStates;
-		// スプライトバッチ
-		std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
     };
 }

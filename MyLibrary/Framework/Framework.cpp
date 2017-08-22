@@ -291,10 +291,13 @@ void Framework::PreRender()
 	Clear();
 
 	m_deviceResources->PIXBeginEvent(L"Render");
+
+	m_SpriteRenderer->Begin();
 }
 
 void Framework::PostRender()
 {
+	m_SpriteRenderer->End();
 	m_DebugText->Draw();
 
 	m_deviceResources->PIXEndEvent();
@@ -377,6 +380,15 @@ void Framework::CreateDeviceDependentResources()
 	ID3D11DeviceContext* context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Initialize device dependent objects here (independent of window size).
+
+	// スプライトマネージャ生成、初期化
+	m_SpriteRenderer = SpriteRenderer::GetInstance();
+	m_SpriteRenderer->Initialize(device, context);
+	// テクスチャキャッシュ生成
+	m_TextureCache = TextureCache::GetInstance();
+	m_TextureCache->Initialize(device);
+	// スプライトファクトリー生成
+	m_SpriteFactory = std::make_unique<SpriteFactory>(m_SpriteRenderer, m_TextureCache);
 	// デバッグテキスト作成
 	m_DebugText = std::make_unique<DebugText>(device, context);
 

@@ -232,7 +232,6 @@ void DeviceResources::CreateDeviceResources()
     }
 
 	m_commonStates = std::make_unique<CommonStates>(m_d3dDevice.Get());
-	m_spriteBatch = std::make_unique<SpriteBatch>(m_d3dContext.Get());
 }
 
 // These resources need to be recreated every time the window size is changed.
@@ -465,8 +464,6 @@ void DeviceResources::HandleDeviceLost()
     {
         m_deviceNotify->OnDeviceRestored();
     }
-
-	m_spriteBatch.reset();
 }
 
 // Present the contents of the swap chain to the screen.

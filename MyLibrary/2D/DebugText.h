@@ -1,4 +1,10 @@
-﻿#pragma once
+﻿/// <summary>
+/// デバッグ文字列画面表示クラス
+/// 
+/// 開発用の情報を画面に表示するためのクラス
+/// ASCIIコードのみ対応
+/// </summary>
+#pragma once
 
 #include <wrl/client.h>
 #include <SpriteFont.h>
@@ -7,7 +13,6 @@
 
 namespace MyLibrary
 {
-	// デバッグ用画面表示クラス
 	class DebugText
 	{
 	public:

@@ -14,6 +14,7 @@
 #include "Collision\Collision.h"
 #include "Collision\CollisionNode.h"
 
+#include "2D\SpriteRenderer.h"
 #include "2D\DebugText.h"
 
 #include "3D\Obj3D.h"

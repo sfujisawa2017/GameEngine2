@@ -9,6 +9,8 @@
 #include "../Common/DeviceResources.h"
 #include "../Common/StepTimer.h"
 
+#include "../2D/SpriteRenderer.h"
+#include "../2D/Sprite.h"
 #include "../2D/DebugText.h"
 
 namespace MyLibrary
@@ -67,6 +69,12 @@ namespace MyLibrary
 
 		// デバッグテキスト
 		std::unique_ptr<DebugText>	m_DebugText;
+		// スプライトレンダラー
+		SpriteRenderer* m_SpriteRenderer;
+		// テクスチャキャッシュ
+		TextureCache* m_TextureCache;
+		// スプライトファクトリー
+		std::unique_ptr<SpriteFactory> m_SpriteFactory;
 
 		// FPS表示有効
 		bool m_IsDispFPS;

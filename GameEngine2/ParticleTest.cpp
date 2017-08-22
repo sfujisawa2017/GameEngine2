@@ -14,7 +14,7 @@ ParticleTest::ParticleTest(Camera* camera)
 	m_Camera = camera;
 
 	ParticleEffectManager::getInstance()->Initialize();
-	ParticleEffectManager::getInstance()->Load(0, L"Resources/Images/effect2.png");
+	ParticleEffectManager::getInstance()->Load(0, L"Resources/Textures/effect2.png");
 	ParticleEffectManager::getInstance()->SetCamera(m_Camera);
 }
 

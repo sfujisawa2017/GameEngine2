@@ -46,6 +46,14 @@ void Game::Initialize()
 
 	// パーティクルテスト
 	m_ParticleTest = std::make_unique<ParticleTest>(m_Camera.get());
+
+	m_Spr = m_SpriteFactory->CreateFromFile(L"cat");
+	m_Spr->SetColor(DirectX::SimpleMath::Color(1, 0, 0, 1));
+
+	m_Spr2 = m_SpriteFactory->CreateFromFile(L"cat");
+	m_Spr2->SetColor(DirectX::SimpleMath::Color(0, 1, 0, 1));
+
+	m_Spr->AddChild(m_Spr2.get());
 }
 
 void Game::Finalize()
@@ -75,5 +83,17 @@ void Game::Render()
 	m_ObjSkydome->Draw();
 
 	m_ParticleTest->Draw();
+
+	m_Spr->SetPosition(DirectX::SimpleMath::Vector2(800, 450));
+	static float rot = 0;
+	rot += 1.1f;
+	m_Spr->SetRotation(rot);
+	m_Spr->SetScale(DirectX::SimpleMath::Vector2(5, 5));
+	
+	m_Spr->SetAnchorPoint(DirectX::SimpleMath::Vector2(1, 1));
+
+	m_Spr->Draw();
+
+	m_Spr2->Draw();
 }
 #pragma endregion
