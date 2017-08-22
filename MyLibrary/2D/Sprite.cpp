@@ -148,6 +148,7 @@ std::unique_ptr<Sprite> SpriteFactory::CreateFromFile(const wchar_t* filename)
 	Texture* texture = m_TextureCache->LoadTexture(filename);
 	sprite->SetTexture(texture);
 
+	// テクスチャ全体を貼り付ける設定
 	RECT rect = RECT{0,0,0,0};
 	rect.right = texture->desc.Width;
 	rect.bottom = texture->desc.Height;

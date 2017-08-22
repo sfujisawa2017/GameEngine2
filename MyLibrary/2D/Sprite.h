@@ -79,6 +79,7 @@ namespace MyLibrary
 	{
 	public:
 		SpriteFactory(SpriteRenderer * spriteRenderer, TextureCache* textureCache);
+		// テクスチャをロードしてスプライト生成
 		std::unique_ptr<Sprite> CreateFromFile(const wchar_t* filename);
 	private:
 		// スプライトレンダラーへのポインタ

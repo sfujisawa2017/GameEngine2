@@ -22,9 +22,11 @@ void Game::Initialize()
 
 	// マウスライブラリにウィンドウハンドルを渡す
 	MouseUtil::GetInstance()->SetWindow(DeviceResources::GetInstance()->GetWindow());
-
+	
+	// ウィンドウ矩形取得
+	RECT windowRect = deviceResources->GetOutputSize();
 	// デバッグカメラ作成
-	m_Camera = std::make_unique<DebugCamera>(960, 640);
+	m_Camera = std::make_unique<DebugCamera>(windowRect.right- windowRect.left, windowRect.bottom - windowRect.top);
 
 	{ // Obj3D初期化
 		// 設定
@@ -106,6 +108,8 @@ void Game::Render()
 	//m_Spr->SetAnchorPoint(DirectX::SimpleMath::Vector2(1, 1));
 
 	m_Spr2->SetRotation(rot);
+
+	m_Spr3->SetRotation(rot);
 
 	m_Spr->Draw();
 
