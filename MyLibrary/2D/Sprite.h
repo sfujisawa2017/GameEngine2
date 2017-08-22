@@ -34,13 +34,18 @@ namespace MyLibrary
 
 		void AddChild(Sprite * child);
 
+		// ダーティフラグを立てる
+		void SetDirty();
+		// ダーティフラグチェック
+		bool CheckDirty();
+
 		/// <summary>
 		/// property
 		/// </summary>
-		void SetPosition(const Vector2& position) { m_Position = position; }
-		void SetRotation(float rotation) { m_Rotation = rotation; }
-		void SetScale(float scale) { m_Scale = Vector2(scale, scale); }
-		void SetScale(const Vector2& scale) { m_Scale = scale; }
+		void SetPosition(const Vector2& position);
+		void SetRotation(float rotation);
+		void SetScale(float scale);
+		void SetScale(const Vector2& scale);
 		void SetColor(const Color& color) { m_Color = color; }
 		void SetTexture(Texture* texture) { m_Texture = texture; }
 		void SetTextureRect(const RECT& rect) { m_TextureRect = rect; }
@@ -70,6 +75,8 @@ namespace MyLibrary
 		Sprite* m_Parent;
 		// 子オブジェクトへのポインタ配列
 		std::vector<Sprite*>	m_Children;
+		// 行列ダーティフラグ
+		bool m_IsDirty;
 		// スプライトレンダラーへのポインタ
 		SpriteRenderer* m_SpriteManager;
 	};

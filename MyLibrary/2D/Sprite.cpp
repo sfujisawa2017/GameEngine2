@@ -17,12 +17,13 @@ Sprite::Sprite()
 	m_AnchorPoint = Vector2(0.5f, 0.5f);
 	m_Parent = nullptr;
 	m_SpriteManager = nullptr;
+	m_IsDirty = true;
 }
 
 void Sprite::Update(bool recursive)
 {
-	//// ダーティでなければ更新不要
-	//if (!CheckDirty())	return;
+	// ダーティでなければ更新不要
+	if (!CheckDirty())	return;
 
 	Matrix scalem;
 	Matrix rotm;
@@ -47,8 +48,8 @@ void Sprite::Update(bool recursive)
 		m_LocalWorld = m_LocalWorld * m_Parent->GetLocalWorld();
 	}
 
-	//// 更新したのでダーティフラグを下す
-	//m_IsDirty = false;
+	// 更新したのでダーティフラグを下す
+	m_IsDirty = false;
 
 	if (recursive)
 	{
@@ -130,6 +131,49 @@ void Sprite::AddChild(Sprite* child)
 	child->m_Parent = this;
 	// 子オブジェクトリストに追加
 	this->m_Children.push_back(child);
+}
+
+void Sprite::SetDirty()
+{
+	m_IsDirty = true;
+
+	// 階層を辿って全ての子オブジェクトをダーティにする
+	if (m_Children.size() != 0)
+	{
+		for (Sprite*& child : m_Children)
+		{
+			child->SetDirty();
+		}
+	}
+}
+
+bool Sprite::CheckDirty()
+{
+	return m_IsDirty;
+}
+
+void Sprite::SetPosition(const Vector2& position)
+{
+	m_Position = position;
+	SetDirty();
+}
+
+void Sprite::SetRotation(float rotation)
+{
+	m_Rotation = rotation;
+	SetDirty();
+}
+
+void Sprite::SetScale(float scale)
+{
+	m_Scale = Vector2(scale, scale);
+	SetDirty();
+}
+
+void Sprite::SetScale(const Vector2& scale)
+{
+	m_Scale = scale;
+	SetDirty();
 }
 
 SpriteFactory::SpriteFactory(SpriteRenderer * spriteRenderer, TextureCache* textureCache)
