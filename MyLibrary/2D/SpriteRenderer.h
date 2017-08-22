@@ -1,5 +1,5 @@
-/// <summary>
-/// ƒXƒvƒ‰ƒCƒg•`‰æƒNƒ‰ƒX
+ï»¿/// <summary>
+/// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»ã‚¯ãƒ©ã‚¹
 /// </summary>
 #pragma once
 
@@ -26,19 +26,19 @@ namespace MyLibrary
 	private:
 		static std::unique_ptr<SpriteRenderer> m_Instance;
 	public:
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize(ID3D11Device* device, ID3D11DeviceContext* context);
 		
-		// •`‰æó•tŠJn
+		// æç”»å—ä»˜é–‹å§‹
 		void Begin();
-		// •`‰æó•tI—¹
+		// æç”»å—ä»˜çµ‚äº†
 		void End();
-		// •`‰æ
+		// æç”»
 		void Draw(ID3D11ShaderResourceView* texture, DirectX::XMFLOAT2 const& position, RECT const* sourceRectangle, DirectX::FXMVECTOR color = DirectX::Colors::White, float rotation = 0, const DirectX::XMFLOAT2& origin = DirectX::SimpleMath::Vector2(0,0), const DirectX::XMFLOAT2& scale = DirectX::SimpleMath::Vector2(1,1), DirectX::SpriteEffects effects = DirectX::SpriteEffects_None, float layerDepth = 0);
 	private:
-		// ƒXƒvƒ‰ƒCƒgƒoƒbƒ`
+		// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒãƒƒãƒ
 		std::unique_ptr<DirectX::SpriteBatch>	m_SpriteBatch;
-		// ”Ä—p•`‰æİ’è
+		// æ±ç”¨æç”»è¨­å®š
 		std::unique_ptr<DirectX::CommonStates>	m_CommonStates;
 	};
 }

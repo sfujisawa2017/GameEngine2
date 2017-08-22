@@ -1,5 +1,5 @@
-/// <summary>
-/// ƒeƒNƒXƒ`ƒƒ‚ÌŠi”[ŒÉ
+ï»¿/// <summary>
+/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æ ¼ç´åº«
 /// </summary>
 #pragma once
 
@@ -12,16 +12,16 @@
 
 namespace MyLibrary
 {
-	// ƒeƒNƒXƒ`ƒƒ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£
 	struct Texture
 	{
-		// ƒeƒNƒXƒ`ƒƒî•ñ
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£æƒ…å ±
 		CD3D11_TEXTURE2D_DESC desc;
-		// DirectX11ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[
+		// DirectX11ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	shaderResourceView;
 	};
 
-	// ƒeƒNƒXƒ`ƒƒ‚ÌŠi”[ŒÉ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æ ¼ç´åº«
 	class TextureCache
 	{
 	public:
@@ -33,15 +33,15 @@ namespace MyLibrary
 		static std::unique_ptr<TextureCache> m_Instance;
 	public:
 		TextureCache();
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize(ID3D11Device* d3dDevice);
-		// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 		Texture* LoadTexture(const wchar_t* filename);
 	private:
-		// DirectX11ƒfƒoƒCƒX
+		// DirectX11ãƒ‡ãƒã‚¤ã‚¹
 		ID3D11Device* m_d3dDevice;
 
-		// ƒeƒNƒXƒ`ƒƒ”z—ñ
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£é…åˆ—
 		std::map<std::wstring, std::unique_ptr<Texture>> m_Textures;
 	};
 }

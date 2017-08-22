@@ -34,4 +34,6 @@ private:
 	
 	std::unique_ptr<MyLibrary::Sprite> m_Spr;
 	std::unique_ptr<MyLibrary::Sprite> m_Spr2;
+
+	std::unique_ptr<MyLibrary::Sprite> m_Spr3;
 };

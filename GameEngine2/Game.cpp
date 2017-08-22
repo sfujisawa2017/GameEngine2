@@ -49,11 +49,23 @@ void Game::Initialize()
 
 	m_Spr = m_SpriteFactory->CreateFromFile(L"cat");
 	m_Spr->SetColor(DirectX::SimpleMath::Color(1, 0, 0, 1));
+	m_Spr->SetAnchorPoint(DirectX::SimpleMath::Vector2(0, 0));
+	m_Spr->SetTextureRect(RECT{ 50,50,100,100 });
+	m_Spr->SetScale(DirectX::SimpleMath::Vector2(2, 2));
 
 	m_Spr2 = m_SpriteFactory->CreateFromFile(L"cat");
 	m_Spr2->SetColor(DirectX::SimpleMath::Color(0, 1, 0, 1));
 
+	m_Spr2->SetPosition(DirectX::SimpleMath::Vector2(50, 50));
+	m_Spr2->SetAnchorPoint(DirectX::SimpleMath::Vector2(0, 0));
+	//m_Spr2->SetScale(0.5f);
+
 	m_Spr->AddChild(m_Spr2.get());
+
+	m_Spr3 = m_SpriteFactory->CreateFromFile(L"effect1");
+	m_Spr3->SetPosition(DirectX::SimpleMath::Vector2(100, 100));
+	m_Spr3->SetScale(0.5f);
+	m_Spr2->AddChild(m_Spr3.get());
 }
 
 void Game::Finalize()
@@ -88,12 +100,15 @@ void Game::Render()
 	static float rot = 0;
 	rot += 1.1f;
 	m_Spr->SetRotation(rot);
-	m_Spr->SetScale(DirectX::SimpleMath::Vector2(5, 5));
+	//m_Spr->SetRotation(45);
 	
-	m_Spr->SetAnchorPoint(DirectX::SimpleMath::Vector2(1, 1));
+	
+	//m_Spr->SetAnchorPoint(DirectX::SimpleMath::Vector2(1, 1));
+
+	m_Spr2->SetRotation(rot);
 
 	m_Spr->Draw();
 
-	m_Spr2->Draw();
+	//m_Spr2->Draw();
 }
 #pragma endregion

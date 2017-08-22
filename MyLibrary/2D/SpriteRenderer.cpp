@@ -1,4 +1,4 @@
-#include "SpriteRenderer.h"
+ï»¿#include "SpriteRenderer.h"
 #include "Sprite.h"
 
 #include <assert.h>
@@ -7,7 +7,7 @@ using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using namespace MyLibrary;
 
-// Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì
+// é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°ã®å®Ÿä½“
 std::unique_ptr<SpriteRenderer> SpriteRenderer::m_Instance;
 
 SpriteRenderer * MyLibrary::SpriteRenderer::GetInstance()
@@ -33,7 +33,7 @@ void SpriteRenderer::Begin()
 {
 	assert(m_SpriteBatch);
 
-	m_SpriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_CommonStates->NonPremultiplied() );
+	m_SpriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_CommonStates->Opaque() );
 }
 
 void SpriteRenderer::End()

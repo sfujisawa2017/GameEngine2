@@ -1,17 +1,17 @@
-#include "TextureCache.h"
+ï»¿#include "TextureCache.h"
 
 #include <WICTextureLoader.h>
 
 using namespace DirectX;
 using namespace MyLibrary;
 
-// ’è”
-// ƒŠƒ\[ƒXƒfƒBƒŒƒNƒgƒŠƒpƒX
+// å®šæ•°
+// ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹
 const std::wstring TextureCache::RESOURCE_DIRECTORY = L"Resources/Textures/";
-// ƒtƒ@ƒCƒ‹Šg’£q
+// ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­
 const std::wstring TextureCache::RESOURCE_EXT = L".png";
 
-// Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì
+// é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°ã®å®Ÿä½“
 std::unique_ptr<TextureCache> TextureCache::m_Instance;
 
 TextureCache * MyLibrary::TextureCache::GetInstance()
@@ -35,41 +35,41 @@ void TextureCache::Initialize(ID3D11Device * d3dDevice)
 }
 
 /// <summary>
-/// ƒtƒ@ƒCƒ‹–¼‚ğw’è‚µ‚ÄƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+/// ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã—ã¦ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 /// </summary>
-/// <param name="filename">ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼</param>
-/// <returns>“Ç‚İ‚ñ‚¾ƒeƒNƒXƒ`ƒƒ</returns>
+/// <param name="filename">ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å</param>
+/// <returns>èª­ã¿è¾¼ã‚“ã ãƒ†ã‚¯ã‚¹ãƒãƒ£</returns>
 Texture* TextureCache::LoadTexture(const wchar_t * filename)
 {
 	HRESULT res;
 
-	// w’èƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İÏ‚İ‚Å‚È‚¢‚©H
+	// æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿æ¸ˆã¿ã§ãªã„ã‹ï¼Ÿ
 	if (m_Textures.count(filename) == 0)
 	{
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shaderResourceView;
 		Microsoft::WRL::ComPtr<ID3D11Resource> resource;
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> resourceTexture;
 
-		// ƒtƒ‹ƒpƒX‚É•âŠ®
+		// ãƒ•ãƒ«ãƒ‘ã‚¹ã«è£œå®Œ
 		std::wstring fullpath_bin = RESOURCE_DIRECTORY + filename + RESOURCE_EXT;
-		// ƒeƒNƒXƒ`ƒƒ‚ğ“Ç‚İ‚İAƒRƒ“ƒeƒi‚É“o˜^iƒL[‚Íƒtƒ@ƒCƒ‹–¼j
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’èª­ã¿è¾¼ã¿ã€ã‚³ãƒ³ãƒ†ãƒŠã«ç™»éŒ²ï¼ˆã‚­ãƒ¼ã¯ãƒ•ã‚¡ã‚¤ãƒ«åï¼‰
 		res = CreateWICTextureFromFile(m_d3dDevice, fullpath_bin.c_str(), resource.GetAddressOf(),
 			shaderResourceView.ReleaseAndGetAddressOf());
 
-		// “Ç‚İ‚İ¸”s
+		// èª­ã¿è¾¼ã¿å¤±æ•—
 		if (FAILED(res)) 	goto FAILED;
 
-		// ƒŠƒ\[ƒX‚ğƒeƒNƒXƒ`ƒƒ‚Æ‚µ‚Ä‰ğß
+		// ãƒªã‚½ãƒ¼ã‚¹ã‚’ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¨ã—ã¦è§£é‡ˆ
 		res = resource.As(&resourceTexture);
 
-		// ƒeƒNƒXƒ`ƒƒ‚Å‚Í‚È‚¢
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã§ã¯ãªã„
 		if (FAILED(res)) 	goto FAILED;
 
-		// ƒeƒNƒXƒ`ƒƒî•ñæ“¾
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£æƒ…å ±å–å¾—
 		CD3D11_TEXTURE2D_DESC texDesc;
 		resourceTexture->GetDesc(&texDesc);
 
-		// “Ç‚İ‚ñ‚¾î•ñ‚ğŠi”[
+		// èª­ã¿è¾¼ã‚“ã æƒ…å ±ã‚’æ ¼ç´
 		std::unique_ptr<Texture> texture = std::make_unique<Texture>();
 		texture->desc = texDesc;
 		texture->shaderResourceView = shaderResourceView;

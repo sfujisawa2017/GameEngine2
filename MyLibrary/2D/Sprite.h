@@ -1,5 +1,5 @@
-/// <summary>
-/// ‚Q‚c‰æ‘œ•\¦ƒNƒ‰ƒX
+ï»¿/// <summary>
+/// ï¼’ï¼¤ç”»åƒè¡¨ç¤ºã‚¯ãƒ©ã‚¹
 /// </summary>
 #pragma once
 
@@ -13,19 +13,22 @@
 
 namespace MyLibrary
 {
-	// ‚Q‚c‰æ‘œ•\¦ƒNƒ‰ƒX
+	// ï¼’ï¼¤ç”»åƒè¡¨ç¤ºã‚¯ãƒ©ã‚¹
 	class Sprite
 	{
 	public:
 		friend SpriteRenderer;
 		using Vector2 = DirectX::SimpleMath::Vector2;
+		using Vector3 = DirectX::SimpleMath::Vector3;
+		using Quaternion = DirectX::SimpleMath::Quaternion;
 		using Matrix = DirectX::SimpleMath::Matrix;
 		using Color = DirectX::SimpleMath::Color;
 
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		Sprite();
-		// •`‰æ
-		void Draw();
+		void Update(bool recursive = true);
+		// æç”»
+		void Draw(bool recursive = true);
 
 		void SetParent(Sprite * parent);
 
@@ -40,45 +43,47 @@ namespace MyLibrary
 		void SetScale(const Vector2& scale) { m_Scale = scale; }
 		void SetColor(const Color& color) { m_Color = color; }
 		void SetTexture(Texture* texture) { m_Texture = texture; }
-		void SetRect(const RECT& rect) { m_Rect = rect; }
+		void SetTextureRect(const RECT& rect) { m_TextureRect = rect; }
 		void SetAnchorPoint(const Vector2& anchor) { m_AnchorPoint = anchor; }
 		void SetSpriteManager(SpriteRenderer* manager) { m_SpriteManager = manager; }
 
+		const DirectX::SimpleMath::Matrix& GetLocalWorld() { return m_LocalWorld; }
+
 	private:
-		// À•W
+		// åº§æ¨™
 		Vector2 m_Position;
-		// ‰ñ“]
+		// å›è»¢
 		float m_Rotation;
-		// ƒXƒP[ƒŠƒ“ƒO
+		// ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
 		Vector2 m_Scale;
-		// ƒ[ƒ‹ƒhs—ñ
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
 		Matrix m_LocalWorld;
-		// F
+		// è‰²
 		Color m_Color;
-		// ƒeƒNƒXƒ`ƒƒ
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		Texture* m_Texture;
-		// ƒeƒNƒXƒ`ƒƒ‹éŒ`
-		RECT m_Rect;
-		// ‰æ‘œ’†S
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£çŸ©å½¢
+		RECT m_TextureRect;
+		// ç”»åƒä¸­å¿ƒ
 		Vector2 m_AnchorPoint;
-		// eƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^
+		// è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
 		Sprite* m_Parent;
-		// qƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^”z—ñ
+		// å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿é…åˆ—
 		std::vector<Sprite*>	m_Children;
-		// ƒXƒvƒ‰ƒCƒgƒŒƒ“ƒ_ƒ‰[‚Ö‚Ìƒ|ƒCƒ“ƒ^
+		// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 		SpriteRenderer* m_SpriteManager;
 	};
 
-	// ƒXƒvƒ‰ƒCƒgƒtƒ@ƒNƒgƒŠ[
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¼
 	class SpriteFactory
 	{
 	public:
 		SpriteFactory(SpriteRenderer * spriteRenderer, TextureCache* textureCache);
 		std::unique_ptr<Sprite> CreateFromFile(const wchar_t* filename);
 	private:
-		// ƒXƒvƒ‰ƒCƒgƒŒƒ“ƒ_ƒ‰[‚Ö‚Ìƒ|ƒCƒ“ƒ^
+		// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 		SpriteRenderer* m_SpriteRenderer;
-		// ƒeƒNƒXƒ`ƒƒƒLƒƒƒbƒVƒ…
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚­ãƒ£ãƒƒã‚·ãƒ¥
 		TextureCache* m_TextureCache;
 	};
 }
