@@ -13,7 +13,7 @@ const int ParticleEffectManager::PARTICLE_NUM_MAX = 10000;
 const std::vector<D3D11_INPUT_ELEMENT_DESC> ParticleEffectManager::INPUT_LAYOUT =
 {
 	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "COLOR",		0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "COLOR",		0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, sizeof(Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(Vector3) + sizeof(Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
@@ -31,11 +31,11 @@ void ParticleEffectManager::Initialize()
 
 	// コンパイル済みシェーダーファイル読み込み
 	// 頂点シェーダ
-	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleTestVS.cso");
+	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleVS.cso");
 	// ジオメトリシェーダ
-	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleTestGS.cso");
+	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleGS.cso");
 	// ピクセルシェーダ
-	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleTestPS.cso");
+	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticlePS.cso");
 
 	// 頂点シェーダ作成
 	if (FAILED(device->CreateVertexShader(VSData.GetData(), VSData.GetSize(), NULL, m_VertexShader.ReleaseAndGetAddressOf())))

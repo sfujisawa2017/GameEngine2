@@ -33,7 +33,7 @@ void SpriteRenderer::Begin()
 {
 	assert(m_SpriteBatch);
 
-	m_SpriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_CommonStates->Opaque() );
+	m_SpriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, m_CommonStates->NonPremultiplied() );
 }
 
 void SpriteRenderer::End()

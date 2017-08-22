@@ -47,16 +47,16 @@ void ParticleTest::Update()
 				position = Vector3::Transform(position, Matrix::CreateRotationY(angle + angle_add));
 			Vector3 velocity = position *0.5f;
 			Vector3 accel = Vector3(0, 0, 0);
-			Color s_color = Color(1, 0, 0, 0);
-			Color e_color = Color(1, 0, 0, 0);
+			Color s_color = Color(1, 0, 0, 1);
+			Color e_color = Color(1, 0, 0, 1);
 			if (j == 1)
 			{
-				s_color = Color(0, 1, 0, 0);
-				e_color = Color(0, 1, 0, 0);
+				s_color = Color(0, 1, 0, 1);
+				e_color = Color(0, 1, 0, 1);
 			}
 
 			ParticleEffectManager::getInstance()->Entry(0, 120,
-				position, velocity, accel, 0, 360, 1.0f, 1.0f,
+				position, velocity, accel, 0, 360, 2.0f, 0.0f,
 				s_color, e_color);
 		}
 	}

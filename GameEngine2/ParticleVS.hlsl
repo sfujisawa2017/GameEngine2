@@ -1,17 +1,16 @@
-#include "ParticleTest.hlsli"
+#include "Particle.hlsli"
 
 /// <summary>
-/// ’¸“_ƒVƒF[ƒ_[
+/// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 /// 
-/// ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“•ÏŠ·‚ÍƒWƒIƒƒgƒŠƒVƒF[ƒ_‚Ås‚¤‚Ì‚ÅA
-/// ‚±‚±‚Å‚Í‚È‚É‚à‚¹‚¸‚»‚Ì‚Ü‚Ü”’l‚ğó‚¯“n‚·
+/// ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³å¤‰æ›ã¯ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã§è¡Œã†ã®ã§ã€
+/// ã“ã“ã§ã¯ãªã«ã‚‚ã›ãšãã®ã¾ã¾æ•°å€¤ã‚’å—ã‘æ¸¡ã™
 /// </summary>
 VSOutput main( float4 pos : POSITION, float4 color : COLOR, float2 other : TEXCOORD)
 {
 	VSOutput output;
 
 	output.pos = pos;
-	//output.pos = mul(pos, g_WVP);
 	output.color = color;
 	output.other = other;
 

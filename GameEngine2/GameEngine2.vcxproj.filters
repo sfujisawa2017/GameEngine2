@@ -32,12 +32,9 @@
     </Manifest>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ParticleTestVS.hlsl" />
-    <FxCompile Include="ParticleTestPS.hlsl" />
-    <FxCompile Include="ParticleTestGS.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ParticleTest.hlsli" />
+    <FxCompile Include="ParticleGS.hlsl" />
+    <FxCompile Include="ParticlePS.hlsl" />
+    <FxCompile Include="ParticleVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\CapsuleNode.FBX">
@@ -49,5 +46,8 @@
     <MeshContentTask Include="Assets\SphereNode.FBX">
       <Filter>Assets\CMO</Filter>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Particle.hlsli" />
   </ItemGroup>
 </Project>

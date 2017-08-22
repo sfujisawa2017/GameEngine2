@@ -3,8 +3,8 @@
 //--------------------------------------------------------------------------------------
 cbuffer global
 {
-	row_major matrix g_VP; //ƒ[ƒ‹ƒh‚©‚çË‰e‚Ü‚Å‚Ì•ÏŠ·s—ñi—ñ—Dæj
-	row_major matrix g_Billboard;	// ƒrƒ‹ƒ{[ƒhs—ñi—ñ—Dæj
+	row_major matrix g_VP; //ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‹ã‚‰å°„å½±ã¾ã§ã®å¤‰æ›è¡Œåˆ—ï¼ˆåˆ—å„ªå…ˆï¼‰
+	row_major matrix g_Billboard;	// ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—ï¼ˆåˆ—å„ªå…ˆï¼‰
 };
 
 //-----------------------------------------------------------------------------------------
@@ -13,7 +13,7 @@ cbuffer global
 Texture2D g_texture: register(t0);
 SamplerState g_sampler : register(s0);
 
-// ƒo[ƒeƒbƒNƒXƒVƒF[ƒ_‚Ìo—Í
+// ãƒãƒ¼ãƒ†ãƒƒã‚¯ã‚¹ã‚·ã‚§ãƒ¼ãƒ€ã®å‡ºåŠ›
 struct VSOutput
 {
 	float4 pos : SV_POSITION;
@@ -21,7 +21,7 @@ struct VSOutput
 	float2 other : TEXCOORD;
 };
 
-// ƒWƒIƒƒgƒŠƒVƒF[ƒ_‚Ìo—Í
+// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã®å‡ºåŠ›
 struct GSOutput
 {
 	float4 pos : SV_POSITION;
