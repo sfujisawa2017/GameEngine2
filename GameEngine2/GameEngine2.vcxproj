@@ -186,7 +186,7 @@
     <Manifest Include="settings.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\DirectXTK\DirectXTK_Desktop_2015.vcxproj">
+    <ProjectReference Include="C:\DirectXTK\DirectXTK_Desktop_2015.vcxproj">
       <Project>{e0b52ae7-e160-4d32-bf3f-910b785e5a8e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\MyLibrary\MyLibrary.vcxproj">
