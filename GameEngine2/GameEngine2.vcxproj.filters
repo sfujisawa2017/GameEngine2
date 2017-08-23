@@ -11,12 +11,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="ParticleTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ParticleTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -32,11 +30,6 @@
     </Manifest>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ParticleGS.hlsl" />
-    <FxCompile Include="ParticlePS.hlsl" />
-    <FxCompile Include="ParticleVS.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
     <MeshContentTask Include="Assets\CapsuleNode.FBX">
       <Filter>Assets\CMO</Filter>
     </MeshContentTask>
@@ -46,8 +39,5 @@
     <MeshContentTask Include="Assets\SphereNode.FBX">
       <Filter>Assets\CMO</Filter>
     </MeshContentTask>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Particle.hlsli" />
   </ItemGroup>
 </Project>

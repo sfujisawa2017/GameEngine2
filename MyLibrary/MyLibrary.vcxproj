@@ -148,7 +148,6 @@
     <ClCompile Include="3D\LandShape.cpp" />
     <ClCompile Include="3D\LandShapeData.cpp" />
     <ClCompile Include="3D\Obj3D.cpp" />
-    <ClCompile Include="3D\ParticleEffect.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Camera\DebugCamera.cpp" />
     <ClCompile Include="Collision\Collision.cpp" />
@@ -168,7 +167,6 @@
     <ClInclude Include="3D\LandShape.h" />
     <ClInclude Include="3D\LandShapeData.h" />
     <ClInclude Include="3D\Obj3D.h" />
-    <ClInclude Include="3D\ParticleEffect.h" />
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Camera\DebugCamera.h" />
     <ClInclude Include="Collision\Collision.h" />
