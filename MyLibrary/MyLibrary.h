@@ -19,6 +19,7 @@
 
 #include "3D\Obj3D.h"
 #include "3D\LandShape.h"
+#include "3D\ParticleEffect.h"
 
 #include "Camera\Camera.h"
 #include "Camera\DebugCamera.h"

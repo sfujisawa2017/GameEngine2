@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "ParticleTest.h"
 
 extern void ExitGame();
 
@@ -40,7 +41,33 @@ void Game::Initialize()
 	// 天球読み込み
 	m_ObjSkydome = std::make_unique<Obj3D>();
 	m_ObjSkydome->LoadModel(L"skydome");
-	m_ObjSkydome->DisableLighting();
+
+	m_ObjTest = std::make_unique<Obj3D>();
+	m_ObjTest->LoadModel(L"SphereNode");
+	m_ObjSkydome->AddChild(m_ObjTest.get());
+
+	// パーティクルテスト
+	m_ParticleTest = std::make_unique<ParticleTest>(m_Camera.get());
+
+	m_Spr = m_SpriteFactory->CreateFromFile(L"cat");
+	m_Spr->SetColor(DirectX::SimpleMath::Color(1, 0, 0, 1));
+	m_Spr->SetAnchorPoint(DirectX::SimpleMath::Vector2(0, 0));
+	m_Spr->SetTextureRect(RECT{ 50,50,100,100 });
+	m_Spr->SetScale(DirectX::SimpleMath::Vector2(2, 2));
+
+	m_Spr2 = m_SpriteFactory->CreateFromFile(L"cat");
+	m_Spr2->SetColor(DirectX::SimpleMath::Color(0, 1, 0, 1));
+
+	m_Spr2->SetPosition(DirectX::SimpleMath::Vector2(50, 50));
+	m_Spr2->SetAnchorPoint(DirectX::SimpleMath::Vector2(0, 0));
+	//m_Spr2->SetScale(0.5f);
+
+	m_Spr->AddChild(m_Spr2.get());
+
+	m_Spr3 = m_SpriteFactory->CreateFromFile(L"effect1");
+	m_Spr3->SetPosition(DirectX::SimpleMath::Vector2(100, 100));
+	m_Spr3->SetScale(0.5f);
+	m_Spr2->AddChild(m_Spr3.get());
 }
 
 void Game::Finalize()
@@ -57,7 +84,7 @@ void Game::Update(StepTimer const& timer)
 {
 	MouseUtil::GetInstance()->Update();
 
-	m_Camera->Update();
+	m_ParticleTest->Update();
 }
 #pragma endregion
 
@@ -69,5 +96,23 @@ void Game::Render()
 {
 	m_ObjSkydome->Draw();
 
+	m_ParticleTest->Draw();
+
+	m_Spr->SetPosition(DirectX::SimpleMath::Vector2(800, 450));
+	static float rot = 0;
+	rot += 1.1f;
+	m_Spr->SetRotation(rot);
+	//m_Spr->SetRotation(45);
+	
+	
+	//m_Spr->SetAnchorPoint(DirectX::SimpleMath::Vector2(1, 1));
+
+	m_Spr2->SetRotation(rot);
+
+	m_Spr3->SetRotation(rot);
+
+	m_Spr->Draw();
+
+	//m_Spr2->Draw();
 }
 #pragma endregion
