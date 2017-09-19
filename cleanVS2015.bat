@@ -27,9 +27,6 @@ if exist *.sdf del *.sdf
 if exist *.vcproj.* del *.vcproj*
 if exist *.max del *.max
 if exist *.WRL del *.WRL
-if exist *.cmo del *.cmo
-if exist *.dds del *.dds
-if exist *.cso del *.cso
 for /d %%i in (.\*) do  (	
 	call :sub %%i
 )
