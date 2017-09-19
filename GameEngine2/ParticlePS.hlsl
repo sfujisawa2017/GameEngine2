@@ -2,5 +2,7 @@
 
 float4 main(PSInput In) : SV_TARGET
 {
-	return float4(1.0f, 1.0f, 1.0f, 1.0f);
+	float4 color = g_texture.Sample(g_sampler, In.uv) * In.color;
+
+	return color;
 }

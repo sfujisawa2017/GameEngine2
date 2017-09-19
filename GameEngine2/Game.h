@@ -55,4 +55,8 @@ private:
 	std::vector<DirectX::VertexPositionColorTexture> m_Vertices;
 	// 汎用描画設定
 	std::unique_ptr<DirectX::CommonStates> m_CommonStates;
+	// テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_Texture;
+	//テクスチャーサンプラー
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_Sampler;
 };

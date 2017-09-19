@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include <WICTextureLoader.h>
 
 extern void ExitGame();
 
@@ -98,6 +99,24 @@ void Game::Initialize()
 	{// エラー
 		MessageBox(0, L"CreateBuffer Failed.", NULL, MB_OK);
 		return;
+	}	
+
+	{
+		// １つ分の頂点データ
+		VertexPositionColorTexture vertexData;
+		vertexData.position = Vector3(0, -0.5f, 0);	// 下
+		vertexData.color = Vector4(1, 1, 1, 1); // 白
+		vertexData.textureCoordinate = Vector2(0, 1);	// テクスチャ画像の左下隅
+		m_Vertices.push_back(vertexData);
+	}
+
+	{
+		// １つ分の頂点データ
+		VertexPositionColorTexture vertexData;
+		vertexData.position = Vector3(0.5f, -0.5f, 0);	// 右下
+		vertexData.color = Vector4(1, 1, 1, 1); // 白
+		vertexData.textureCoordinate = Vector2(1, 1);	// テクスチャ画像の右下隅
+		m_Vertices.push_back(vertexData);
 	}
 
 	{
@@ -112,22 +131,34 @@ void Game::Initialize()
 	{
 		// １つ分の頂点データ
 		VertexPositionColorTexture vertexData;
-		vertexData.position = Vector3(0, -0.5f, 0);	// 原点
+		vertexData.position = Vector3(0.5f, 0, 0);	// 右
 		vertexData.color = Vector4(1, 1, 1, 1); // 白
-		vertexData.textureCoordinate = Vector2(0, 0);	// テクスチャ画像の左上隅
-		m_Vertices.push_back(vertexData);
-	}
-
-	{
-		// １つ分の頂点データ
-		VertexPositionColorTexture vertexData;
-		vertexData.position = Vector3(0.5f, -0.5f, 0);	// 原点
-		vertexData.color = Vector4(1, 1, 1, 1); // 白
-		vertexData.textureCoordinate = Vector2(0, 0);	// テクスチャ画像の左上隅
+		vertexData.textureCoordinate = Vector2(1, 0);	// テクスチャ画像の右下隅
 		m_Vertices.push_back(vertexData);
 	}
 
 	m_CommonStates = std::make_unique<CommonStates>(device);
+
+	// テクスチャ読み込み
+	if (FAILED(CreateWICTextureFromFile(device, L"Resources/Textures/effect1.png", nullptr,
+		m_Texture.ReleaseAndGetAddressOf())))
+	{// エラー
+		MessageBox(0, L"ParticleTest Failed.", NULL, MB_OK);
+		return;
+	}
+
+	// テクスチャサンプラー作成
+	D3D11_SAMPLER_DESC SamDesc;
+	ZeroMemory(&SamDesc, sizeof(D3D11_SAMPLER_DESC));
+	SamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	SamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	SamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	SamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	if (FAILED(device->CreateSamplerState(&SamDesc, m_Sampler.ReleaseAndGetAddressOf())))
+	{// エラー
+		MessageBox(0, L"CreateSamplerState Failed.", NULL, MB_OK);
+		return;
+	}
 }
 
 void Game::Finalize()
@@ -149,12 +180,17 @@ void Game::Update(StepTimer const& timer)
 	//	vertex.position.x += 0.01f;
 	//}
 
-	for (auto& vertex : m_Vertices)
-	{
-		vertex.color.x -= 0.01f;
-		vertex.color.y -= 0.01f;
-		vertex.color.z -= 0.01f;
-	}
+	//for (auto& vertex : m_Vertices)
+	//{
+	//	vertex.color.x -= 0.01f;
+	//	vertex.color.y -= 0.01f;
+	//	vertex.color.z -= 0.01f;
+	//}
+
+	//for (auto& vertex : m_Vertices)
+	//{
+	//	vertex.textureCoordinate.x += 0.03f;
+	//}
 
 	m_Camera->Update();
 }
@@ -175,6 +211,8 @@ void Game::Render()
 	Matrix world = Matrix::Identity;
 	Matrix view = Matrix::Identity;
 	Matrix proj = Matrix::Identity;
+
+	world = Matrix::CreateScale(3.0f);
 
 	view = m_Camera->GetView();
 	proj = m_Camera->GetProj();
@@ -210,9 +248,14 @@ void Game::Render()
 	// 時計回りの面を陰面消去
 	context->RSSetState(m_CommonStates->CullNone());
 
+	// テクスチャサンプラー設定
+	context->PSSetSamplers(0, 1, m_Sampler.GetAddressOf());
+	//テクスチャーをシェーダーに渡す		
+	context->PSSetShaderResources(0, 1, m_Texture.GetAddressOf());
+
 	// 頂点データをすべて渡して描画する
 	m_PrimitiveBatch->Begin();
-	m_PrimitiveBatch->Draw(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST, &m_Vertices[0], m_Vertices.size());
+	m_PrimitiveBatch->Draw(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP, &m_Vertices[0], m_Vertices.size());
 	m_PrimitiveBatch->End();
 }
 #pragma endregion
