@@ -19,6 +19,12 @@ public:
 	// 入力レイアウトの定義.
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
 
+	// コンスタントバッファ
+	struct Constants
+	{
+		DirectX::SimpleMath::Matrix WVP;	// ワールドビュープロジェクション合成行列
+	};
+
 	Game(HINSTANCE hInstance, int nCmdShow);
 
     void Initialize() override;
@@ -39,6 +45,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VertexShader;
 	// ピクセルシェーダ
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PixelShader;
+	// コンスタントバッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_ConstantBuffer;
 	// プリミティブバッチ
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_PrimitiveBatch;
 	// 入力レイアウト

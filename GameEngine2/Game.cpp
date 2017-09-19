@@ -84,6 +84,22 @@ void Game::Initialize()
 		VSData.GetData(), VSData.GetSize(),
 		m_InputLayout.GetAddressOf());
 
+	//シェーダに共通データを渡す為の
+	//コンスタントバッファー作成
+	D3D11_BUFFER_DESC cb;
+	cb.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cb.ByteWidth = sizeof(Constants);
+	cb.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cb.MiscFlags = 0;
+	cb.StructureByteStride = 0;
+	cb.Usage = D3D11_USAGE_DYNAMIC;
+
+	if (FAILED(device->CreateBuffer(&cb, NULL, m_ConstantBuffer.ReleaseAndGetAddressOf())))
+	{// エラー
+		MessageBox(0, L"CreateBuffer Failed.", NULL, MB_OK);
+		return;
+	}
+
 	{
 		// １つ分の頂点データ
 		VertexPositionColorTexture vertexData;
@@ -155,8 +171,32 @@ void Game::Render()
 	DeviceResources* deviceResources = DeviceResources::GetInstance();
 	ID3D11DeviceContext* context = deviceResources->GetD3DDeviceContext();
 
+	// ビュー、プロジェクション行列を合成
+	Matrix world = Matrix::Identity;
+	Matrix view = Matrix::Identity;
+	Matrix proj = Matrix::Identity;
+
+	view = m_Camera->GetView();
+	proj = m_Camera->GetProj();
+	Matrix wvp = world * view * proj;
+
+	//シェーダーのコンスタントバッファーに各種データを渡す
+	D3D11_MAPPED_SUBRESOURCE pData;
+	if (SUCCEEDED(context->Map(m_ConstantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
+	{
+		Constants constants;
+
+		constants.WVP = wvp;
+
+		//データを上書き
+		memcpy_s(pData.pData, pData.RowPitch, &constants, sizeof(constants));
+		context->Unmap(m_ConstantBuffer.Get(), 0);
+	}
+	//このコンスタントバッファーをどのシェーダーで使うか
+	context->VSSetConstantBuffers(0, 1, m_ConstantBuffer.GetAddressOf());
+	context->PSSetConstantBuffers(0, 0, nullptr);
+
 	context->VSSetShader(m_VertexShader.Get(), nullptr, 0);
-	//context->GSSetShader(nullptr, nullptr, 0);
 	context->PSSetShader(m_PixelShader.Get(), nullptr, 0);
 
 	context->IASetInputLayout(m_InputLayout.Get());
