@@ -8,6 +8,9 @@
     <Filter Include="Assets\CMO">
       <UniqueIdentifier>{27b2ef02-7ab9-4340-9f45-515b61cc2873}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{4a056913-7274-49ae-8a11-2ae174102e71}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -39,5 +42,18 @@
     <MeshContentTask Include="Assets\SphereNode.FBX">
       <Filter>Assets\CMO</Filter>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="ParticleVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticlePS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Particle.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
