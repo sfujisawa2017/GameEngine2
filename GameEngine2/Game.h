@@ -23,7 +23,8 @@ public:
 	// コンスタントバッファ
 	struct Constants
 	{
-		DirectX::SimpleMath::Matrix WVP;	// ワールドビュープロジェクション合成行列
+		DirectX::SimpleMath::Matrix VP;	// ビュープロジェクション合成行列
+		DirectX::SimpleMath::Matrix Billboard; // ビルボード行列
 	};
 
 	Game(HINSTANCE hInstance, int nCmdShow);
@@ -62,4 +63,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_Texture;
 	//テクスチャーサンプラー
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_Sampler;
+	// 減算描画ステート
+	ID3D11BlendState* m_BlendStateSubtract;
 };

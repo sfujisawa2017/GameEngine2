@@ -15,7 +15,7 @@ using namespace MyLibrary;
 // パーティクル最大数
 const int Game::PARTICLE_NUM_MAX = 20000;
 
-const int Game::POINT_NUM = 20;
+const int Game::POINT_NUM = 200;
 
 const std::vector<D3D11_INPUT_ELEMENT_DESC> Game::INPUT_LAYOUT =
 {
@@ -116,7 +116,8 @@ void Game::Initialize()
 		VertexPositionColorTexture vertexData;
 		vertexData.position.x = cosf((float)i / POINT_NUM * XM_2PI);
 		vertexData.position.y = sinf((float)i / POINT_NUM * XM_2PI);
-		vertexData.color = Vector4(1, 1, 1, 1); // 白
+		//vertexData.color = Vector4(0.2f,0,0, 1); // 赤
+		vertexData.color = Vector4(0.03f, 0.03f, 0.03f, 1); // 赤
 		vertexData.textureCoordinate.x = 0.5f; // スケーリング
 		m_Vertices.push_back(vertexData);
 	}
@@ -143,6 +144,20 @@ void Game::Initialize()
 		MessageBox(0, L"CreateSamplerState Failed.", NULL, MB_OK);
 		return;
 	}
+
+	// 減算描画用のブレンドステートを作成
+	D3D11_BLEND_DESC desc;
+	desc.AlphaToCoverageEnable = false;
+	desc.IndependentBlendEnable = false;
+	desc.RenderTarget[0].BlendEnable = true;
+	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	desc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+	desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_REV_SUBTRACT;
+	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_REV_SUBTRACT;
+	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	HRESULT ret = device->CreateBlendState(&desc, &m_BlendStateSubtract);
 }
 
 void Game::Finalize()
@@ -177,7 +192,11 @@ void Game::Update(StepTimer const& timer)
 	for (auto& vertex : m_Vertices)
 	{
 		i++;
-		vertex.textureCoordinate.x = (sinf(param-i*XM_2PI/POINT_NUM)+1.0f) * 0.1f;
+		vertex.textureCoordinate.x = (sinf(param-i*XM_2PI/POINT_NUM)+1.0f) * 0.3f;
+		vertex.textureCoordinate.y += 0.1f;
+
+		//vertex.color.x = (cosf(param - i*XM_2PI / POINT_NUM)) * 0.2f;
+		//vertex.color.z = (sinf(param - i*XM_2PI / POINT_NUM)) * 0.2f;
 	}
 
 	m_Camera->Update();
@@ -212,7 +231,8 @@ void Game::Render()
 	{
 		Constants constants;
 
-		constants.WVP = wvp;
+		constants.VP = wvp;
+		constants.Billboard = m_Camera->GetBillboard();
 
 		//データを上書き
 		memcpy_s(pData.pData, pData.RowPitch, &constants, sizeof(constants));
@@ -230,7 +250,11 @@ void Game::Render()
 	context->IASetInputLayout(m_InputLayout.Get());
 
 	// アルファブレンド描画
-	context->OMSetBlendState(m_CommonStates->NonPremultiplied(), nullptr, 0xFFFFFFFF);
+	//context->OMSetBlendState(m_CommonStates->NonPremultiplied(), nullptr, 0xFFFFFFFF);
+	// 加算合成
+	context->OMSetBlendState(m_CommonStates->Additive(), nullptr, 0xFFFFFFFF);
+	// 減算合成
+	//context->OMSetBlendState(m_BlendStateSubtract, nullptr, 0xFFFFFFFF);
 
 	// 深度バッファを更新しない
 	context->OMSetDepthStencilState(m_CommonStates->DepthRead(), 0);
