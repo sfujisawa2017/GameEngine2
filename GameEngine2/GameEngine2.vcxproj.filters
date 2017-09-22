@@ -50,6 +50,9 @@
     <FxCompile Include="ParticlePS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="ParticleGS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Particle.hlsli">

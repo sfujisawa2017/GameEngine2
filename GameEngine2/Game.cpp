@@ -56,6 +56,7 @@ void Game::Initialize()
 
 	// コンパイルされたシェーダファイルを読み込み
 	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleVS.cso");
+	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleGS.cso");
 	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticlePS.cso");
 
 	ID3D11Device* device = deviceResources->GetD3DDevice();
@@ -65,6 +66,13 @@ void Game::Initialize()
 	if (FAILED(device->CreateVertexShader(VSData.GetData(), VSData.GetSize(), NULL, m_VertexShader.ReleaseAndGetAddressOf())))
 	{// エラー
 		MessageBox(0, L"CreateVertexShader Failed.", NULL, MB_OK);
+		return;
+	}
+
+	// ジオメトリシェーダ作成
+	if (FAILED(device->CreateGeometryShader(GSData.GetData(), GSData.GetSize(), NULL, m_GeometryShader.ReleaseAndGetAddressOf())))
+	{// エラー
+		MessageBox(0, L"CreateGeometryShader Failed.", NULL, MB_OK);
 		return;
 	}
 
@@ -231,10 +239,12 @@ void Game::Render()
 		context->Unmap(m_ConstantBuffer.Get(), 0);
 	}
 	//このコンスタントバッファーをどのシェーダーで使うか
-	context->VSSetConstantBuffers(0, 1, m_ConstantBuffer.GetAddressOf());
+	context->VSSetConstantBuffers(0, 0, nullptr);
+	context->GSSetConstantBuffers(0, 1, m_ConstantBuffer.GetAddressOf());
 	context->PSSetConstantBuffers(0, 0, nullptr);
 
 	context->VSSetShader(m_VertexShader.Get(), nullptr, 0);
+	context->GSSetShader(m_GeometryShader.Get(), nullptr, 0);
 	context->PSSetShader(m_PixelShader.Get(), nullptr, 0);
 
 	context->IASetInputLayout(m_InputLayout.Get());
@@ -255,7 +265,11 @@ void Game::Render()
 
 	// 頂点データをすべて渡して描画する
 	m_PrimitiveBatch->Begin();
-	m_PrimitiveBatch->Draw(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP, &m_Vertices[0], m_Vertices.size());
+	m_PrimitiveBatch->Draw(D3D_PRIMITIVE_TOPOLOGY_POINTLIST, &m_Vertices[0], m_Vertices.size());
 	m_PrimitiveBatch->End();
+
+	context->VSSetShader(nullptr, nullptr, 0);
+	context->GSSetShader(nullptr, nullptr, 0);
+	context->PSSetShader(nullptr, nullptr, 0);
 }
 #pragma endregion

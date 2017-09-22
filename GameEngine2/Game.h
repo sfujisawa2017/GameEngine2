@@ -43,6 +43,8 @@ private:
 
 	// 頂点シェーダ
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VertexShader;
+	// ジオメトリシェーダ
+	Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_GeometryShader;
 	// ピクセルシェーダ
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PixelShader;
 	// コンスタントバッファ
