@@ -19,7 +19,7 @@ struct GSInput
 {
 	float4 pos : SV_POSITION;
 	float4 color : COLOR;
-	float2 uv : TEXCOORD;
+	float2 other : TEXCOORD;
 };
 
 //--------------------------------------------------------------------------------------

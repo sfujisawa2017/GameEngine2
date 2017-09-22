@@ -15,6 +15,8 @@ using namespace MyLibrary;
 // パーティクル最大数
 const int Game::PARTICLE_NUM_MAX = 20000;
 
+const int Game::POINT_NUM = 20;
+
 const std::vector<D3D11_INPUT_ELEMENT_DESC> Game::INPUT_LAYOUT =
 {
 	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -108,40 +110,14 @@ void Game::Initialize()
 		MessageBox(0, L"CreateBuffer Failed.", NULL, MB_OK);
 		return;
 	}	
-
+		
+	for (int i = 0; i < POINT_NUM; i++)
 	{
-		// １つ分の頂点データ
 		VertexPositionColorTexture vertexData;
-		vertexData.position = Vector3(0, -2.0f, 0);	// 下
+		vertexData.position.x = cosf((float)i / POINT_NUM * XM_2PI);
+		vertexData.position.y = sinf((float)i / POINT_NUM * XM_2PI);
 		vertexData.color = Vector4(1, 1, 1, 1); // 白
-		vertexData.textureCoordinate = Vector2(0, 1);	// テクスチャ画像の左下隅
-		m_Vertices.push_back(vertexData);
-	}
-
-	{
-		// １つ分の頂点データ
-		VertexPositionColorTexture vertexData;
-		vertexData.position = Vector3(2.0f, -2.0f, 0);	// 右下
-		vertexData.color = Vector4(1, 1, 1, 1); // 白
-		vertexData.textureCoordinate = Vector2(1, 1);	// テクスチャ画像の右下隅
-		m_Vertices.push_back(vertexData);
-	}
-
-	{
-		// １つ分の頂点データ
-		VertexPositionColorTexture vertexData;
-		vertexData.position = Vector3(0, 0, 0);	// 原点
-		vertexData.color = Vector4(1, 1, 1, 1); // 白
-		vertexData.textureCoordinate = Vector2(0, 0);	// テクスチャ画像の左上隅
-		m_Vertices.push_back(vertexData);
-	}
-
-	{
-		// １つ分の頂点データ
-		VertexPositionColorTexture vertexData;
-		vertexData.position = Vector3(2.0f, 0, 0);	// 右
-		vertexData.color = Vector4(1, 1, 1, 1); // 白
-		vertexData.textureCoordinate = Vector2(1, 0);	// テクスチャ画像の右下隅
+		vertexData.textureCoordinate.x = 0.5f; // スケーリング
 		m_Vertices.push_back(vertexData);
 	}
 
@@ -195,10 +171,14 @@ void Game::Update(StepTimer const& timer)
 	//	vertex.color.z -= 0.01f;
 	//}
 
-	//for (auto& vertex : m_Vertices)
-	//{
-	//	vertex.textureCoordinate.x += 0.03f;
-	//}
+	static float param = 0;
+	param += 0.1f;
+	int i = 0;
+	for (auto& vertex : m_Vertices)
+	{
+		i++;
+		vertex.textureCoordinate.x = (sinf(param-i*XM_2PI/POINT_NUM)+1.0f) * 0.1f;
+	}
 
 	m_Camera->Update();
 }
