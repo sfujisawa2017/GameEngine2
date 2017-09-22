@@ -112,7 +112,7 @@ void Game::Initialize()
 	{
 		// １つ分の頂点データ
 		VertexPositionColorTexture vertexData;
-		vertexData.position = Vector3(0, -0.5f, 0);	// 下
+		vertexData.position = Vector3(0, -2.0f, 0);	// 下
 		vertexData.color = Vector4(1, 1, 1, 1); // 白
 		vertexData.textureCoordinate = Vector2(0, 1);	// テクスチャ画像の左下隅
 		m_Vertices.push_back(vertexData);
@@ -121,7 +121,7 @@ void Game::Initialize()
 	{
 		// １つ分の頂点データ
 		VertexPositionColorTexture vertexData;
-		vertexData.position = Vector3(0.5f, -0.5f, 0);	// 右下
+		vertexData.position = Vector3(2.0f, -2.0f, 0);	// 右下
 		vertexData.color = Vector4(1, 1, 1, 1); // 白
 		vertexData.textureCoordinate = Vector2(1, 1);	// テクスチャ画像の右下隅
 		m_Vertices.push_back(vertexData);
@@ -139,7 +139,7 @@ void Game::Initialize()
 	{
 		// １つ分の頂点データ
 		VertexPositionColorTexture vertexData;
-		vertexData.position = Vector3(0.5f, 0, 0);	// 右
+		vertexData.position = Vector3(2.0f, 0, 0);	// 右
 		vertexData.color = Vector4(1, 1, 1, 1); // 白
 		vertexData.textureCoordinate = Vector2(1, 0);	// テクスチャ画像の右下隅
 		m_Vertices.push_back(vertexData);
