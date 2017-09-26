@@ -78,6 +78,9 @@
     <ClCompile Include="2D\SpriteRenderer.cpp">
       <Filter>2D</Filter>
     </ClCompile>
+    <ClCompile Include="3D\ParticleEffect.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\Collision.h">
@@ -134,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="2D\SpriteRenderer.h">
       <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\ParticleEffect.h">
+      <Filter>3D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

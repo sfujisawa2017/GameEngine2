@@ -1,15 +1,18 @@
-/// <summary>
-/// パーティクル用頂点シェーダ
-/// </summary>
 #include "Particle.hlsli"
 
-GSInput main( float4 pos : POSITION, float4 color : COLOR, float2 other : TEXCOORD )
+/// <summary>
+/// 頂点シェーダー
+/// 
+/// ビュープロジェクション変換はジオメトリシェーダで行うので、
+/// ここではなにもせずそのまま数値を受け渡す
+/// </summary>
+VSOutput main( float4 pos : POSITION, float4 color : COLOR, float2 other : TEXCOORD)
 {
-	GSInput Out;
-	//Out.pos = mul(pos, g_WVP);
-	Out.pos = pos;
-	Out.color = color;
-	Out.other = other;
+	VSOutput output;
 
-	return Out;
+	output.pos = pos;
+	output.color = color;
+	output.other = other;
+
+	return output;
 }

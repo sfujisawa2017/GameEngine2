@@ -41,28 +41,5 @@ private:
 	// デバッグカメラ
 	std::unique_ptr<MyLibrary::DebugCamera> m_Camera;
 	// 天球
-	std::unique_ptr<MyLibrary::Obj3D> m_ObjSkydome;
-
-	// 頂点シェーダ
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VertexShader;
-	// ジオメトリシェーダ
-	Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_GeometryShader;
-	// ピクセルシェーダ
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PixelShader;
-	// コンスタントバッファ
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_ConstantBuffer;
-	// プリミティブバッチ
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_PrimitiveBatch;
-	// 入力レイアウト
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_InputLayout;
-	// 頂点データ配列
-	std::vector<DirectX::VertexPositionColorTexture> m_Vertices;
-	// 汎用描画設定
-	std::unique_ptr<DirectX::CommonStates> m_CommonStates;
-	// テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_Texture;
-	//テクスチャーサンプラー
-	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_Sampler;
-	// 減算描画ステート
-	ID3D11BlendState* m_BlendStateSubtract;
+	std::unique_ptr<MyLibrary::Obj3D> m_ObjSkydome;	
 };
