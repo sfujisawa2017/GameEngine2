@@ -44,15 +44,6 @@ void Game::Initialize()
 	m_ObjSkydome->LoadModel(L"skydome");
 	m_ObjSkydome->DisableLighting();
 
-	// パーティクルマネージャの初期化
-	ParticleEffectManager* particleMan = ParticleEffectManager::getInstance();
-	particleMan->Initialize();
-	// カメラをセット
-	particleMan->SetCamera(m_Camera.get());
-	// 0番スロットにテクスチャをロード
-	particleMan->Load(0, L"Resources/Textures/effect1.png");
-
-
 }
 
 void Game::Finalize()
@@ -69,12 +60,7 @@ void Game::Update(StepTimer const& timer)
 {
 	MouseUtil::GetInstance()->Update();
 	
-	m_Camera->Update();
-
-	ParticleEffectManager::getInstance()->Entry(0, 30, Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 0, 0, 1, 1, Color(1, 1, 1, 1), Color(1, 1, 1, 1));
-
-	// パーティクルマネージャの更新
-	ParticleEffectManager::getInstance()->Update();
+	m_Camera->Update();	
 }
 #pragma endregion
 
@@ -85,7 +71,5 @@ void Game::Update(StepTimer const& timer)
 void Game::Render()
 {
 	m_ObjSkydome->Draw();
-
-	ParticleEffectManager::getInstance()->Draw();
 }
 #pragma endregion
