@@ -15,18 +15,6 @@
 class Game : public MyLibrary::Framework
 {
 public:
-	static const int PARTICLE_NUM_MAX;
-	// 入力レイアウトの定義.
-	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
-	static const int POINT_NUM;
-
-	// コンスタントバッファ
-	struct Constants
-	{
-		DirectX::SimpleMath::Matrix VP;	// ビュープロジェクション合成行列
-		DirectX::SimpleMath::Matrix Billboard; // ビルボード行列
-	};
-
 	Game(HINSTANCE hInstance, int nCmdShow);
 
     void Initialize() override;
