@@ -389,6 +389,9 @@ void Framework::CreateDeviceDependentResources()
 	m_TextureCache->Initialize(device);
 	// スプライトファクトリー生成
 	m_SpriteFactory = std::make_unique<SpriteFactory>(m_SpriteRenderer, m_TextureCache);
+	// プリミティブマネージャ生成、初期化
+	m_PrimitiveRenderer = PrimitiveRenderer::GetInstance();
+	m_PrimitiveRenderer->Initialize(device, context);
 	// デバッグテキスト作成
 	m_DebugText = std::make_unique<DebugText>(device, context);
 
