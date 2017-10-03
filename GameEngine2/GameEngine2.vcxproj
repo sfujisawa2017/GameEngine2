@@ -72,16 +72,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\DirectXTK\Inc;$(ProjectDir)..\MyLibrary;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\DirectXTK\Bin\Desktop_2015\Win32\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\DirectXTK\Inc;$(ProjectDir)..\MyLibrary;$(ProjectDir)..\MyLibrary\ADX2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\DirectXTK\Bin\Desktop_2015\Win32\Debug;$(ProjectDir)..\MyLibrary;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\DirectXTK\Inc;$(ProjectDir)..\MyLibrary;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\DirectXTK\Bin\Desktop_2015\Win32\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\DirectXTK\Inc;$(ProjectDir)..\MyLibrary;$(ProjectDir)..\MyLibrary\ADX2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\DirectXTK\Bin\Desktop_2015\Win32\Release;$(ProjectDir)..\MyLibrary;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -108,6 +108,12 @@
     <MeshContentTask>
       <ContentOutput>Resources\CMO\%(Filename).cmo</ContentOutput>
     </MeshContentTask>
+    <PostBuildEvent>
+      <Command>copy /B /Y cri_ware_pcx86_le.dll $(OutDir)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>ADX2ライブラリのDLLを実行ファイルのディレクトリにコピーする</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -150,6 +156,12 @@
     <MeshContentTask>
       <ContentOutput>Resources\CMO\%(Filename).cmo</ContentOutput>
     </MeshContentTask>
+    <PostBuildEvent>
+      <Command>copy /B /Y cri_ware_pcx86_le.dll $(OutDir)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>ADX2ライブラリのDLLを実行ファイルのディレクトリにコピーする</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

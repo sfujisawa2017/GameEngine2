@@ -52,7 +52,7 @@ namespace MyLibrary
 			// 読み込み済みモデルコンテナ
 			std::map<std::wstring, std::unique_ptr<DirectX::Model>> modelarray;
 			// 減算描画ステート
-			ID3D11BlendState* blendStateSubtract;
+			Microsoft::WRL::ComPtr<ID3D11BlendState> blendStateSubtract;
 		};
 		// 静的メンバ関数
 		// システム初期化

@@ -40,7 +40,7 @@ void Obj3D::InitializeCommon(CommonDef def)
 	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
 	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_REV_SUBTRACT;
 	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	HRESULT ret = def.pDevice->CreateBlendState(&desc, &s_Common.blendStateSubtract);
+	HRESULT ret = def.pDevice->CreateBlendState(&desc, s_Common.blendStateSubtract.GetAddressOf());
 }
 
 void Obj3D::UnloadAll()
@@ -51,7 +51,7 @@ void Obj3D::UnloadAll()
 void Obj3D::SetSubtractive()
 {
 	// 減算描画を設定
-	s_Common.deviceContext->OMSetBlendState(s_Common.blendStateSubtract, nullptr, 0xffffff);
+	s_Common.deviceContext->OMSetBlendState(s_Common.blendStateSubtract.Get(), nullptr, 0xffffff);
 }
 
 /// <summary>

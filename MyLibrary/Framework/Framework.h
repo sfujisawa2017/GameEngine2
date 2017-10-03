@@ -11,6 +11,7 @@
 
 #include "../2D/SpriteRenderer.h"
 #include "../2D/Sprite.h"
+#include "../2D/PrimitiveRenderer.h"
 #include "../2D/DebugText.h"
 
 namespace MyLibrary
@@ -71,6 +72,8 @@ namespace MyLibrary
 		std::unique_ptr<DebugText>	m_DebugText;
 		// スプライトレンダラー
 		SpriteRenderer* m_SpriteRenderer;
+		// プリミティブレンダラー
+		PrimitiveRenderer* m_PrimitiveRenderer;
 		// テクスチャキャッシュ
 		TextureCache* m_TextureCache;
 		// スプライトファクトリー

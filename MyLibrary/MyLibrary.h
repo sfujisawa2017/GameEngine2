@@ -11,10 +11,13 @@
 #include "Input\MouseUtil.h"
 #include "Input\KeyboardUtil.h"
 
+#include "ADX2\ADX2Le.h"
+
 #include "Collision\Collision.h"
 #include "Collision\CollisionNode.h"
 
 #include "2D\SpriteRenderer.h"
+#include "2D\PrimitiveRenderer.h"
 #include "2D\DebugText.h"
 
 #include "3D\Obj3D.h"

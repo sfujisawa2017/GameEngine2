@@ -3,7 +3,6 @@
 //
 
 #include "Game.h"
-#include <WICTextureLoader.h>
 
 extern void ExitGame();
 

@@ -70,11 +70,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>C:\DirectXTK\Inc;$(ProjectDir)ADX2\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\DirectXTK\Bin\Desktop_2015\Win32\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>C:\DirectXTK\Inc;$(ProjectDir)ADX2\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\DirectXTK\Bin\Desktop_2015\Win32\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2D\DebugText.cpp" />
+    <ClCompile Include="2D\PrimitiveRenderer.cpp" />
     <ClCompile Include="2D\Sprite.cpp" />
     <ClCompile Include="2D\SpriteRenderer.cpp" />
     <ClCompile Include="2D\TextureCache.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="3D\LandShapeData.cpp" />
     <ClCompile Include="3D\Obj3D.cpp" />
     <ClCompile Include="3D\ParticleEffect.cpp" />
+    <ClCompile Include="ADX2\ADX2Le.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Camera\DebugCamera.cpp" />
     <ClCompile Include="Collision\Collision.cpp" />
@@ -162,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2D\DebugText.h" />
+    <ClInclude Include="2D\PrimitiveRenderer.h" />
     <ClInclude Include="2D\Sprite.h" />
     <ClInclude Include="2D\SpriteRenderer.h" />
     <ClInclude Include="2D\TextureCache.h" />
@@ -169,6 +172,7 @@
     <ClInclude Include="3D\LandShapeData.h" />
     <ClInclude Include="3D\Obj3D.h" />
     <ClInclude Include="3D\ParticleEffect.h" />
+    <ClInclude Include="ADX2\ADX2Le.h" />
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Camera\DebugCamera.h" />
     <ClInclude Include="Collision\Collision.h" />
