@@ -68,11 +68,14 @@ void Game::Initialize()
 	m_Spr3->SetPosition(DirectX::SimpleMath::Vector2(100, 100));
 	m_Spr3->SetScale(0.5f);
 	m_Spr2->AddChild(m_Spr3.get());
+
+	ADX2Le::GetInstance()->Initialize(L"ADX2_samples.acf");
+	ADX2Le::GetInstance()->ADX2Le::LoadAcb(L"Basic.acb", L"Basic.awb");
 }
 
 void Game::Finalize()
 {
-
+	ADX2Le::GetInstance()->Finalize();
 }
 
 #pragma region Frame Update
@@ -83,8 +86,16 @@ void Game::Finalize()
 void Game::Update(StepTimer const& timer)
 {
 	MouseUtil::GetInstance()->Update();
+	ADX2Le::GetInstance()->Update();
+
+	m_Camera->Update();
 
 	m_ParticleTest->Update();
+
+	if (MouseUtil::GetInstance()->IsTriggered(MyLibrary::MouseUtil::Button::Left))
+	{
+		ADX2Le::GetInstance()->Play(5);
+	}
 }
 #pragma endregion
 

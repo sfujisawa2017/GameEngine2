@@ -10,7 +10,7 @@ using namespace MyLibrary;
 // 静的メンバ変数の実体
 std::unique_ptr<PrimitiveRenderer> PrimitiveRenderer::m_Instance;
 
-PrimitiveRenderer * MyLibrary::PrimitiveRenderer::GetInstance()
+PrimitiveRenderer * PrimitiveRenderer::GetInstance()
 {
 	if (!m_Instance)
 	{

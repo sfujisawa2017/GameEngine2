@@ -11,6 +11,8 @@
 #include "Input\MouseUtil.h"
 #include "Input\KeyboardUtil.h"
 
+#include "ADX2\ADX2Le.h"
+
 #include "Collision\Collision.h"
 #include "Collision\CollisionNode.h"
 

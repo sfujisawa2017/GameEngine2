@@ -25,6 +25,9 @@
     <Filter Include="Utility">
       <UniqueIdentifier>{1cca97db-36f7-468b-a6cd-4ca78b47d93b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ADX2">
+      <UniqueIdentifier>{5eb860b6-e14d-4365-a6a8-f0c812586492}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision\Collision.cpp">
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="2D\PrimitiveRenderer.cpp">
       <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="ADX2\ADX2Le.cpp">
+      <Filter>ADX2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="2D\PrimitiveRenderer.h">
       <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="ADX2\ADX2Le.h">
+      <Filter>ADX2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
