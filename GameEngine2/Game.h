@@ -12,6 +12,8 @@
 
 #include "MyLibrary.h"
 
+#include "FlameEmitter.h"
+
 class Game : public MyLibrary::Framework
 {
 public:
@@ -30,4 +32,7 @@ private:
 	std::unique_ptr<MyLibrary::DebugCamera> m_Camera;
 	// 天球
 	std::unique_ptr<MyLibrary::Obj3D> m_ObjSkydome;	
+
+	// 炎エミッター
+	std::unique_ptr<FlameEmitter> m_FrameEmitter;
 };

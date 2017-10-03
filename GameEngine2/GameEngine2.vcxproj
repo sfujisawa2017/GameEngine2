@@ -171,9 +171,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="FlameEmitter.h" />
     <ClInclude Include="Game.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FlameEmitter.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
