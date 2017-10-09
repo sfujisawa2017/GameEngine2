@@ -3,18 +3,17 @@
 /// </summary>
 #pragma once
 
-#include "MyLibrary.h"
+#include "Emitter.h"
 
-class FlameEmitter
+class FlameEmitter : public Emitter
 {
 public:
 	static void LoadTexture(int texslot);
 	static void DisposeTexture();
 
 	FlameEmitter(DirectX::SimpleMath::Vector3 position);
-	void Update();
+	void Update() override;
 protected:
-	static int s_TextureSlot;
-	DirectX::SimpleMath::Vector3 m_Position;
+	static int s_TextureSlot;	
 	float m_param;
 };

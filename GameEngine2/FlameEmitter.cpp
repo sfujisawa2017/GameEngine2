@@ -34,8 +34,8 @@ void FlameEmitter::DisposeTexture()
 }
 
 FlameEmitter::FlameEmitter(DirectX::SimpleMath::Vector3 position)
+	: Emitter(position)
 {
-	m_Position = position;
 	m_param = 0;
 }
 
@@ -44,9 +44,7 @@ FlameEmitter::FlameEmitter(DirectX::SimpleMath::Vector3 position)
 /// </summary>
 void FlameEmitter::Update()
 {
-	m_param += 0.1f;
-	m_Position.x = cosf(m_param);
-	m_Position.y = sinf(m_param);
+	MoveCircular();
 	//ParticleEffectManager::getInstance()->Entry(
 	//	0,	// テクスチャ番号
 	//	(int)RandomRange(60, 150),	// 生存時間
