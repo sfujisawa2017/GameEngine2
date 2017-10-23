@@ -17,6 +17,7 @@ DebugCamera::DebugCamera(int w, int h)
 	m_sx = 1.0f / (float)w;
 	m_sy = 1.0f / (float)h;
 	m_View = DirectX::SimpleMath::Matrix::Identity;
+	cameraDistance = DEFAULT_CAMERA_DISTANCE;
 }
 
 //--------------------------------------------------------------------------------------
@@ -67,7 +68,7 @@ void DebugCamera::Update()
 	Vector3 up(0.0f, 1.0f, 0.0f);
 
 	eye = Vector3::Transform(eye, rt.Invert());
-	eye *= (DEFAULT_CAMERA_DISTANCE - m_scrollWheelValue / 100);
+	eye *= (cameraDistance - m_scrollWheelValue / 100);
 	up = Vector3::Transform(up, rt.Invert());
 
 	Camera::SetEyepos(eye);

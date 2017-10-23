@@ -12,11 +12,15 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="ParticleTest.h" />
+    <ClInclude Include="Octree.h" />
+    <ClInclude Include="GameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
+    <ClCompile Include="Octree.cpp" />
+    <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -49,6 +49,8 @@ namespace MyLibrary
 
 		void SetIsDispFPS(bool flag) { m_IsDispFPS = flag; }
 
+		DebugText* GetDebugText() { return m_DebugText.get(); }
+
 	protected:
 
 		virtual void Update(StepTimer const& timer) = 0;
