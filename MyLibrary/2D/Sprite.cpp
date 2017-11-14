@@ -1,4 +1,5 @@
 ﻿#include "Sprite.h"
+#include <algorithm>
 
 using namespace DirectX;
 using namespace MyLibrary;
@@ -119,18 +120,46 @@ void Sprite::Draw(bool recursive)
 
 void Sprite::SetParent(Sprite* parent)
 {
+	// 既に親がいたら外す
+	RemoveFromParent();
 	// 親オブジェクト設定
 	this->m_Parent = parent;
 	// 子オブジェクトリストに追加
 	parent->m_Children.push_back(this);
 }
 
+void Sprite::RemoveFromParent()
+{
+	if (m_Parent == nullptr) return;
+
+	// 親から外す
+	m_Parent->m_Children.erase(
+		remove(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), this),
+		m_Parent->m_Children.end());
+	// 親をなしにする
+	m_Parent = nullptr;
+}
+
 void Sprite::AddChild(Sprite* child)
 {
+	// 既に親がいたら外す
+	child->RemoveFromParent();
 	// 親オブジェクト設定
 	child->m_Parent = this;
 	// 子オブジェクトリストに追加
 	this->m_Children.push_back(child);
+}
+
+void Sprite::RemoveChild(Sprite* child)
+{
+	if (child->m_Parent == nullptr) return;
+
+	// 親から外す
+	m_Children.erase(
+		remove(m_Children.begin(), m_Children.end(), child),
+		m_Children.end());
+	// 親をなしにする
+	child->m_Parent = nullptr;
 }
 
 void Sprite::SetDirty()

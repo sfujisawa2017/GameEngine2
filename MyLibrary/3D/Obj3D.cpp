@@ -1,6 +1,7 @@
 ﻿#include "Obj3D.h"
 #include "VertexTypes.h"
 #include <CommonStates.h>
+#include <algorithm>
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -162,18 +163,46 @@ void Obj3D::EnableAlpha()
 
 void Obj3D::SetParent(Obj3D* parent)
 {
+	// 既に親がいたら外す
+	RemoveFromParent();
 	// 親オブジェクト設定
 	this->m_pParent = parent;
 	// 子オブジェクトリストに追加
 	parent->m_Children.push_back(this);
 }
 
+void Obj3D::RemoveFromParent()
+{
+	if (m_pParent == nullptr) return;
+
+	// 親から外す
+	m_pParent->m_Children.erase(
+		remove(m_pParent->m_Children.begin(), m_pParent->m_Children.end(), this),
+		m_pParent->m_Children.end());
+	// 親をなしにする
+	m_pParent = nullptr;
+}
+
 void Obj3D::AddChild(Obj3D* child)
 {
+	// 既に親がいたら外す
+	child->RemoveFromParent();
 	// 親オブジェクト設定
 	child->m_pParent = this;
 	// 子オブジェクトリストに追加
 	this->m_Children.push_back(child);
+}
+
+void Obj3D::RemoveChild(Obj3D * child)
+{
+	if (child->m_pParent == nullptr) return;
+
+	// 親から外す
+	m_Children.erase(
+		remove(m_Children.begin(), m_Children.end(), child),
+		m_Children.end());
+	// 親をなしにする
+	child->m_pParent = nullptr;
 }
 
 void Obj3D::SetDirty()

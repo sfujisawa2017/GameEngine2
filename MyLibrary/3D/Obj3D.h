@@ -92,8 +92,12 @@ namespace MyLibrary
 		void EnableAlpha();
 		// 親オブジェクトをセット
 		void SetParent(Obj3D* parent);
+		// 親オブジェクトから切り離す
+		void RemoveFromParent();
 		// 子オブジェクトを追加
 		void AddChild(Obj3D* child);
+		// 子オブジェクトを切り離す
+		void RemoveChild(Obj3D* child);
 		// ダーティフラグを立てる
 		void SetDirty();
 		// ダーティフラグチェック

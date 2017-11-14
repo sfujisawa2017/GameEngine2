@@ -30,9 +30,14 @@ namespace MyLibrary
 		// 描画
 		void Draw(bool recursive = true);
 
+		// 親をセット
 		void SetParent(Sprite * parent);
-
+		// 親から切り離す
+		void RemoveFromParent();
+		// 子を追加
 		void AddChild(Sprite * child);
+		// 子を切り離す
+		void RemoveChild(Sprite* child);
 
 		// ダーティフラグを立てる
 		void SetDirty();
