@@ -20,6 +20,9 @@ namespace MyLibrary
 	{
 	public:
 
+		const int DEFAULT_WINDOW_WIDTH = 1600;
+		const int DEFAULT_WINDOW_HEIGHT = 900;
+
 		static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 		Framework(HINSTANCE hInstance, int nCmdShow);
@@ -45,7 +48,7 @@ namespace MyLibrary
 		virtual void OnWindowSizeChanged(int width, int height);
 
 		// Properties
-		void GetDefaultSize(int& width, int& height) const;
+		virtual void GetDefaultSize(int& width, int& height) const;
 
 		void SetIsDispFPS(bool flag) { m_IsDispFPS = flag; }
 

@@ -367,8 +367,8 @@ void Framework::OnWindowSizeChanged(int width, int height)
 void Framework::GetDefaultSize(int& width, int& height) const
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
-    width = 1600;
-    height = 900;
+    width = DEFAULT_WINDOW_WIDTH;
+    height = DEFAULT_WINDOW_HEIGHT;
 }
 #pragma endregion
 
