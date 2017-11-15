@@ -13,6 +13,11 @@ using namespace MyLibrary;
 
 Game* Game::s_instance = nullptr;
 
+Game * Game::GetInstance()
+{
+	return s_instance;
+}
+
 Game::Game(HINSTANCE hInstance, int nCmdShow)
 	: Framework(hInstance, nCmdShow)
 {
@@ -49,7 +54,9 @@ void Game::Initialize()
 	ADX2Le::GetInstance()->Initialize(L"ADX2_samples.acf");
 	ADX2Le::GetInstance()->ADX2Le::LoadAcb(L"Basic.acb", L"Basic.awb");
 
-	for (int i = 0; i < 200; i++)
+	GameObject::StaticInitialize();
+
+	for (int i = 0; i < 100; i++)
 	{
 		std::unique_ptr<GameObject> gameObj = std::make_unique<GameObject>();
 
@@ -88,6 +95,18 @@ void Game::Update(StepTimer const& timer)
 	double time = pc->GetElapsedTime();
 
 	m_DebugText->AddText(DirectX::SimpleMath::Vector2(10, 10), L"time:%f", time);
+
+	const std::vector<std::pair<Octree::OctreeObject*, Octree::OctreeObject*>>& collisionList = octree.GetCollisionList();
+	for (const std::pair<Octree::OctreeObject*, Octree::OctreeObject*>& collision : collisionList)
+	{
+		GameObject* obj1 = dynamic_cast<GameObject*>(collision.first);
+		if (obj1 == nullptr) continue;
+
+		GameObject* obj2 = dynamic_cast<GameObject*>(collision.second);
+		if (obj2 == nullptr) continue;
+		
+		GameObject::ReflectObjects(obj1, obj2);
+	}
 
 	if (MouseUtil::GetInstance()->IsTriggered(MyLibrary::MouseUtil::Button::Left))
 	{

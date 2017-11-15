@@ -1,6 +1,7 @@
 ﻿#include "Octree.h"
 #include <string>
 #include <queue>
+#include "Game.h"
 
 using namespace DirectX;
 using namespace MyLibrary;
@@ -132,10 +133,31 @@ void Octree::InsertObject(OctreeObject * object)
 	rootNode->InsertObject(object);
 }
 
+bool Octree::TestCollision(OctreeObject * objectA, OctreeObject * objectB)
+{
+	float distanceSQ = Vector3::DistanceSquared(objectA->center, objectB->center);
+
+	float radiusSQ = objectA->radius + objectB->radius;
+	radiusSQ = radiusSQ * radiusSQ;
+
+	if (distanceSQ <= radiusSQ)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void Octree::TestAllCollisions()
 {	
+	collisionList.clear();
 	ancestorStack.clear();
+	hitCount = 0;
 	TestAllCollisions(rootNode, 0);
+
+	Game::GetInstance()->GetDebugText()->AddText(DirectX::SimpleMath::Vector2(10,30), L"Hit:%d", hitCount);
 }
 
 void Octree::TestAllCollisions(OctreeNode * node, int depth)
@@ -150,9 +172,11 @@ void Octree::TestAllCollisions(OctreeNode * node, int depth)
 			{
 				if (A == B) break;
 
-				static int a = 0;
-				a++;
-				//TestCollision(A, B);
+				if (TestCollision(A, B))
+				{
+					collisionList.push_back(std::make_pair(A, B));
+					hitCount++;
+				}
 			}
 		}
 	}

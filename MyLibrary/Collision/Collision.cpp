@@ -20,7 +20,10 @@ using namespace MyLibrary;
 //	using
 //----------------------------------------------
 
-//NS_COLLISION_BEGIN
+#define NS_MYLIB_BEGIN namespace MyLibrary {
+#define NS_MYLIB_END }
+
+NS_MYLIB_BEGIN
 
 //----------------------------------------------
 //	define
@@ -750,32 +753,32 @@ bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, Vector3* i
 	
 	return true;
 }
-//
-////--------------------------------------------------------------------------------------------
-//// 説　明 : 球と平面の当たりチェック
-//// 引　数 : _sphere		球
-////			_plane		平面
-////			_inter		擬似交点（平面上の最接近点）
-//// 戻り値 : 交差しているか否か
-//// メ　モ : 
-////--------------------------------------------------------------------------------------------
-//bool CheckSphere2Plane(const Sphere& _sphere, const Plane& _plane, Vector3 *_inter)
-//{
-//	float dist;
-//	
-//	dist = _sphere.center.Dot(_plane.Normal); // 座標系の原点から球の中心座標への距離
-//	dist -= _plane.Distance;	// 平面の原点距離を減算することで、平面と球の中心との距離が出る
-//	// 距離の絶対値が半径より大きければ当たっていない
-//	if ( fabsf( dist ) > _sphere.radius )	return false;
-//	
-//	if ( _inter )
-//	{// 擬似交点を計算
-//		*_inter = -dist * _plane.Normal + _sphere.center;
-//	}
-//	
-//	return true;
-//}
-//
+
+//--------------------------------------------------------------------------------------------
+// 説　明 : 球と平面の当たりチェック
+// 引　数 : _sphere		球
+//			_plane		平面
+//			_inter		擬似交点（平面上の最接近点）
+// 戻り値 : 交差しているか否か
+// メ　モ : 
+//--------------------------------------------------------------------------------------------
+bool CheckSphere2Plane(const Sphere& _sphere, const MyLibrary::Plane& _plane, Vector3 *_inter)
+{
+	float dist;
+	
+	dist = _sphere.center.Dot(_plane.Normal); // 座標系の原点から球の中心座標への距離
+	dist -= _plane.Distance;	// 平面の原点距離を減算することで、平面と球の中心との距離が出る
+	// 距離の絶対値が半径より大きければ当たっていない
+	if ( fabsf( dist ) > _sphere.radius )	return false;
+	
+	if ( _inter )
+	{// 擬似交点を計算
+		*_inter = -dist * _plane.Normal + _sphere.center;
+	}
+	
+	return true;
+}
+
 //--------------------------------------------------------------------------------------------
 // 説　明 : 球とカプセルの当たりチェック
 // 引　数 : _sphere		球
@@ -1046,5 +1049,4 @@ bool CheckSphere2Triangle(const Sphere& _sphere, const Triangle& _triangle, Vect
 
 	return true;
 }
-//
-//NS_COLLISION_END
+NS_MYLIB_END

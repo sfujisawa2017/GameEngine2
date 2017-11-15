@@ -10,8 +10,6 @@
 #include <vector>
 #include "MyLibrary.h"
 
-//#include "Collision\CollisionNode.h"
-
 class Octree
 {
 public:
@@ -20,11 +18,12 @@ public:
 	// 分割数
 	static const int DIVISION_NUM = 8;
 	// 最大深度
-	static const int MAX_DEPTH = 5;
+	static const int MAX_DEPTH = 2;
 
 	class OctreeObject
 	{
 	public:
+		virtual ~OctreeObject() {}
 		Vector3 center;
 		float radius;
 	};
@@ -59,15 +58,24 @@ public:
 	OctreeNode* rootNode;
 	// 親ノードスタック（探索用）
 	std::vector<OctreeNode*> ancestorStack;
+	// 衝突リスト
+	std::vector<std::pair<OctreeObject*, OctreeObject*>> collisionList;
+	int hitCount;
 public:
 	// コンストラクタ
 	Octree();
 	// オブジェクトを挿入
 	void InsertObject(OctreeObject* object);
-
+	// オブジェクト同士の当たり判定
+	bool TestCollision(OctreeObject* objectA, OctreeObject* objectB);
+	// 全オブジェクトを総当たりで判定する
 	void TestAllCollisions();
-
-	void TestAllCollisions(OctreeNode* node, int depth);
+	
 	// ノードの数を数える
 	void OutputNodeCounts();
+	// 衝突リストを取得
+	const std::vector<std::pair<OctreeObject*, OctreeObject*>>& GetCollisionList() { return collisionList; }
+
+protected:
+	void TestAllCollisions(OctreeNode* node, int depth);
 };

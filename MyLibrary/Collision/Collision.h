@@ -94,18 +94,18 @@ namespace MyLibrary
 		}
 	};
 
-	//// 平面
-	//class Plane
-	//{
-	//public:
-	//	Vector	Normal;		// 法線ベクトル
-	//	float	Distance;	// 原点からの距離（平面上のある与えられた点pに対してd = Dot(n,p)が成立）
-	//	// コンストラクタ
-	//	Plane()
-	//	{
-	//		Distance = 0.0f;
-	//	}
-	//};
+	// 平面
+	class Plane
+	{
+	public:
+		DirectX::SimpleMath::Vector3	Normal;		// 法線ベクトル
+		float	Distance;	// 原点からの距離（平面上のある与えられた点pに対してd = Dot(n,p)が成立）
+		// コンストラクタ
+		Plane()
+		{
+			Distance = 0.0f;
+		}
+	};
 
 	// 法線付き三角形（反時計回りが表面）
 	class Triangle
@@ -154,7 +154,7 @@ namespace MyLibrary
 	//bool CheckAABB2AABB(const AABB& _box0, const AABB& _box1, Point *_inter = nullptr);					// AABBとAABB
 	//bool CheckOBB2OBB(const OBB& a, const OBB& b, Point *_inter = nullptr);								// OBBとOBB
 	//bool CheckSphere2Sphere(const Sphere& _sphere0, const Sphere& _sphere1, Point *_inter = nullptr);	// 球と球
-	//bool CheckSphere2Plane(const Sphere& _sphere, const Plane& _plane, Point *_inter = nullptr);		// 球と平面
+	bool CheckSphere2Plane(const Sphere& _sphere, const Plane& _plane, DirectX::SimpleMath::Vector3 *_inter = nullptr);		// 球と平面
 	//bool CheckSphere2Capsule(const Sphere& _sphere, const Capsule& _capsule, Point *_inter = nullptr);	// 球とカプセル
 	//bool CheckCapsule2Capsule(const Capsule& _capsule0, const Capsule& _capsule1, Point *_inter = nullptr);	// カプセルとカプセル
 	//bool CheckLine2Triangle(const Line& _lay, const Triangle& _triangle, Point *_inter = nullptr);		// 直線と法線付き三角形// 三角形と点の当たり判定
