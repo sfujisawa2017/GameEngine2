@@ -79,19 +79,28 @@ Obj3D::~Obj3D()
 /// ファイルからモデルを読み込む
 /// </summary>
 /// <param name="filename">CMOファイル名</param>
-void Obj3D::LoadModel(const wchar_t*filename)
+void Obj3D::LoadModel(const wchar_t*filename, bool share)
 {
 	assert(s_Common.effectFactory);
 
-	// 指定ファイルを読み込み済みでないか？
-	if (s_Common.modelarray.count(filename) == 0 )
+	// フルパスに補完
+	std::wstring fullpath_bin = RESOURCE_DIRECTORY + filename + RESOURCE_EXT;
+
+	if (share)
 	{
-		// フルパスに補完
-		std::wstring fullpath_bin = RESOURCE_DIRECTORY + filename + RESOURCE_EXT;
-		// モデルを読み込み、コンテナに登録（キーはファイル名）
-		s_Common.modelarray[filename] = Model::CreateFromCMO(s_Common.device, fullpath_bin.c_str(), *s_Common.effectFactory);
+		// 指定ファイルを読み込み済みでないか？
+		if (s_Common.modelarray.count(filename) == 0)
+		{			
+			// モデルを読み込み、コンテナに登録（キーはファイル名）
+			s_Common.modelarray[filename] = Model::CreateFromCMO(s_Common.device, fullpath_bin.c_str(), *s_Common.effectFactory);
+		}
+		m_pModel = s_Common.modelarray[filename];
 	}
-	m_pModel = s_Common.modelarray[filename].get();
+	else
+	{
+		// 新規に読み込み
+		m_pModel = Model::CreateFromCMO(s_Common.device, fullpath_bin.c_str(), *s_Common.effectFactory);
+	}
 }
 
 /**
@@ -99,38 +108,61 @@ void Obj3D::LoadModel(const wchar_t*filename)
 */
 void Obj3D::DisableLighting()
 {
-	if (m_pModel)
+	if (m_pModel == nullptr) return;
+
+	// モデル内の全メッシュ分回す
+	ModelMesh::Collection::const_iterator it_mesh = m_pModel->meshes.begin();
+	for (; it_mesh != m_pModel->meshes.end(); it_mesh++)
 	{
-		// モデル内の全メッシュ分回す
-		ModelMesh::Collection::const_iterator it_mesh = m_pModel->meshes.begin();
-		for (; it_mesh != m_pModel->meshes.end(); it_mesh++)
+		ModelMesh* modelmesh = it_mesh->get();
+		assert(modelmesh);
+
+		// メッシュ内の全メッシュパーツ分回す
+		std::vector<std::unique_ptr<ModelMeshPart>>::iterator it_meshpart = modelmesh->meshParts.begin();
+		for (; it_meshpart != modelmesh->meshParts.end(); it_meshpart++)
 		{
-			ModelMesh* modelmesh = it_mesh->get();
-			assert(modelmesh);
+			ModelMeshPart* meshpart = it_meshpart->get();
+			assert(meshpart);
 
-			// メッシュ内の全メッシュパーツ分回す
-			std::vector<std::unique_ptr<ModelMeshPart>>::iterator it_meshpart = modelmesh->meshParts.begin();
-			for (; it_meshpart != modelmesh->meshParts.end(); it_meshpart++)
+			// メッシュパーツにセットされたエフェクトをBasicEffectとして取得
+			std::shared_ptr<IEffect> ieff = meshpart->effect;
+			BasicEffect* eff = dynamic_cast<BasicEffect*>(ieff.get());
+			if (eff != nullptr)
 			{
-				ModelMeshPart* meshpart = it_meshpart->get();
-				assert(meshpart);
+				// 自己発光を最大値に
+				eff->SetEmissiveColor(Vector3(1,1,1));
 
-				// メッシュパーツにセットされたエフェクトをBasicEffectとして取得
-				std::shared_ptr<IEffect> ieff = meshpart->effect;
-				BasicEffect* eff = dynamic_cast<BasicEffect*>(ieff.get());
-				if (eff != nullptr)
+				// エフェクトに含む全ての平行光源分について処理する
+				for (int i = 0; i < BasicEffect::MaxDirectionalLights; i++)
 				{
-					// 自己発光を最大値に
-					eff->SetEmissiveColor(Vector3(1,1,1));
-
-					// エフェクトに含む全ての平行光源分について処理する
-					for (int i = 0; i < BasicEffect::MaxDirectionalLights; i++)
-					{
-						// ライトを無効にする
-						eff->SetLightEnabled(i, false);
-					}
+					// ライトを無効にする
+					eff->SetLightEnabled(i, false);
 				}
 			}
+		}
+	}
+}
+
+void Obj3D::SetEffect(std::shared_ptr<IEffect>& effect)
+{
+	if (m_pModel == nullptr) return;
+
+	// モデル内の全メッシュ分回す
+	ModelMesh::Collection::const_iterator it_mesh = m_pModel->meshes.begin();
+	for (; it_mesh != m_pModel->meshes.end(); it_mesh++)
+	{
+		ModelMesh* modelmesh = it_mesh->get();
+		assert(modelmesh);
+
+		// メッシュ内の全メッシュパーツ分回す
+		std::vector<std::unique_ptr<ModelMeshPart>>::iterator it_meshpart = modelmesh->meshParts.begin();
+		for (; it_meshpart != modelmesh->meshParts.end(); it_meshpart++)
+		{
+			ModelMeshPart* meshpart = it_meshpart->get();
+			assert(meshpart);
+
+			meshpart->effect = effect;
+			//meshpart->ModifyEffect(s_Common.device, ieff);
 		}
 	}
 }

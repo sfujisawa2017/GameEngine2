@@ -20,6 +20,11 @@ namespace MyLibrary
 		/// static member
 		/// </summary>
 	public:
+		using Color = DirectX::SimpleMath::Color;
+		using Vector3 = DirectX::SimpleMath::Vector3;
+		using Matrix = DirectX::SimpleMath::Matrix;
+		using Quaternion = DirectX::SimpleMath::Quaternion;
+
 		static const std::wstring RESOURCE_DIRECTORY;
 		static const std::wstring RESOURCE_EXT;
 
@@ -50,7 +55,7 @@ namespace MyLibrary
 			// 共用のカメラ（描画時に使用）
 			Camera* camera;
 			// 読み込み済みモデルコンテナ
-			std::map<std::wstring, std::unique_ptr<DirectX::Model>> modelarray;
+			std::map<std::wstring, std::shared_ptr<DirectX::Model>> modelarray;
 			// 減算描画ステート
 			Microsoft::WRL::ComPtr<ID3D11BlendState> blendStateSubtract;
 		};
@@ -77,7 +82,7 @@ namespace MyLibrary
 		Obj3D();
 		virtual ~Obj3D();
 		// ファイルからモデルを読み込む
-		void LoadModel(const wchar_t*filename = nullptr);
+		void LoadModel(const wchar_t*filename = nullptr, bool share = true);
 		// 行列の更新
 		void Update(bool recursive = true);
 		// 描画
@@ -88,6 +93,8 @@ namespace MyLibrary
 		void DrawBillboardConstrainY(bool recursive = true);
 		// オブジェクトのライティングを無効にする
 		void DisableLighting();
+		// エフェクトをセット
+		void SetEffect(std::shared_ptr<DirectX::IEffect>& effect);
 		// アルファブレンディングを有効にする
 		void EnableAlpha();
 		// 親オブジェクトをセット
@@ -104,37 +111,37 @@ namespace MyLibrary
 		bool CheckDirty();
 
 		//setter
-		void SetTrans(const DirectX::SimpleMath::Vector3& trans);
-		void SetRot(const DirectX::SimpleMath::Vector3& rot);
-		void SetRotQuat(const DirectX::SimpleMath::Quaternion& quat);
+		void SetTrans(const Vector3& trans);
+		void SetRot(const Vector3& rot);
+		void SetRotQuat(const Quaternion& quat);
 		void SetScale(float scale);
-		void SetScale(const DirectX::SimpleMath::Vector3& scale);
-		void SetLocalWorld(const DirectX::SimpleMath::Matrix& mat);
+		void SetScale(const Vector3& scale);
+		void SetLocalWorld(const Matrix& mat);
 		//getter
-		const DirectX::SimpleMath::Vector3& GetTrans() { return m_Trans; }
-		const DirectX::SimpleMath::Vector3& GetRot() { return m_RotEuler; }
-		const DirectX::SimpleMath::Quaternion& GetRotQuat() { return m_RotQuat; }
-		const DirectX::SimpleMath::Vector3& GetScale() { return m_Scale; }
-		const DirectX::SimpleMath::Matrix& GetLocalWorld() { return m_LocalWorld; }
+		const Vector3& GetTrans() { return m_Trans; }
+		const Vector3& GetRot() { return m_RotEuler; }
+		const Quaternion& GetRotQuat() { return m_RotQuat; }
+		const Vector3& GetScale() { return m_Scale; }
+		const Matrix& GetLocalWorld() { return m_LocalWorld; }
 
 	private:
 		// モデルデータへのポインタ
-		const DirectX::Model* m_pModel;
+		std::shared_ptr<DirectX::Model> m_pModel;
 		// 平行移動
-		DirectX::SimpleMath::Vector3 m_Trans;
+		Vector3 m_Trans;
 		// 回転
 		bool m_UseQuternion;
 		union
 		{
 			// クォータニオン
-			DirectX::SimpleMath::Quaternion m_RotQuat;
+			Quaternion m_RotQuat;
 			// オイラー角
-			DirectX::SimpleMath::Vector3 m_RotEuler;
+			Vector3 m_RotEuler;
 		};
 		// スケーリング
-		DirectX::SimpleMath::Vector3 m_Scale;
+		Vector3 m_Scale;
 		// ワールド行列
-		DirectX::SimpleMath::Matrix m_LocalWorld;
+		Matrix m_LocalWorld;
 		// 親オブジェクトへのポインタ
 		Obj3D* m_pParent;
 		// 子オブジェクトへのポインタ配列
