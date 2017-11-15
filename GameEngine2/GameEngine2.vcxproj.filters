@@ -12,11 +12,13 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="ParticleTest.h" />
+    <ClInclude Include="GameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
+    <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -44,6 +46,9 @@
       <Filter>Assets\CMO</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\SphereNode.FBX">
+      <Filter>Assets\CMO</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\ground200m.FBX">
       <Filter>Assets\CMO</Filter>
     </MeshContentTask>
   </ItemGroup>

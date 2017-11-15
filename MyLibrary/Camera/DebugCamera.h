@@ -24,6 +24,9 @@ namespace MyLibrary
 		// スクロールフォイール値
 		int m_scrollWheelValue;
 
+		// カメラ距離
+		float cameraDistance;
+
 	private:
 
 		void Motion(int x, int y);
@@ -34,5 +37,12 @@ namespace MyLibrary
 
 		// 更新
 		void Update() override;
+
+		// カメラ距離
+		void SetCameraDistance(float distance) { cameraDistance = distance; }
+		// 横回転
+		void SetYAngle(float yAngle) { m_yAngle = yAngle; m_yTmp = yAngle; }
+		// 縦回転
+		void SetXAngle(float xAngle) { m_xAngle = xAngle; m_xTmp = xAngle; }
 	};
 }

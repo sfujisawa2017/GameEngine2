@@ -8,7 +8,7 @@
 #include <DirectXColors.h>
 
 #include "MyLibrary.h"
-#include "ParticleTest.h"
+#include "GameObject.h"
 
 class Game : public MyLibrary::Framework
 {
@@ -28,12 +28,8 @@ private:
 	std::unique_ptr<MyLibrary::DebugCamera> m_Camera;
 	// 天球
 	std::unique_ptr<MyLibrary::Obj3D> m_ObjSkydome;
-	std::unique_ptr<MyLibrary::Obj3D> m_ObjTest;
-	// パーティクル表示テスト
-	std::unique_ptr<ParticleTest> m_ParticleTest;
-	
-	std::unique_ptr<MyLibrary::Sprite> m_Spr;
-	std::unique_ptr<MyLibrary::Sprite> m_Spr2;
-
-	std::unique_ptr<MyLibrary::Sprite> m_Spr3;
+	// 地面
+	std::unique_ptr<MyLibrary::Obj3D> m_ObjGround;
+	// ゲームオブジェクト
+	std::vector<std::unique_ptr<GameObject>> gameObjects;
 };
