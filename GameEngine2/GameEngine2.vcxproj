@@ -243,7 +243,9 @@
     <None Include="Particle.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <MeshContentTask Include="Assets\BallTex.FBX" />
     <MeshContentTask Include="Assets\CapsuleNode.FBX" />
+    <MeshContentTask Include="Assets\Cube.FBX" />
     <MeshContentTask Include="Assets\ground200m.FBX" />
     <MeshContentTask Include="Assets\skydome.FBX" />
     <MeshContentTask Include="Assets\SphereNode.FBX" />

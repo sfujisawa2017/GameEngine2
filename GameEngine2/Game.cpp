@@ -27,7 +27,7 @@ void Game::Initialize()
 	RECT windowRect = deviceResources->GetOutputSize();
 	// デバッグカメラ作成
 	m_Camera = std::make_unique<DebugCamera>(windowRect.right- windowRect.left, windowRect.bottom - windowRect.top);
-	m_Camera->SetCameraDistance(70.0f);
+	m_Camera->SetCameraDistance(20.0f);
 	m_Camera->SetXAngle(XMConvertToRadians(30.0f));
 
 	{ // Obj3D初期化
@@ -51,6 +51,8 @@ void Game::Initialize()
 	// サウンド読み込み
 	ADX2Le::GetInstance()->Initialize(L"ADX2_samples.acf");
 	ADX2Le::GetInstance()->ADX2Le::LoadAcb(L"Basic.acb", L"Basic.awb");
+
+	TextureCache::GetInstance()->LoadTexture(L"cat");
 
 	for (int i = 0; i < 10; i++)
 	{
