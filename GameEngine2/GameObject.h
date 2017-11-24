@@ -4,7 +4,7 @@
 #pragma once
 
 #include "MyLibrary.h"
-#include "Octree.h"
+#include "OctreeObject.h"
 
 //class Wall
 //{
@@ -18,7 +18,7 @@
 //	float restitution;
 //};
 
-class GameObject : public Octree::OctreeObject
+class GameObject : public OctreeObject
 {
 public:
 	using Vector3 = DirectX::SimpleMath::Vector3;

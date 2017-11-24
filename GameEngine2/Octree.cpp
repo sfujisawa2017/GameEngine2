@@ -1,4 +1,5 @@
 ﻿#include "Octree.h"
+#include "OctreeObject.h"
 #include <string>
 #include <queue>
 #include "Game.h"
@@ -6,122 +7,139 @@
 using namespace DirectX;
 using namespace MyLibrary;
 
-/// <summary>
-/// 八分木を特定の深さまで拡張する
-/// </summary>
-/// <param name="center">部分木の中心点</param>
-/// <param name="halfWidth">領域幅の半分</param>
-/// <param name="stopDepth">残り階層</param>
-/// <returns></returns>
-Octree::OctreeNode * Octree::OctreeNode::BuildOctree(Vector3 center, float halfWidth, int stopDepth)
-{
-	// 特定の深さに達したら拡張を止める
-	if (stopDepth < 0)
-	{
-		return nullptr;
-	}
-	else
-	{
-		// この部分木のルートを構築して埋める
-		OctreeNode* node = new OctreeNode;
-		node->center = center;
-		node->halfWidth = halfWidth;
-
-		// 部分木の8つの子を再帰的に構築
-		Vector3 offset;
-		float step = halfWidth * 0.5f;
-		for (int i = 0; i < DIVISION_NUM; i++)
-		{
-			// 交互にマイナスとプラスに割り振る
-			offset.x = ((i & 1) ? step : -step);
-			// ２つごとにマイナスとプラスに割り振る
-			offset.y = ((i & 2) ? step : -step);
-			// ４つごとにマイナスとプラスに割り振る
-			offset.z = ((i & 4) ? step : -step);
-			// 再帰呼び出し
-			node->children[i] = BuildOctree(center + offset, step, stopDepth - 1);
-		}
-		return node;
-	}
-}
-
-/// <summary>
-/// オブジェクトを挿入
-/// </summary>
-/// <param name="object">挿入するオブジェクト</param>
-void Octree::OctreeNode::InsertObject(OctreeObject * object)
-{
-	int index = 0;
-	bool straddle = false;
-
-	// XYZで3要素
-	const int ELEMENT_NUM = 3;
-
-	// Vector3のxyzを、floatの配列として解釈
-	// w値に絶対アクセスしないように注意。
-	XMVECTORF32* treeCenter = (XMVECTORF32*)&center;
-	XMVECTORF32* objectCenter = (XMVECTORF32*)&object->center;
-
-	// 木の中心部との位置関係から８つの子のどれに挿入するか[0..7]を決定
-	for (int i = 0; i < ELEMENT_NUM; i++)
-	{
-		float delta = objectCenter->f[i] - treeCenter->f[i];
-
-		// プラスとマイナスの領域をまたぐかどうか
-		if (fabsf(delta) < object->radius)
-		{
-			straddle = true;
-			break;
-		}
-		// 2進数でみて、X:第一ビット Y:第二ビット Z:第三ビットを決定する。
-		// 最終的には2進数3桁分でインデックスを決定
-		if (delta > 0.0f)
-		{
-			index |= (1 << i);
-		}
-	}
-	//straddle = true;	// これを有効化すると、全てルートノードに追加される
-	// 領域をまたいでいない場合は、子ノードでさらに再帰判定する
-	if (!straddle && children[index])
-	{
-		children[index]->InsertObject(object);
-	}
-	// 領域をまたいでいるか、限界の深さに達したら、ツリーにオブジェクトを繋ぐ
-	else
-	{
-		objList.push_front(object);
-	}
-}
-
-/// <summary>
-/// オブジェクトの数を再帰的に数える
-/// </summary>
-/// <returns>オブジェクトの数</returns>
-int Octree::OctreeNode::CountObject()
-{
-	int count = objList.size();
-
-	for (int i = 0; i < DIVISION_NUM; i++)
-	{
-		if (children[i])
-		{
-			count += children[i]->CountObject();
-		}
-	}
-
-	return count;
-}
+// 分割数
+const int Octree::DIVISION_NUM = 8;
+// 最大深度
+const int Octree::MAX_DEPTH = 8;
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Octree::Octree()
+Octree::Octree(int depth, Vector3 minimum, Vector3 maximum)
 {
-	center = Vector3(0, 0, 0);
-	size = Vector3(1000, 1000, 1000);
-	rootNode = OctreeNode::BuildOctree(center, size.x / 2.0f, MAX_DEPTH);
+	assert(depth <= MAX_DEPTH);
 
-	ancestorStack.reserve(MAX_DEPTH);
+	m_Min = minimum;
+	m_Max = maximum;
+	m_Depth = depth;
+	Vector3 size = m_Max - m_Min;
+	int maxNodeCount = 1 << depth;
+	m_Unit = size / ((float)maxNodeCount);
+
+	// 各レベルのノード数を計算（深さ+1まで）
+	m_NodeCounts.resize(depth+1);
+	m_NodeCounts[0] = 1;
+	for (int i = 1; i < depth+1; i++)
+	{
+		// ８のべき乗
+		m_NodeCounts[i] = m_NodeCounts[i - 1] * DIVISION_NUM;
+	}
+
+	// 全レベルでのノード数の合計を計算
+	int nodeNum = 0;
+	for (int i = 0; i < depth; i++)
+	{
+		nodeNum += m_NodeCounts[i];
+	}
+	
+	// 全ノードを生成
+	m_Nodes.resize(nodeNum);
+	for (auto& node : m_Nodes)
+	{
+		node = std::make_unique<OctreeNode>();
+	}
+
+	// 衝突リスト用のメモリを適当に確保しておく
+	m_CollisionList.reserve(100);
+	// 衝突スタック用のメモリを確保しておく
+	m_CollisionStack.reserve(MAX_DEPTH);
+}
+
+/// <summary>
+/// ビット分割関数
+/// 8ビットの入力を3ビット刻みのビット列に変換する
+/// 原理上、出力の下位22ビット分にデータが収納される
+/// </summary>
+/// <param name="n"></param>
+/// <returns></returns>
+DWORD Octree::BitSeparateFor3D(BYTE n)
+{
+	// s = ------------------------76543210 : 入力値
+	// s = ----------------7654321076543210 : s | s << 8
+	// m = ----------------||||--------||||	: 0x0000f00f
+	// s = ----------------7654--------3210 : ビットAND
+	// s = ------------76547654----32103210 : s | s << 4
+	// m = ------------||----||----||----|| : 0x000c30c3
+	// s = ------------76----54----32----10	: ビットAND
+	// s = ----------7676--5454--3232--1010 : s | s << 2
+	// m = ----------|--|--|--|--|--|--|--| : 0x00249249
+	// s = ----------7--6--5--4--3--2--1--0 : ビットAND（出力値）
+	DWORD s = n;
+	s = (s | s << 8) & 0x0000f00f;
+	s = (s | s << 4) & 0x000c30c3;
+	s = (s | s << 2) & 0x00249249;
+	return s;
+}
+
+/// <summary>
+/// 3Dモートン空間番号算出関数
+/// 3つの8ビットの数字を入力として、それらをビットとして挟み込んで1つの数字にする
+/// </summary>
+/// <param name="x"></param>
+/// <param name="y"></param>
+/// <param name="z"></param>
+/// <returns></returns>
+DWORD Octree::Get3DMortonNumber(BYTE x, BYTE y, BYTE z)
+{
+	// ----------x--x--x--x--x--x--x--x : BitSeparateFor3D(x)
+	// ---------y--y--y--y--y--y--y--y- : BitSeparateFor3D(y) << 1
+	// --------z--z--z--z--z--z--z--z-- : BitSeparateFor3D(z) << 2
+	return BitSeparateFor3D(x) | BitSeparateFor3D(y) << 1 | BitSeparateFor3D(z) << 2;
+}
+
+/// <summary>
+/// 座標→線形8分木要素番号変換関数
+/// x,y,z座標をそれぞれツリー内のノード番号に変換し、そこからモートン空間番号を得る
+/// </summary>
+/// <param name="p"></param>
+/// <returns></returns>
+DWORD Octree::GetPointElem(Vector3& p)
+{
+	return Get3DMortonNumber(
+		(BYTE)((p.x - m_Min.x) / m_Unit.x),
+		(BYTE)((p.y - m_Min.y) / m_Unit.y),
+		(BYTE)((p.z - m_Min.z) / m_Unit.z)
+	);
+}
+
+// 座標から空間番号を算出
+DWORD Octree::GetMortonNumber(Vector3& minimun, Vector3& maximum)
+{
+	if (m_Nodes.size() <= 0)
+		return 0xffffffff;
+
+	// 最小レベルにおける各軸位置を算出
+	DWORD LT = GetPointElem(minimun);
+	DWORD RB = GetPointElem(maximum);
+
+	// 空間番号を引き算して
+	// 最上位区切りから所属レベルを算出
+	DWORD Def = RB ^ LT;
+	int HiLevel = 1;
+	for (int i = 0; i<m_Depth; i++)
+	{
+		DWORD Check = (Def >> (i * 3)) & 0x7;
+		if (Check != 0)
+			HiLevel = i + 1;
+	}
+	DWORD SpaceNum = RB >> (HiLevel * 3);
+	DWORD AddNum = (m_NodeCounts[m_Depth - HiLevel] - 1) / 7;
+	SpaceNum += AddNum;
+
+	if (SpaceNum > m_Nodes.size())
+		return 0xffffffff;
+
+	return SpaceNum;
 }
 
 /// <summary>
@@ -130,7 +148,16 @@ Octree::Octree()
 /// <param name="object">挿入するオブジェクト</param>
 void Octree::InsertObject(OctreeObject * object)
 {
-	rootNode->InsertObject(object);
+	Vector3 minimum(object->center.x - object->radius, object->center.y - object->radius, object->center.z - object->radius);
+	Vector3 maximum(object->center.x + object->radius, object->center.y + object->radius, object->center.z + object->radius);
+	// オブジェクトの境界範囲から登録モートン番号を算出
+	DWORD elem = GetMortonNumber(minimum, maximum);
+	if (elem >= m_Nodes.size())
+		return;
+
+	// ノードにオブジェクトを挿入
+	m_Nodes[elem]->InsertObject(object);
+	object->node = m_Nodes[elem].get();
 }
 
 bool Octree::TestCollision(OctreeObject * objectA, OctreeObject * objectB)
@@ -152,53 +179,77 @@ bool Octree::TestCollision(OctreeObject * objectA, OctreeObject * objectB)
 
 void Octree::TestAllCollisions()
 {	
-	collisionList.clear();
-	ancestorStack.clear();
+	m_CollisionList.clear();
 	hitCount = 0;
-	TestAllCollisions(rootNode, 0);
+
+	// ルート空間の存在をチェック
+	if (m_Nodes.size()==0)
+		return;	// 空間が存在していない
+
+	m_CollisionStack.clear();
+	// 再帰で判定を取る
+	TestCollisionsRecursive(0);
 
 	Game::GetInstance()->GetDebugText()->AddText(DirectX::SimpleMath::Vector2(10,30), L"Hit:%d", hitCount);
 }
 
-void Octree::TestAllCollisions(OctreeNode * node, int depth)
-{	
-	ancestorStack.push_back(node);
+// 空間内で衝突リストを作成する
+void Octree::TestCollisionsRecursive(DWORD Elem)
+{
+	assert(0 <= Elem && Elem < m_Nodes.size());
 
-	for (int n = 0; n < depth+1; n++)
+	OctreeNode* node = m_Nodes[Elem].get();
+
+	// ① 空間内のオブジェクト同士の衝突リスト作成
+	for (OctreeObject* A : node->GetObjList())
 	{
-		for (OctreeObject* A : ancestorStack[n]->objList)
+		for (OctreeObject* B : node->GetObjList())
 		{
-			for (OctreeObject* B : node->objList)
-			{
-				if (A == B) break;
+			if (A == B) break;
 
+			if (TestCollision(A, B))
+			{
+				m_CollisionList.push_back(std::make_pair(A, B));
+				hitCount++;
+			}			
+		}
+	}
+
+	// ② 衝突スタックとの衝突リスト作成
+	for (OctreeObject* A : node->GetObjList())
+	{
+		for (OctreeNode* stackNode : m_CollisionStack)
+		{
+			for (OctreeObject* B : stackNode->GetObjList())
+			{
 				if (TestCollision(A, B))
 				{
-					collisionList.push_back(std::make_pair(A, B));
+					m_CollisionList.push_back(std::make_pair(A, B));
 					hitCount++;
 				}
 			}
 		}
 	}
 
-	for (int i = 0; i < DIVISION_NUM; i++)
-	{
-		if (node->children[i])
-		{
-			TestAllCollisions(node->children[i], depth+1);
+	bool childExists = false;
+	// ③ 子空間に移動
+	DWORD ObjNum = 0;
+	DWORD NextElem;
+	for (int i = 0; i < 8; i++) {
+		NextElem = Elem * 8 + 1 + i;
+		if (NextElem < m_Nodes.size()) {
+			if (!childExists) {
+				// ④ ノードをスタックに追加
+				m_CollisionStack.push_back(node);
+			}
+			childExists = true;
+			TestCollisionsRecursive(Elem * 8 + 1 + i);	// 子空間へ
 		}
 	}
 
-	ancestorStack.pop_back();
+	// ⑤ スタックからオブジェクトを外す
+	if (childExists) {
+		m_CollisionStack.pop_back();
+	}
 }
 
-/// <summary>
-/// ノードの数を数える
-/// </summary>
-void Octree::OutputNodeCounts()
-{
-	int count = rootNode->CountObject();
-
-	std::string str = std::to_string(count);
-	OutputDebugStringA(str.c_str());
-}

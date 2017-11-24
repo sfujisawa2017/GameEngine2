@@ -5,7 +5,7 @@ using namespace DirectX::SimpleMath;
 using namespace MyLibrary;
 
 const float GameObject::GRAVITY = 9.8f;
-const float GameObject::WALL_RESTITUTION =  0.78f;
+const float GameObject::WALL_RESTITUTION =  0.18f;
 const float GameObject::SPEED_MAX = 1.0f;
 
 MyLibrary::Plane GameObject::planes[PLANE_NUM];
@@ -75,14 +75,11 @@ void GameObject::Update()
 	{
 		velocity.y = -SPEED_MAX;
 	}
+
 	// 速度による移動処理
 	position = position + velocity;
 
 	// 地面との衝突判定と跳ね返り
-	//MyLibrary::Plane plane;
-	//plane.Normal = Vector3(0, 1, 0);
-	//plane.Distance = 0;
-	//ReflectPlane(plane);
 	for (int i = 0; i < PLANE_NUM; i++)
 	{
 		ReflectPlane(planes[i]);
@@ -181,8 +178,7 @@ void GameObject::ReflectPlane(const MyLibrary::Plane& plane)
 }
 
 /// <summary>
-/// 動いている2球の跳ね返り
-/// アルゴリズム参考：http://marupeke296.com/COL_3D_No9_GetSphereColliTimeAndPos.html
+/// 2球の跳ね返り
 /// </summary>
 /// <param name="o1"></param>
 /// <param name="o2"></param>
@@ -211,62 +207,4 @@ void GameObject::ReflectObjects(GameObject * o1, GameObject * o2)
 	// 完全弾性衝突
 	o1->velocity = va2 + vb1;
 	o2->velocity = va1 + vb2;
-
-
-
-	//// 移動前のオブジェクトの位置の差（推定）
-	//Vector3 cs = (o2->sphere.center - o2->velocity) - (o1->sphere.center - o1->velocity);
-	//// 移動後のオブジェクトの位置の差
-	//Vector3 ce = o2->sphere.center - o1->sphere.center;
-
-	//Vector3 cs2e = ce - cs;
-	//// 半径の和の二乗
-	//float rad_sq = o1->sphere.radius + o2->sphere.radius;
-	//rad_sq = rad_sq * rad_sq;
-
-	//float p = Vector3::DistanceSquared(cs, ce);
-	//float q = cs.x * cs2e.x + cs.y * cs2e.y + cs.z * cs2e.z;
-	//float r = Vector3::DistanceSquared(o1->sphere.center, o2->sphere.center);
-
-	//float hitTime = (-q + sqrtf(q*q - p * (r - rad_sq))) / p;
-
-	//// 1フレーム内での当たりがない
-	//if (hitTime < 0 || hitTime > 1.0f)
-	//{
-	//	return;
-	//}
-
-	//// 衝突時間まで戻す
-	//o1->position -= o1->velocity*hitTime;
-	//o2->position -= o2->velocity*hitTime;
-
-	//float distance = Vector3::Distance(o1->position, o2->position);
-
-	//// 衝突時のオブジェクトの位置の差
-	//Vector3 cc = o2->position - o1->position;
-	//cc.Normalize();
-
-	//Vector3 va1 = o1->velocity.Dot(cc) * cc;
-	//Vector3 va2 = o2->velocity.Dot(cc) * cc;
-	//Vector3 vb1 = o1->velocity - va1;
-	//Vector3 vb2 = o2->velocity - va2;
-
-	//// 完全弾性衝突
-	//o1->velocity = va2 + vb1;
-	//o2->velocity = va1 + vb2;
-
-	//// 残り時間分移動
-	//o1->position += o1->velocity * (1 - hitTime);
-	//o2->position += o2->velocity * (1 - hitTime);
-
-	//// オブジェクト更新
-	//o1->UpdateObj3d();
-	//o2->UpdateObj3d();
-
-	//// 球の情報を更新
-	//o1->sphere.center = o1->position;
-	//o2->sphere.center = o2->position;
-	//// 中心座標を更新
-	//o1->center = o1->position;
-	//o2->center = o2->position;
 }

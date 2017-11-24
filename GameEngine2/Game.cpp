@@ -8,6 +8,7 @@
 extern void ExitGame();
 
 using namespace DirectX;
+using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 using namespace MyLibrary;
 
@@ -56,11 +57,14 @@ void Game::Initialize()
 
 	GameObject::StaticInitialize();
 
-	for (int i = 0; i < 100; i++)
+	const float halfWidth = 30.0f;
+	m_Octree = std::make_unique<Octree>(3, Vector3(-halfWidth, -halfWidth, -halfWidth), Vector3(halfWidth, halfWidth, halfWidth));
+
+	for (int i = 0; i < 150; i++)
 	{
 		std::unique_ptr<GameObject> gameObj = std::make_unique<GameObject>();
 
-		octree.InsertObject(gameObj.get());
+		m_Octree->InsertObject(gameObj.get());
 
 		gameObjects.push_back(std::move(gameObj));
 	}
@@ -86,18 +90,21 @@ void Game::Update(StepTimer const& timer)
 	for ( std::unique_ptr<GameObject>& obj : gameObjects)
 	{
 		obj->Update();
+		// ツリーへの登録を更新
+		obj->RemoveFromNode();
+		m_Octree->InsertObject(obj.get());
 	}
 
 	PerformanceCounter* pc = PerformanceCounter::GetInstance();
 	pc->Begin();
-	octree.TestAllCollisions();
+	m_Octree->TestAllCollisions();
 	pc->End();
 	double time = pc->GetElapsedTime();
 
 	m_DebugText->AddText(DirectX::SimpleMath::Vector2(10, 10), L"time:%f", time);
 
-	const std::vector<std::pair<Octree::OctreeObject*, Octree::OctreeObject*>>& collisionList = octree.GetCollisionList();
-	for (const std::pair<Octree::OctreeObject*, Octree::OctreeObject*>& collision : collisionList)
+	const std::vector<std::pair<OctreeObject*, OctreeObject*>>& collisionList = m_Octree->GetCollisionList();
+	for (const std::pair<OctreeObject*, OctreeObject*>& collision : collisionList)
 	{
 		GameObject* obj1 = dynamic_cast<GameObject*>(collision.first);
 		if (obj1 == nullptr) continue;

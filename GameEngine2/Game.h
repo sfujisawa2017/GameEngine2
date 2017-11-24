@@ -44,5 +44,5 @@ private:
 	//std::unique_ptr<MyLibrary::Sprite> m_Spr3;
 	std::vector<std::unique_ptr<GameObject>> gameObjects;
 
-	Octree octree;
+	std::unique_ptr<Octree> m_Octree;
 };
