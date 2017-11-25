@@ -16,12 +16,14 @@ GameObject::GameObject()
 	velocity = Vector3(0, 0, 0);
 	radius = 1.0f;
 
-	// 地面上のランダムな座標に配置
-	position.x = RandomRange(-10, 10);
-	position.y = 1.0f;
-	position.z = RandomRange(-10, 10);
+	const float range = 100;
 
-	velocity.x = 0.1f;
+	// 地面上のランダムな座標に配置
+	position.x = RandomRange(-range, range);
+	position.y = 0.5f;
+	position.z = RandomRange(-range, range);
+
+	//velocity.x = 0.1f;
 
 	// 色をランダムに決定
 	float red = RandomRange(0, 1);
@@ -68,5 +70,7 @@ void GameObject::UpdateObj3d()
 
 void GameObject::Draw()
 {
+	if (!obj.GetCamera()->TestInFrustum(position, radius)) return;
+
 	obj.Draw();
 }

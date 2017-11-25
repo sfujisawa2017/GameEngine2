@@ -41,6 +41,8 @@ void Camera::Update()
 	m_Proj = Matrix::CreatePerspectiveFieldOfView(m_FovY, m_Aspect, m_NearClip, m_FarClip);
 	// ビルボード行列を計算
 	CalcBillboard();
+	// 視錘台の平面を計算
+	CalcViewFrustumPlanes();
 }
 
 /// <summary>
@@ -176,4 +178,69 @@ void Camera::CalcBillboard()
 	m_Billboard.m[2][0] = -eyeDir.x;
 	m_Billboard.m[2][1] = -eyeDir.y;
 	m_Billboard.m[2][2] = -eyeDir.z;
+}
+
+/// <summary>
+/// 視錘台の平面を計算
+/// </summary>
+void Camera::CalcViewFrustumPlanes()
+{
+	float tangent = tanf(m_FovY / 2.0f);
+	float nh = m_NearClip * tangent;
+	float nw = nh * m_Aspect;
+	float fh = m_FarClip  * tangent;
+	float fw = fh * m_Aspect;
+
+	// カメラから見た各軸を算出
+	Vector3 axisZ = m_Eyepos - m_Refpos;
+	axisZ.Normalize();
+	Vector3 axisX = m_Upvec.Cross(axisZ);
+	axisX.Normalize();
+	Vector3 axisY = axisZ.Cross(axisX);
+	axisY.Normalize();
+
+	// ニア平面とファー平面の中点を算出
+	Vector3 nc = m_Eyepos - axisZ * m_NearClip;
+	Vector3 fc = m_Eyepos - axisZ * m_FarClip;
+
+	// ニア平面の端４点を算出
+	Vector3 ntl = nc + axisY * nh - axisX * nw;
+	Vector3 ntr = nc + axisY * nh + axisX * nw;
+	Vector3 nbl = nc - axisY * nh - axisX * nw;
+	Vector3 nbr = nc - axisY * nh + axisX * nw;
+
+	// ファー平面の端４点を算出
+	Vector3 ftl = fc + axisY * fh - axisX * fw;
+	Vector3 ftr = fc + axisY * fh + axisX * fw;
+	Vector3 fbl = fc - axisY * fh - axisX * fw;
+	Vector3 fbr = fc - axisY * fh + axisX * fw;
+
+	// それぞれ３点ずつから平面の法線と距離を算出（法線は領域の外側向き）
+	m_ViewFrustumPlanes[VIEW_FRUSTUM_PLANE_NEAR].ComputeBy3Points(ntl, ntr, nbr);
+	m_ViewFrustumPlanes[VIEW_FRUSTUM_PLANE_FAR].ComputeBy3Points(ftr, ftl, fbl);
+	m_ViewFrustumPlanes[VIEW_FRUSTUM_PLANE_LEFT].ComputeBy3Points(ntl, nbl, fbl);
+	m_ViewFrustumPlanes[VIEW_FRUSTUM_PLANE_RIGHT].ComputeBy3Points(nbr, ntr, fbr);
+	m_ViewFrustumPlanes[VIEW_FRUSTUM_PLANE_TOP].ComputeBy3Points(ntr, ntl, ftl);
+	m_ViewFrustumPlanes[VIEW_FRUSTUM_PLANE_BOTTOM].ComputeBy3Points(nbl, nbr, fbr);
+}
+
+/// <summary>
+/// 視錘台の内外判定
+/// </summary>
+/// <param name="p"></param>
+/// <param name="radius"></param>
+/// <returns></returns>
+bool Camera::TestInFrustum(Vector3 &p, float radius) {
+
+	float distance;
+
+	for (int i = 0; i < VIEW_FRUSTUM_PLANE_NUM; i++) {
+		distance = m_ViewFrustumPlanes[i].Normal.Dot(p) - m_ViewFrustumPlanes[i].Distance;
+		// 外側
+		if (distance < -radius)
+			return false;
+	}
+
+	// 一つも該当しないので、内側
+	return true;
 }

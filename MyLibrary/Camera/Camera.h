@@ -13,6 +13,19 @@ namespace MyLibrary
 	public:
 		using Vector3 = DirectX::SimpleMath::Vector3;
 		using Vector2 = DirectX::SimpleMath::Vector2;
+		//static const int VIEW_FRUSTUM_PLANE_NUM = 6;
+		// 視錘台の判定平面数
+		enum VIEW_FRUSTUM_PLANE
+		{
+			VIEW_FRUSTUM_PLANE_NEAR,	// 手前
+			VIEW_FRUSTUM_PLANE_FAR,		// 奥
+			VIEW_FRUSTUM_PLANE_LEFT,	// 左
+			VIEW_FRUSTUM_PLANE_RIGHT,	// 右
+			VIEW_FRUSTUM_PLANE_TOP,		// 上
+			VIEW_FRUSTUM_PLANE_BOTTOM,	// 下
+
+			VIEW_FRUSTUM_PLANE_NUM
+		};
 	protected:
 		// ビュー行列
 		DirectX::SimpleMath::Matrix m_View;
@@ -38,6 +51,8 @@ namespace MyLibrary
 		DirectX::SimpleMath::Matrix m_Billboard;
 		// ビルボード行列(Y軸周り限定）
 		DirectX::SimpleMath::Matrix m_BillboardConstrainY;
+		// 視錘台判定平面
+		Plane m_ViewFrustumPlanes[VIEW_FRUSTUM_PLANE_NUM];
 	public:
 		// コンストラクタ
 		Camera(int width, int height);
@@ -59,7 +74,9 @@ namespace MyLibrary
 
 		bool Project(const Vector3& worldPos, Vector2* screenPos);
 		void UnProject(const Vector2& screenPos, Segment* worldSegment);
-		void UnProject(const Vector2 & screenPos, float distance, Vector3 * worldPos);
+		void UnProject(const Vector2& screenPos, float distance, Vector3 * worldPos);
 		void CalcBillboard();
+		void CalcViewFrustumPlanes();
+		bool TestInFrustum(Vector3& p, float radius);
 	};
 }

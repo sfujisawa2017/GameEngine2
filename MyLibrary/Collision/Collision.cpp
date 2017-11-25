@@ -41,6 +41,17 @@ using namespace MyLibrary;
 //----------------------------------------------
 //	global functions definition
 //----------------------------------------------
+void MyLibrary::Plane::ComputeBy3Points(const Vector3& p0, const Vector3& p1, const Vector3& p2)
+{
+	Vector3 P0_P1 = p1 - p0;
+	Vector3 P1_P2 = p2 - p1;
+
+	Normal = P0_P1.Cross(P1_P2);
+	Normal.Normalize();
+
+	Distance = Normal.Dot(p0);
+}
+
 ////--------------------------------------------------------------------------------------------
 //// 説　明 : ベクトルのスカラー三重積を計算
 //// 引　数 : _v0		ベクトル0
@@ -1048,3 +1059,5 @@ bool CheckSphere2Triangle(const Sphere& _sphere, const Triangle& _triangle, Vect
 }
 //
 //NS_COLLISION_END
+
+

@@ -1,10 +1,10 @@
-//--------------------------------------------------------------------------------------
-// ƒtƒ@ƒCƒ‹–¼: Collision.h
-// ì¬Ò: “¡àV@L¡
-// ì¬“ú: 2016/06/07
-// à–¾:“–‚½‚è”»’èƒ‰ƒCƒuƒ‰ƒŠ
-//      –w‚Ç‚ÌƒAƒ‹ƒSƒŠƒYƒ€‚Í
-//		uƒQ[ƒ€ƒvƒƒOƒ‰ƒ~ƒ“ƒO‚Ì‚½‚ß‚ÌƒŠƒAƒ‹ƒ^ƒCƒ€Õ“Ë”»’èvhttp://www.borndigital.co.jp/book/164.html@‚©‚çˆø—p
+ï»¿//--------------------------------------------------------------------------------------
+// ãƒ•ã‚¡ã‚¤ãƒ«å: Collision.h
+// ä½œæˆè€…: è—¤æ¾¤ã€€ä¼¸æ²»
+// ä½œæˆæ—¥: 2016/06/07
+// èª¬æ˜:å½“ãŸã‚Šåˆ¤å®šãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+//      æ®†ã©ã®ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã¯
+//		ã€Œã‚²ãƒ¼ãƒ ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ã®ãŸã‚ã®ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ è¡çªåˆ¤å®šã€http://www.borndigital.co.jp/book/164.htmlã€€ã‹ã‚‰å¼•ç”¨
 //--------------------------------------------------------------------------------------
 #pragma once
 #include <d3d11_1.h>
@@ -20,72 +20,72 @@ namespace MyLibrary
 	//----------------------------------------------
 	//	class
 	//----------------------------------------------
-	//// ‰~
+	//// å††
 	//class Circle
 	//{
 	//public:
-	//	DirectX::SimpleMath::Vector3	center;	// ’†SÀ•W
-	//	float	radius;	// ”¼Œa
-	//	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//	DirectX::SimpleMath::Vector3	center;	// ä¸­å¿ƒåº§æ¨™
+	//	float	radius;	// åŠå¾„
+	//	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	//	Circle()
 	//	{
 	//		radius = 1.0f;
 	//	}
 	//};
 
-	//// ’¼ü
+	//// ç›´ç·š
 	//class Line
 	//{
 	//public:
-	//	DirectX::SimpleMath::Vector3	point0;	// “_0
-	//	DirectX::SimpleMath::Vector3	point1;	// “_1
+	//	DirectX::SimpleMath::Vector3	point0;	// ç‚¹0
+	//	DirectX::SimpleMath::Vector3	point1;	// ç‚¹1
 	//};
 
-	// ü•ª
+	// ç·šåˆ†
 	class Segment
 	{
 	public:
-		DirectX::SimpleMath::Vector3	start;	// n“_À•W
-		DirectX::SimpleMath::Vector3	end;	// I“_À•W
+		DirectX::SimpleMath::Vector3	start;	// å§‹ç‚¹åº§æ¨™
+		DirectX::SimpleMath::Vector3	end;	// çµ‚ç‚¹åº§æ¨™
 	};
 
-	//// ²•½s‹«ŠEƒ{ƒbƒNƒX(AABB)
+	//// è»¸å¹³è¡Œå¢ƒç•Œãƒœãƒƒã‚¯ã‚¹(AABB)
 	//class AABB
 	//{
 	//public:
-	//	Point	Max;	// X,Y,ZÀ•W‚»‚ê‚¼‚ê‚ÌÅ¬’l
-	//	Point	Min;	// X,Y,ZÀ•W‚»‚ê‚¼‚ê‚ÌÅ‘å’l
+	//	Point	Max;	// X,Y,Zåº§æ¨™ãã‚Œãã‚Œã®æœ€å°å€¤
+	//	Point	Min;	// X,Y,Zåº§æ¨™ãã‚Œãã‚Œã®æœ€å¤§å€¤
 	//};
 
-	//// —LŒü‹«ŠEƒ{ƒbƒNƒX(OBB)
+	//// æœ‰å‘å¢ƒç•Œãƒœãƒƒã‚¯ã‚¹(OBB)
 	//class OBB
 	//{
 	//public:
-	//	Point	center;		// ’†SÀ•W
-	//	Vector	Axis[3];	// ƒ[ƒJƒ‹X,Y,Z²
-	//	Vector	Size;		// ‘å‚«‚³iX,Y,Z‚»‚ê‚¼‚ê1•Ó‚Ì’·‚³‚Ì”¼•ªj
+	//	Point	center;		// ä¸­å¿ƒåº§æ¨™
+	//	Vector	Axis[3];	// ãƒ­ãƒ¼ã‚«ãƒ«X,Y,Zè»¸
+	//	Vector	Size;		// å¤§ãã•ï¼ˆX,Y,Zãã‚Œãã‚Œ1è¾ºã®é•·ã•ã®åŠåˆ†ï¼‰
 	//};
 
-	// ‹…
+	// çƒ
 	class Sphere
 	{
 	public:
-		DirectX::SimpleMath::Vector3	center;	// ’†SÀ•W
-		float	radius;	// ”¼Œa
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		DirectX::SimpleMath::Vector3	center;	// ä¸­å¿ƒåº§æ¨™
+		float	radius;	// åŠå¾„
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		Sphere()
 		{
 			radius = 1.0f;
 		}
 	};
 
-	// ƒJƒvƒZƒ‹(‹…‚ğƒXƒEƒB[ƒv‚µ‚½Œ`ój
+	// ã‚«ãƒ—ã‚»ãƒ«(çƒã‚’ã‚¹ã‚¦ã‚£ãƒ¼ãƒ—ã—ãŸå½¢çŠ¶ï¼‰
 	class Capsule
 	{
 	public:
-		Segment	segment;	// cü
-		float	radius;	// ”¼Œa
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		Segment	segment;	// èŠ¯ç·š
+		float	radius;	// åŠå¾„
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		Capsule()
 		{
 			segment.start = DirectX::SimpleMath::Vector3(0, 0, 0);
@@ -94,73 +94,76 @@ namespace MyLibrary
 		}
 	};
 
-	//// •½–Ê
-	//class Plane
-	//{
-	//public:
-	//	Vector	Normal;		// –@üƒxƒNƒgƒ‹
-	//	float	Distance;	// Œ´“_‚©‚ç‚Ì‹——£i•½–Êã‚Ì‚ ‚é—^‚¦‚ç‚ê‚½“_p‚É‘Î‚µ‚Äd = Dot(n,p)‚ª¬—§j
-	//	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	//	Plane()
-	//	{
-	//		Distance = 0.0f;
-	//	}
-	//};
+	// å¹³é¢
+	class Plane
+	{
+	public:
+		DirectX::SimpleMath::Vector3	Normal;		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+		float	Distance;	// åŸç‚¹ã‹ã‚‰ã®è·é›¢ï¼ˆå¹³é¢ä¸Šã®ã‚ã‚‹ä¸ãˆã‚‰ã‚ŒãŸç‚¹pã«å¯¾ã—ã¦d = Dot(n,p)ãŒæˆç«‹ï¼‰
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		Plane()
+		{
+			Distance = 0.0f;
+		}
 
-	// –@ü•t‚«OŠpŒ`i”½Œv‰ñ‚è‚ª•\–Êj
+		// ä¸‰ç‚¹ã‹ã‚‰å¹³é¢ã‚’è¨ˆç®—ï¼ˆåæ™‚è¨ˆå›ã‚Šã«æŒ‡å®šï¼‰
+		void ComputeBy3Points(const DirectX::SimpleMath::Vector3& _p0, const DirectX::SimpleMath::Vector3& _p1, const DirectX::SimpleMath::Vector3& _p2);
+	};
+
+	// æ³•ç·šä»˜ãä¸‰è§’å½¢ï¼ˆåæ™‚è¨ˆå›ã‚ŠãŒè¡¨é¢ï¼‰
 	class Triangle
 	{
 	public:
 		DirectX::SimpleMath::Vector3	P0;
 		DirectX::SimpleMath::Vector3	P1;
 		DirectX::SimpleMath::Vector3	P2;
-		DirectX::SimpleMath::Vector3	Normal;	// –@üƒxƒNƒgƒ‹
+		DirectX::SimpleMath::Vector3	Normal;	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	};
 
 	//----------------------------------------------
 	//	global functions prototype
 	//----------------------------------------------
 
-	// Å¬’l‚ÆÅ‘å’l‚ÌŠÔ‚ÉƒNƒ‰ƒ“ƒv‚·‚é
+	// æœ€å°å€¤ã¨æœ€å¤§å€¤ã®é–“ã«ã‚¯ãƒ©ãƒ³ãƒ—ã™ã‚‹
 	inline float Clamp(float _x, float _min, float _max)
 	{
 		return min(max(_x, _min), _max);
 	}
-	// ƒxƒNƒgƒ‹‚ÌƒXƒJƒ‰[OdÏ‚ğŒvZ
+	// ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚¹ã‚«ãƒ©ãƒ¼ä¸‰é‡ç©ã‚’è¨ˆç®—
 	//float VectorTriple(const Vector &_v0, const Vector &_v1, const Vector &_v2);
 
-	////-- ‹——£
-	//// “_‚Æü•ª‚Ì‹——£‚Ì“ñæ‚ğæ“¾
+	////-- è·é›¢
+	//// ç‚¹ã¨ç·šåˆ†ã®è·é›¢ã®äºŒä¹—ã‚’å–å¾—
 	//float GetSqDistancePoint2Segment(const Point& _point, const Segment& _segment);
-	//// ü•ª‚Æü•ª‚Ì‹——£‚Ì“ñæ‚ğæ“¾
+	//// ç·šåˆ†ã¨ç·šåˆ†ã®è·é›¢ã®äºŒä¹—ã‚’å–å¾—
 	//float GetSqDistanceSegment2Segment(const Segment& _segment0, const Segment& _segment1);
 
-	//-- ÅÚ‹ß“_‚Ìæ“¾
-	// “_‚Æü•ª
+	//-- æœ€æ¥è¿‘ç‚¹ã®å–å¾—
+	// ç‚¹ã¨ç·šåˆ†
 	//void ClosestPtPoint2Segment(const Point& _point, const Segment& _segment, Point* _closest);
-	//// “_‚ÆOŠpŒ`
+	//// ç‚¹ã¨ä¸‰è§’å½¢
 	//void ClosestPtPoint2Triangle(const Point& _point, const Triangle& _triangle, Point* _closest);
-	//// ü•ª‚Æü•ª‚ÌÅ‹ßÚ“_‚ğŒvZ
+	//// ç·šåˆ†ã¨ç·šåˆ†ã®æœ€è¿‘æ¥ç‚¹ã‚’è¨ˆç®—
 	//void ClosestPtSegment2Segment(const Segment& _segment0, const Segment& _segment1, Point* _closest0, Point* _closest1);
-	//// “_‚ÆAABB
+	//// ç‚¹ã¨AABB
 	//void ClosestPtPoint2AABB(const Point& _point, const AABB& _aabb, Point *_closest);
-	//// “_‚ÆOBB
+	//// ç‚¹ã¨OBB
 	//void ClosestPtPoint2OBB(const Point& _point, const OBB& _obb, Point *_closest);
 	//
-	//// ‚R“_‚©‚çOŠpŒ`‚ğŒvZi”½Œv‰ñ‚è‚Éw’èj
+	//// ï¼“ç‚¹ã‹ã‚‰ä¸‰è§’å½¢ã‚’è¨ˆç®—ï¼ˆåæ™‚è¨ˆå›ã‚Šã«æŒ‡å®šï¼‰
 	void ComputeTriangle(const DirectX::SimpleMath::Vector3& _p0, const DirectX::SimpleMath::Vector3& _p1, const DirectX::SimpleMath::Vector3& _p2, Triangle* _triangle);
 	//
-	//// “–‚½‚è”»’è
-	//bool CheckAABB2AABB(const AABB& _box0, const AABB& _box1, Point *_inter = nullptr);					// AABB‚ÆAABB
-	//bool CheckOBB2OBB(const OBB& a, const OBB& b, Point *_inter = nullptr);								// OBB‚ÆOBB
-	//bool CheckSphere2Sphere(const Sphere& _sphere0, const Sphere& _sphere1, Point *_inter = nullptr);	// ‹…‚Æ‹…
-	//bool CheckSphere2Plane(const Sphere& _sphere, const Plane& _plane, Point *_inter = nullptr);		// ‹…‚Æ•½–Ê
-	//bool CheckSphere2Capsule(const Sphere& _sphere, const Capsule& _capsule, Point *_inter = nullptr);	// ‹…‚ÆƒJƒvƒZƒ‹
-	//bool CheckCapsule2Capsule(const Capsule& _capsule0, const Capsule& _capsule1, Point *_inter = nullptr);	// ƒJƒvƒZƒ‹‚ÆƒJƒvƒZƒ‹
-	//bool CheckLine2Triangle(const Line& _lay, const Triangle& _triangle, Point *_inter = nullptr);		// ’¼ü‚Æ–@ü•t‚«OŠpŒ`// OŠpŒ`‚Æ“_‚Ì“–‚½‚è”»’è
-	//bool CheckPoint2Triangle(const Point& _point, const Triangle& _triangle);	// “_‚ªOŠpŒ`‚Ì’†‚É‚ ‚é‚©”»’è
-	bool CheckSegment2Triangle(const Segment& _segment, const Triangle& _triangle, DirectX::SimpleMath::Vector3 *_inter = nullptr);	// ü•ª‚Æ–@ü•t‚«OŠpŒ`
-	bool CheckSphere2Triangle(const Sphere& _sphere, const Triangle& _triangle, DirectX::SimpleMath::Vector3 *_inter = nullptr); //‹…‚Æ–@ü•t‚«OŠpŒ`‚Ì“–‚½‚èƒ`ƒFƒbƒN
+	//// å½“ãŸã‚Šåˆ¤å®š
+	//bool CheckAABB2AABB(const AABB& _box0, const AABB& _box1, Point *_inter = nullptr);					// AABBã¨AABB
+	//bool CheckOBB2OBB(const OBB& a, const OBB& b, Point *_inter = nullptr);								// OBBã¨OBB
+	//bool CheckSphere2Sphere(const Sphere& _sphere0, const Sphere& _sphere1, Point *_inter = nullptr);	// çƒã¨çƒ
+	//bool CheckSphere2Plane(const Sphere& _sphere, const Plane& _plane, Point *_inter = nullptr);		// çƒã¨å¹³é¢
+	//bool CheckSphere2Capsule(const Sphere& _sphere, const Capsule& _capsule, Point *_inter = nullptr);	// çƒã¨ã‚«ãƒ—ã‚»ãƒ«
+	//bool CheckCapsule2Capsule(const Capsule& _capsule0, const Capsule& _capsule1, Point *_inter = nullptr);	// ã‚«ãƒ—ã‚»ãƒ«ã¨ã‚«ãƒ—ã‚»ãƒ«
+	//bool CheckLine2Triangle(const Line& _lay, const Triangle& _triangle, Point *_inter = nullptr);		// ç›´ç·šã¨æ³•ç·šä»˜ãä¸‰è§’å½¢// ä¸‰è§’å½¢ã¨ç‚¹ã®å½“ãŸã‚Šåˆ¤å®š
+	//bool CheckPoint2Triangle(const Point& _point, const Triangle& _triangle);	// ç‚¹ãŒä¸‰è§’å½¢ã®ä¸­ã«ã‚ã‚‹ã‹åˆ¤å®š
+	bool CheckSegment2Triangle(const Segment& _segment, const Triangle& _triangle, DirectX::SimpleMath::Vector3 *_inter = nullptr);	// ç·šåˆ†ã¨æ³•ç·šä»˜ãä¸‰è§’å½¢
+	bool CheckSphere2Triangle(const Sphere& _sphere, const Triangle& _triangle, DirectX::SimpleMath::Vector3 *_inter = nullptr); //çƒã¨æ³•ç·šä»˜ãä¸‰è§’å½¢ã®å½“ãŸã‚Šãƒã‚§ãƒƒã‚¯
 	bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, DirectX::SimpleMath::Vector3* _inter = nullptr);
 	bool CheckCapsule2Capsule(const Capsule& _capsule0, const Capsule& _capsule1, DirectX::SimpleMath::Vector3* _inter = nullptr);
 	bool CheckSphere2Capsule(const Sphere& _sphere, const Capsule& _capsule, DirectX::SimpleMath::Vector3* _inter = nullptr);
