@@ -40,13 +40,13 @@ void Game::Initialize()
 		Obj3D::InitializeCommon(def);
 	}
 
-	// 天球読み込み
-	m_ObjSkydome = std::make_unique<Obj3D>();
-	m_ObjSkydome->LoadModel(L"skydome");
-	m_ObjSkydome->DisableLighting();
+	//// 天球読み込み
+	//m_ObjSkydome = std::make_unique<Obj3D>();
+	//m_ObjSkydome->LoadModel(L"skydome");
+	//m_ObjSkydome->DisableLighting();
 	// 地面読み込み
 	m_ObjGround = std::make_unique<Obj3D>();
-	m_ObjGround->LoadModel(L"ground200m");
+	m_ObjGround->LoadModel(L"FieldCube");
 	m_ObjGround->DisableLighting();
 	// サウンド読み込み
 	ADX2Le::GetInstance()->Initialize(L"ADX2_samples.acf");
@@ -54,7 +54,9 @@ void Game::Initialize()
 
 	TextureCache::GetInstance()->LoadTexture(L"cat");
 
-	for (int i = 0; i < 500; i++)
+	GameObject::StaticInitialize();
+
+	for (int i = 0; i < 150; i++)
 	{
 		std::unique_ptr<GameObject> gameObj = std::make_unique<GameObject>();
 
@@ -93,7 +95,7 @@ void Game::Update(StepTimer const& timer)
 /// </summary>
 void Game::Render()
 {
-	m_ObjSkydome->Draw();
+	//m_ObjSkydome->Draw();
 	m_ObjGround->Draw();
 
 	for (std::unique_ptr<GameObject>& obj : gameObjects)

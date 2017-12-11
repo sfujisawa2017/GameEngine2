@@ -57,6 +57,9 @@
     <MeshContentTask Include="Assets\Cube.FBX">
       <Filter>Assets\CMO</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\FieldCube.FBX">
+      <Filter>Assets\CMO</Filter>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <None Include="Particle.hlsli" />

@@ -17,6 +17,21 @@ public:
 	// 速さ最大値
 	static const float SPEED_MAX;
 
+	static const float ONGROUND_EPSILON;
+	// 平面の数
+	static const int PLANE_NUM = 5;
+
+	struct PlaneDef
+	{
+		Vector3 normal;
+		float distance;
+	};
+
+	static const PlaneDef planeDefs[PLANE_NUM];
+	static MyLibrary::Plane planes[PLANE_NUM];
+
+	static void StaticInitialize();
+
 	GameObject();
 	// 更新
 	void Update();
