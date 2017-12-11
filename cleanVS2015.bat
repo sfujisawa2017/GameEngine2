@@ -30,6 +30,7 @@ if exist *.WRL del *.WRL
 if exist *.cmo del *.cmo
 if exist *.dds del *.dds
 if exist *.cso del *.cso
+if exist *.VC.db del *.VC.db
 for /d %%i in (.\*) do  (	
 	call :sub %%i
 )

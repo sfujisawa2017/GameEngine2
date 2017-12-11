@@ -28,7 +28,7 @@ void Game::Initialize()
 	// デバッグカメラ作成
 	m_Camera = std::make_unique<DebugCamera>(windowRect.right- windowRect.left, windowRect.bottom - windowRect.top);
 	m_Camera->SetCameraDistance(20.0f);
-	//m_Camera->SetXAngle(XMConvertToRadians(30.0f));
+	m_Camera->SetXAngle(XMConvertToRadians(30.0f));
 
 	{ // Obj3D初期化
 		// 設定
