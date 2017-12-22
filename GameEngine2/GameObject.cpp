@@ -13,10 +13,10 @@ MyLibrary::Plane GameObject::planes[PLANE_NUM];
 const GameObject::PlaneDef GameObject::planeDefs[PLANE_NUM] = 
 {
 	{ Vector3( 0, 1, 0),  0 },
-	{ Vector3(+1, 0, 0),-20 },
-	{ Vector3(-1, 0, 0),-20 },
-	{ Vector3( 0, 0,+1),-20 },
-	{ Vector3( 0, 0,-1),-20 }
+	{ Vector3(+1, 0, 0),-50 },
+	{ Vector3(-1, 0, 0),-50 },
+	{ Vector3( 0, 0,+1),-50 },
+	{ Vector3( 0, 0,-1),-50 }
 };
 
 void GameObject::StaticInitialize()
@@ -31,7 +31,7 @@ void GameObject::StaticInitialize()
 GameObject::GameObject()
 {
 	float yaw = XM_2PI * rand() / RAND_MAX;
-	float r = 1.0f * rand() / RAND_MAX;
+	float r = 10.0f * rand() / RAND_MAX;
 
 	Vector3 pos = Vector3(cosf(yaw) * r, 0, sinf(yaw) * r);
 	pos.y = 10.0f + 50.0f * rand() / RAND_MAX;

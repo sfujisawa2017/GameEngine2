@@ -57,10 +57,10 @@ void Game::Initialize()
 
 	GameObject::StaticInitialize();
 
-	const float halfWidth = 30.0f;
+	const float halfWidth = 60.0f;
 	m_Octree = std::make_unique<Octree>(3, Vector3(-halfWidth, -halfWidth, -halfWidth), Vector3(halfWidth, halfWidth, halfWidth));
 
-	for (int i = 0; i < 150; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		std::unique_ptr<GameObject> gameObj = std::make_unique<GameObject>();
 
