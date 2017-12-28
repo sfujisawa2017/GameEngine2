@@ -6,6 +6,8 @@
 #include <d3d11_1.h>
 #include <SimpleMath.h>
 
+class OctreeNode;
+
 class OctreeObject
 {
 public:
@@ -15,6 +17,7 @@ public:
 	OctreeObject()
 	{
 		radius = 1.0f;
+		node = nullptr;
 	}
 
 	// デストラクタ
@@ -24,4 +27,6 @@ public:
 	Vector3 center;
 	// 半径
 	float radius;
+
+	OctreeNode* node;
 };

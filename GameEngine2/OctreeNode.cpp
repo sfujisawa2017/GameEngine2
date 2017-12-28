@@ -63,26 +63,32 @@ void OctreeNode::InsertObject(OctreeObject * object, int maxDepth)
 	else
 	{
 		m_ObjList.push_front(object);
+		object->node = this;
 	}
 }
 
 void OctreeNode::RemoveObject(OctreeObject * object)
 {
-	std::list<OctreeObject*>::iterator it = find(m_ObjList.begin(), m_ObjList.end(), object);
+	if (object->node == nullptr) return;
 
-	// リストに含まれる？
-	if (it != m_ObjList.end())
-	{
-		// 除外して終了
-		m_ObjList.erase(it);
-		return;
-	}
+	m_ObjList.remove(object);
+	object->node = nullptr;
 
-	// 子ノードに対して再帰的に繰り返す
-	for (int i = 0; i < DIVISION_NUM; i++)
-	{
-		if (m_Children[i] == nullptr) continue;
+	//std::list<OctreeObject*>::iterator it = find(m_ObjList.begin(), m_ObjList.end(), object);
 
-		m_Children[i]->RemoveObject(object);
-	}
+	//// リストに含まれる？
+	//if (it != m_ObjList.end())
+	//{
+	//	// 除外して終了
+	//	m_ObjList.erase(it);
+	//	return;
+	//}
+
+	//// 子ノードに対して再帰的に繰り返す
+	//for (int i = 0; i < DIVISION_NUM; i++)
+	//{
+	//	if (m_Children[i] == nullptr) continue;
+
+	//	m_Children[i]->RemoveObject(object);
+	//}
 }

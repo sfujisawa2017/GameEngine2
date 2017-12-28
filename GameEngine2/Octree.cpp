@@ -36,14 +36,16 @@ Octree::Octree(int depth, Vector3 minimum, Vector3 maximum)
 
 void Octree::InsertObject(OctreeObject * object)
 {
-	// ルートノードに挿入
+	// ルートノードから探索して挿入
 	m_RootNode->InsertObject(object, m_MaxDepth);
 }
 
 void Octree::RemoveObject(OctreeObject * object)
 {
-	// ルートノードに挿入
-	//m_RootNode->InsertObject(object, m_MaxDepth);
+	if (object->node == nullptr) return;
+	object->node->RemoveObject(object);
+	//// ルートノードに挿入
+	//m_RootNode->RemoveObject(object);
 }
 
 void Octree::TestAllCollisions()

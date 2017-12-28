@@ -93,9 +93,9 @@ void Game::Update(StepTimer const& timer)
 	{
 		obj->Update();
 
-		//// 八分木に登録しなおす
-		//m_Octree->RemoveObject(obj.get());
-		//m_Octree->InsertObject(obj.get());
+		// 八分木に登録しなおす
+		m_Octree->RemoveObject(obj.get());
+		m_Octree->InsertObject(obj.get());
 	}
 
 	PerformanceCounter* pc = PerformanceCounter::GetInstance();
