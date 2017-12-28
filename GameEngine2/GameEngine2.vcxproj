@@ -185,6 +185,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Octree.h" />
+    <ClInclude Include="OctreeNode.h" />
     <ClInclude Include="OctreeObject.h" />
     <ClInclude Include="ParticleTest.h" />
   </ItemGroup>
@@ -193,6 +194,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Octree.cpp" />
+    <ClCompile Include="OctreeNode.cpp" />
     <ClCompile Include="OctreeObject.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
   </ItemGroup>

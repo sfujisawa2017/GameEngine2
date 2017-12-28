@@ -15,6 +15,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Octree.h" />
     <ClInclude Include="OctreeObject.h" />
+    <ClInclude Include="OctreeNode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
@@ -23,6 +24,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Octree.cpp" />
     <ClCompile Include="OctreeObject.cpp" />
+    <ClCompile Include="OctreeNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

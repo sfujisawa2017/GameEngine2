@@ -8,6 +8,7 @@
 extern void ExitGame();
 
 using namespace DirectX;
+using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 using namespace MyLibrary;
 
@@ -57,7 +58,8 @@ void Game::Initialize()
 	GameObject::StaticInitialize();
 
 	// 八分木の生成
-	m_Octree = std::make_unique<Octree>();
+	const float halfWidth = 60.0f;
+	m_Octree = std::make_unique<Octree>(3, Vector3(-halfWidth, -halfWidth, -halfWidth), Vector3(halfWidth, halfWidth, halfWidth));
 
 	for (int i = 0; i < 150; i++)
 	{
@@ -90,6 +92,10 @@ void Game::Update(StepTimer const& timer)
 	for (std::unique_ptr<GameObject>& obj : gameObjects)
 	{
 		obj->Update();
+
+		//// 八分木に登録しなおす
+		//m_Octree->RemoveObject(obj.get());
+		//m_Octree->InsertObject(obj.get());
 	}
 
 	PerformanceCounter* pc = PerformanceCounter::GetInstance();
