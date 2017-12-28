@@ -4,8 +4,9 @@
 #pragma once
 
 #include "MyLibrary.h"
+#include "OctreeObject.h"
 
-class GameObject
+class GameObject : public OctreeObject
 {
 public:
 	using Vector3 = DirectX::SimpleMath::Vector3;
@@ -31,6 +32,7 @@ public:
 	static MyLibrary::Plane planes[PLANE_NUM];
 
 	static void StaticInitialize();
+	static void ReflectObjects(GameObject * o1, GameObject * o2);
 
 	GameObject();
 	// 更新
@@ -47,12 +49,8 @@ public:
 protected:
 	MyLibrary::Obj3D obj;
 	MyLibrary::Sphere sphere;
-	// 座標
-	Vector3 position;
 	// 速度
 	Vector3 velocity;
-	// 半径
-	float radius;
 	// 接地フラグ
 	bool onGround;
 };

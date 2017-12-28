@@ -9,6 +9,7 @@
 
 #include "MyLibrary.h"
 #include "GameObject.h"
+#include "Octree.h"
 
 class Game : public MyLibrary::Framework
 {
@@ -32,4 +33,6 @@ private:
 	std::unique_ptr<MyLibrary::Obj3D> m_ObjGround;
 	// ゲームオブジェクト
 	std::vector<std::unique_ptr<GameObject>> gameObjects;
+	// 八分木
+	std::unique_ptr<Octree> m_Octree;
 };

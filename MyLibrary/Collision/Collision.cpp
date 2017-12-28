@@ -20,7 +20,10 @@ using namespace MyLibrary;
 //	using
 //----------------------------------------------
 
-//NS_COLLISION_BEGIN
+#define NS_MYLIB_BEGIN namespace MyLibrary {
+#define NS_MYLIB_END }
+
+NS_MYLIB_BEGIN
 
 //----------------------------------------------
 //	define
@@ -1057,7 +1060,6 @@ bool CheckSphere2Triangle(const Sphere& _sphere, const Triangle& _triangle, Vect
 
 	return true;
 }
-//
-//NS_COLLISION_END
+NS_MYLIB_END
 
 

@@ -35,19 +35,49 @@ void GameObject::StaticInitialize()
 	}
 }
 
+/// <summary>
+/// 2球の跳ね返り
+/// </summary>
+/// <param name="o1"></param>
+/// <param name="o2"></param>
+void GameObject::ReflectObjects(GameObject * o1, GameObject * o2)
+{
+	// 当たっていれば衝突点を算出　当たっていなければ終了
+	if (!MyLibrary::CheckSphere2Sphere(o1->sphere, o2->sphere)) return;
+
+	// 衝突時のオブジェクトの位置の差
+	Vector3 cc = o2->center - o1->center;
+	float distance = cc.Length();
+	// めり込み量
+	float overlap_length = o1->sphere.radius + o2->sphere.radius - distance;
+	cc.Normalize();
+	// めり込み排除
+	o1->center -= cc * (overlap_length / 2.0f);
+	o2->center += cc * (overlap_length / 2.0f);
+
+	Vector3 va1 = o1->velocity.Dot(cc) * cc;
+	Vector3 va2 = o2->velocity.Dot(cc) * cc;
+	Vector3 vb1 = o1->velocity - va1;
+	Vector3 vb2 = o2->velocity - va2;
+
+	// 完全弾性衝突
+	o1->velocity = va2 + vb1;
+	o2->velocity = va1 + vb2;
+}
+
 GameObject::GameObject()
 {
 	// メンバ変数初期化
-	position = Vector3(0, 0, 0);
+	center = Vector3(0, 0, 0);
 	velocity = Vector3(0, 0, 0);
 	radius = 1.0f;
 
 	const float range = 30;
 
 	// 地面上のランダムな座標に配置
-	position.x = RandomRange(-range, range);
-	position.y = RandomRange(10.0f, 60.0f);
-	position.z = RandomRange(-range, range);
+	center.x = RandomRange(-range, range);
+	center.y = RandomRange(10.0f, 60.0f);
+	center.z = RandomRange(-range, range);
 
 	const float vel_range = 1.0f;
 	velocity.x = RandomRange(-vel_range, vel_range);
@@ -66,14 +96,14 @@ GameObject::GameObject()
 	std::shared_ptr<IEffect> effect = basicEffect;
 
 	obj.LoadModel(L"SphereNode", false);
-	obj.SetTrans(position);
+	obj.SetTrans(center);
 	obj.SetScale(radius);
 	// 作成したエフェクトをセット
 	obj.SetEffect(effect);
 	obj.Update();
 
 	// 球の情報をセット
-	sphere.center = position;
+	sphere.center = center;
 	sphere.radius = radius;
 
 	onGround = false;
@@ -81,6 +111,14 @@ GameObject::GameObject()
 
 void GameObject::Update()
 {
+	if (onGround)
+	{
+		if (center.y > radius + 0.05f)
+		{
+			onGround = false;
+		}
+	}
+
 	if (!onGround)
 	{
 		// 重力処理 1フレームで9.8/60(m/s)加速
@@ -90,18 +128,21 @@ void GameObject::Update()
 	}
 
 	// 速度による移動処理
-	position = position + velocity;
+	center = center + velocity;
 
 	// 地面との衝突判定と跳ね返り
 	for (int i = 0; i < PLANE_NUM; i++)
 	{
 		if (ReflectPlane(planes[i]))
 		{
-			if (velocity.y < ONGROUND_EPSILON)
+			if (i == 0)
 			{
-				velocity.y = 0;
-				position.y = radius;
-				onGround = true;
+				if (velocity.y < ONGROUND_EPSILON)
+				{
+					velocity.y = 0;
+					center.y = radius;
+					onGround = true;
+				}
 			}
 		}
 	}
@@ -110,19 +151,19 @@ void GameObject::Update()
 	UpdateObj3d();
 
 	// 球の情報を更新
-	sphere.center = position;
+	sphere.center = center;
 }
 
 void GameObject::UpdateObj3d()
 {
-	obj.SetTrans(position);
+	obj.SetTrans(center);
 	obj.SetScale(radius);
 	obj.Update();
 }
 
 void GameObject::Draw()
 {
-	if (!obj.GetCamera()->TestInFrustum(position, radius)) return;
+	if (!obj.GetCamera()->TestInFrustum(center, radius)) return;
 
 	obj.Draw();
 }
@@ -133,10 +174,8 @@ void GameObject::Draw()
 /// <param name="plane"></param>
 bool GameObject::ReflectPlane(const MyLibrary::Plane& plane)
 {
-	Vector3 inter;
-
 	// 球の中心とワールド原点の法線方向での距離
-	float sphereDistance = position.Dot(plane.Normal);
+	float sphereDistance = center.Dot(plane.Normal);
 
 	// 平面に接触していない
 	if (sphereDistance - radius >= plane.Distance) return false;
@@ -152,19 +191,19 @@ bool GameObject::ReflectPlane(const MyLibrary::Plane& plane)
 	overTime = std::min<float>(overTime, 1.0f);
 
 	// めりこんだ分巻き戻す
-	position -= velocity * overTime;
+	center -= velocity * overTime;
 
 	// 跳ね返り速度
 	velocity = GetRefrectVelocity(plane.Normal, WALL_RESTITUTION);
 
 	// めりこんだ時間分、跳ね返り速度方向に進める
-	position += velocity * overTime;
+	center += velocity * overTime;
 
 	// オブジェクト更新
 	UpdateObj3d();
 
 	// 球の情報を更新
-	sphere.center = position;
+	sphere.center = center;
 
 	return true;
 }

@@ -56,9 +56,15 @@ void Game::Initialize()
 
 	GameObject::StaticInitialize();
 
+	// 八分木の生成
+	m_Octree = std::make_unique<Octree>();
+
 	for (int i = 0; i < 150; i++)
 	{
 		std::unique_ptr<GameObject> gameObj = std::make_unique<GameObject>();
+
+		// 八分木に登録
+		m_Octree->InsertObject(gameObj.get());
 
 		gameObjects.push_back(std::move(gameObj));
 	}
@@ -84,6 +90,28 @@ void Game::Update(StepTimer const& timer)
 	for (std::unique_ptr<GameObject>& obj : gameObjects)
 	{
 		obj->Update();
+	}
+
+	PerformanceCounter* pc = PerformanceCounter::GetInstance();
+	pc->Begin();
+	m_Octree->TestAllCollisions();
+	pc->End();
+	double time = pc->GetElapsedTime();
+	int hitCount = m_Octree->GetHitCount();
+
+	m_DebugText->AddText(DirectX::SimpleMath::Vector2(10, 10), L"time:%f", time);
+	m_DebugText->AddText(DirectX::SimpleMath::Vector2(10, 30), L"Hit:%d", hitCount);
+
+	const std::vector<std::pair<OctreeObject*, OctreeObject*>>& collisionList = m_Octree->GetCollisionList();
+	for (const std::pair<OctreeObject*, OctreeObject*>& collision : collisionList)
+	{
+		GameObject* obj1 = dynamic_cast<GameObject*>(collision.first);
+		if (obj1 == nullptr) continue;
+
+		GameObject* obj2 = dynamic_cast<GameObject*>(collision.second);
+		if (obj2 == nullptr) continue;
+
+		GameObject::ReflectObjects(obj1, obj2);
 	}
 
 }
